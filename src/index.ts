@@ -3,7 +3,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 import low from 'lowdb'
 import swaggerUI from 'swagger-ui-express'
-// import busRouter from './api/routes/bus.routes'
+import busRouter from './api/routes/bus.routes'
 import path from 'path'
 import swaggerJsdoc from 'swagger-jsdoc'
 
@@ -38,7 +38,7 @@ const swaggerOptions = {
             bearerAuth: []
         }]
     },
-    apis: ['./src/routes/*.js'],
+    apis: ['./src/api/routes/*.ts'],
     // Updated path for swagger.json
     swaggerFile: path.join(__dirname, './src/api/config/swagger.json')
 }
@@ -56,6 +56,6 @@ app.use(cors())
 app.use(express.json()) 
 app.use(morgan('dev')) 
 
-// app.use('busses', busRouter) 
+app.use('busses', busRouter) 
 
 app.listen(PORT, () => console.log(`The server is running on port ${PORT}`)) 
