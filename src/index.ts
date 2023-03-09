@@ -1,9 +1,11 @@
 import express from 'express'
+import 'dotenv/config'
+import { PORT } from './config/dotenv'
 const app = express()
-const port = process.env.PORT || 3003
+const port = PORT
 
 const normalResponse = {
-    msg: 'App running.'
+    msg: 'Welcome to Phantom API'
 }
 const exceptionalResponse= {
     msg: 'Wow! you\'re a deep digger'
@@ -18,5 +20,5 @@ app.use('*', (req, res) => {
 })
 
 app.listen(port, () => {
-    console.info(port)
+    console.info('API server is 🏃🏃 on'+port)
 })
