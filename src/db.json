@@ -1,0 +1,24 @@
+{
+  "buses": [
+    {
+      "id": "iEuOBYkU",
+      "plate": "RDF HK6M",
+      "driver": "Elie Kanimba"
+    },
+    {
+      "id": "0kFaJHB2",
+      "plate": "KMZ 6WYLO",
+      "driver": "Jon Bentley"
+    },
+    {
+      "id": "ukjXyUuM",
+      "plate": "RCA H2K33",
+      "driver": "Kellia Bashabe"
+    },
+    {
+      "id": "BDUDxb6F",
+      "plate": "MCT 5HKM8",
+      "driver": "Alexander Dewdney"
+    }
+  ]
+}

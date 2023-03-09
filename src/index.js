@@ -1,11 +1,18 @@
 import express from 'express'
-import * as swaggerUi from 'swagger-ui-express'
-import swaggerJsdoc from 'swagger-jsdoc'
-import path from 'path'
-// import usersRouter from './routes/users.route'
+import cors from 'cors'
+import morgan from 'morgan'
+import low from 'lowdb'
+import swaggerUI from 'swagger-ui-express'
+import swaggerJsDoc from 'swagger-jsdoc'
+import busRouter from './api/routes/bus.routes'
 
-const app = express()
-const port = process.env.PORT || 3003
+const PORT = process.env.PORT || 4000
+
+import FileSync from 'lowdb/adapters/FileSync'
+
+const adapter = new FileSync("db.json")
+const db = low(adapter)
+db.defaults({ buses: [] }).write()
 
 const swaggerOptions = {
     swaggerDefinition: {
@@ -36,12 +43,18 @@ const swaggerOptions = {
 }
 
 const specs = swaggerJsdoc(swaggerOptions)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
+a
 
-app.get('/', (req, res) => res.status(200).send('Welcome to Phantom'))
+const app = express() 
 
-// app.use('/users', usersRouter)
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs)) 
 
-app.listen(port, () => {
-    console.info(`Server running on port ${port}`)
-})
+app.db = db 
+
+app.use(cors()) 
+app.use(express.json()) 
+app.use(morgan("dev")) 
+
+app.use("/buses", busRouter) 
+
+app.listen(PORT, () => console.log(`The server is running on port ${PORT}`)) 
