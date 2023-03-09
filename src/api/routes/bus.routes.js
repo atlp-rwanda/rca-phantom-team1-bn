@@ -1,8 +1,8 @@
 import express from 'express'
-const busRouter = express.Router();
+const busRouter = express.Router()
 import { nanoid } from 'nanoid'
 
-const idLength = 8;
+const idLength = 8
 
 /**
  * @swagger
