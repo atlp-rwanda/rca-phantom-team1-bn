@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "node ./src/index.js",
-    "dev": "tsc && nodemon dist/index",
+    "dev": "tsc --watch & nodemon dist/index",
     "test": "tsc && nyc mocha",
     "lint": "eslint src"
   },

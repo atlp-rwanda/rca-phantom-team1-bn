@@ -129,7 +129,7 @@ busRouter.post('/', (req, res) => {
     
         // res.send(bus)
 
-        res.send([{success: true, data: {id: '3', plateNumber: 'RAB 05734 KXH'}}])
+        res.status(201).send([{success: true, data: {id: '3', plateNumber: 'RAB 05734 KXH'}}])
     } catch (error) {
         return res.status(500).send(error)
     }
@@ -176,7 +176,7 @@ busRouter.put('/:id', (req, res) => {
         //     .write()
 
         // res.send(req.app.db.get('buses').find({ id: req.params.id }))
-        res.send([{id: '1', plateNumber: 'RAB 05734 KXH'},{id: '2', plateNumber: 'RAB 05734 KXH'}])
+        res.status(200).send([{success: true, data:{id: '2', plateNumber: 'RAB 05734 KXH'}}])
     } catch (error) {
         return res.status(500).send(error)
     }
@@ -206,7 +206,8 @@ busRouter.put('/:id', (req, res) => {
 busRouter.delete('/:id', (req, res) => {
     // req.app.db.get('buses').remove({ id: req.params.id }).write();
 
-    res.sendStatus(200)
+    // res.sendStatus(200)
+    res.status(200).json({success: true, message: 'Bus deleted successfully'})
 })
 
 export default busRouter

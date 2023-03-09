@@ -56,6 +56,7 @@ app.use(cors())
 app.use(express.json()) 
 app.use(morgan('dev')) 
 
-app.use('busses', busRouter) 
+app.get('/', (_,res) => res.json({message: 'Welcome to Phantom API'}))
+app.use('/buses', busRouter) 
 
 app.listen(PORT, () => console.log(`The server is running on port ${PORT}`)) 
