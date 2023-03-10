@@ -1,51 +1,25 @@
 {
-  "name": "phantom-backend",
+  "name": "swagger-api-library",
   "version": "1.0.0",
-  "description": "Elevate the public transport experience",
-  "main": "src/index.ts",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "tsc && node dist/index",
-    "dev": "tsc && nodemon dist/index",
-    "test": "tsc && nyc mocha",
-    "lint": "eslint src"
+    "start": "node ./src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:create": "sequelize-cli db:create",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:g:migration": "sequelize-cli migration:generate --name",
+    "db:reset": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate",
+    "db:g:seed": "sequelize-cli seed:generate --name",
+    "db:seeds": "sequelize-cli db:seed:all",
+    "db:reseed": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all"
   },
-  "mocha": {
-    "extension": [
-      "ts"
-    ],
-    "spec": "src/test/**/*.spec.ts",
-    "require": "ts-node/register"
-  },
-  "nyc": {
-    "extends": "@istanbuljs/nyc-config-typescript",
-    "reporter": [
-      "text-summary",
-      "lcov"
-    ],
-    "all": "true",
-    "exclude": [
-      "dist",
-      "coverage"
-    ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Stackup-Rwanda/phantom-backend.git"
-  },
-  "keywords": [
-    "buses",
-    "transport",
-    "typescript"
-  ],
-  "author": "ceelogre",
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Stackup-Rwanda/phantom-backend/issues"
-  },
-  "homepage": "https://github.com/Stackup-Rwanda/phantom-backend#readme",
   "dependencies": {
     "@types/express": "^4.17.6",
     "body-parser": "^1.20.2",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "pg": "^8.10.0",
     "pg-hstore": "^2.3.4",
@@ -62,10 +36,17 @@
     "@typescript-eslint/parser": "^4.0.1",
     "assert": "^2.0.0",
     "chai": "^4.2.0",
+    "cors": "^2.8.5",
     "eslint": "^7.8.1",
+    "express": "^4.17.1",
+    "lowdb": "^1.0.0",
     "mocha": "^10.2.0",
+    "morgan": "^1.10.0",
+    "nanoid": "^3.1.20",
     "nyc": "^15.1.0",
     "source-map-support": "^0.5.19",
+    "swagger-jsdoc": "^6.0.1",
+    "swagger-ui-express": "^4.1.6",
     "ts-node": "^9.0.0"
   }
 }
