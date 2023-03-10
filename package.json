@@ -1,49 +1,17 @@
 {
-  "name": "phantom-backend",
+  "name": "swagger-api-library",
   "version": "1.0.0",
-  "description": "Elevate the public transport experience",
-  "main": "src/index.ts",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "tsc & cross-env NODE_ENV=staging node dist/index",
-    "prod": "tsc & cross-env NODE_ENV=production node dist/index.js",
-    "dev": "tsc --watch  & cross-env NODE_ENV=development nodemon dist/index.js",
-    "test": "tsc & cross-env NODE_ENV=staging && nyc mocha",
+    "start": "cross-env NODE_ENV=staging node src/index.js",
+    "prod": "cross-env NODE_ENV=production node src/index.js",
+    "dev": "cross-env NODE_ENV=development nodemon src/index.js",
+    "test": "cross-env NODE_ENV=staging && nyc mocha",
     "lint": "eslint src"
   },
-  "mocha": {
-    "extension": [
-      "ts"
-    ],
-    "spec": "src/test/**/*.spec.ts",
-    "require": "ts-node/register"
-  },
-  "nyc": {
-    "extends": "@istanbuljs/nyc-config-typescript",
-    "reporter": [
-      "text-summary",
-      "lcov"
-    ],
-    "all": "true",
-    "exclude": [
-      "dist",
-      "coverage"
-    ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Stackup-Rwanda/phantom-backend.git"
-  },
-  "keywords": [
-    "buses",
-    "transport",
-    "typescript"
-  ],
-  "author": "ceelogre",
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Stackup-Rwanda/phantom-backend/issues"
-  },
-  "homepage": "https://github.com/Stackup-Rwanda/phantom-backend#readme",
   "dependencies": {
     "@types/express": "^4.17.6",
     "dotenv": "^16.0.3",
@@ -64,6 +32,13 @@
     "nyc": "^15.1.0",
     "source-map-support": "^0.5.19",
     "ts-node": "^9.0.0",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "lowdb": "^1.0.0",
+    "morgan": "^1.10.0",
+    "nanoid": "^3.1.20",
+    "swagger-jsdoc": "^6.0.1",
+    "swagger-ui-express": "^4.1.6"
   }
 }
