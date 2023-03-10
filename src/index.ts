@@ -3,17 +3,16 @@ const app = express()
 const port = process.env.PORT || 3003
 
 const normalResponse = {
-    msg: 'App running.'
+    msg: 'App running.',
 }
-const exceptionalResponse= {
-    msg: 'Wow! you\'re a deep digger'
+const exceptionalResponse = {
+    msg: 'Wow! you\'re a deep digger',
 }
 app.use('/', (req, res) => {
     res.json(normalResponse)
 })
 
 app.use('*', (req, res) => {
-    
     res.json(exceptionalResponse)
 })
 

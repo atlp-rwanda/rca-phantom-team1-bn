@@ -7,7 +7,8 @@
     "start": "tsc && node dist/index",
     "dev": "tsc && nodemon dist/index",
     "test": "tsc && nyc mocha --require ts-node/register src/test/**/*.ts",
-    "lint": "eslint src"
+    "lint": "eslint src --fix",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\""
   },
   "mocha": {
     "extension": [
@@ -58,8 +59,10 @@
     "assert": "^2.0.0",
     "chai": "^4.3.7",
     "eslint": "^7.8.1",
+    "eslint-config-prettier": "^8.7.0",
     "mocha": "^8.4.0",
     "nyc": "^15.1.0",
+    "prettier": "^2.8.4",
     "sinon": "^15.0.1",
     "source-map-support": "^0.5.19",
     "ts-node": "^10.8.1",
