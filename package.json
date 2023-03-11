@@ -28,7 +28,8 @@
         "exclude": [
             "dist",
             "coverage"
-        ]
+        ],
+        "require": "ts-node/register"
     },
     "repository": {
         "type": "git",
@@ -39,7 +40,7 @@
         "transport",
         "typescript"
     ],
-    "require": "ts-node/register",
+
     "author": "ceelogre",
     "license": "ISC",
     "bugs": {
