@@ -12,8 +12,8 @@ jobs:
       - name: Run Lint
         run: npm run lint
 
-      # - name: Run Tests
-      #   run: npm run test
+        # - name: Run Tests
+        #   run: npm run test
 
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v3.2.0
@@ -23,8 +23,8 @@ jobs:
           coverageCommand: npm run test
           debug: true
 
-      - name: Deploy
-        uses: johnbeynon/render-deploy-action
+      # - name: Deploy
+      - uses: johnbeynon/render-deploy-action
         with:
           service-id: srv-cg5sfed269v5l63v258g
           api-key: 6eouuTwWKHA
