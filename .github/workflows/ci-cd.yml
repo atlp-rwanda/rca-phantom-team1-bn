@@ -4,21 +4,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Run Lint
-      run: npm run lint
+      - name: Run Lint
+        run: npm run lint
 
-    # - name: Run Tests
-    #   run: npm run test
+      # - name: Run Tests
+      #   run: npm run test
 
-    - name: Test & publish code coverage
-      uses: paambaati/codeclimate-action@v3.2.0
-      env:
-        CC_TEST_REPORTER_ID: 944bb86ef4c84643b0711f0592ce7597c3e195e38c84e57888136ca2c850312f
-      with:
-        coverageCommand: npm run test
-        debug: true
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v3.2.0
+        env:
+          CC_TEST_REPORTER_ID: 944bb86ef4c84643b0711f0592ce7597c3e195e38c84e57888136ca2c850312f
+        with:
+          coverageCommand: npm run test
+          debug: true
+
+      - name: Deploy
+        uses: johnbeynon/render-deploy-action
+        with:
+          service-id: srv-cg5sfed269v5l63v258g
+          api-key: 6eouuTwWKHA
