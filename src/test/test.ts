@@ -17,3 +17,4 @@ describe('Example Test Suite', () => {
         expect(callback.calledWith('hello', 'world')).to.be.true
     })
 })
+
