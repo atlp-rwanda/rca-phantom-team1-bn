@@ -22,3 +22,4 @@ jobs:
         with:
           coverageCommand: npm run test
           debug: true
+
