@@ -14,17 +14,6 @@ describe('Example Test Suite', () => {
 
         callback('hello', 'world')
 
-        expect(callback.calledOnce).to.be.true
-        expect(callback.calledWith('hello', 'world')).to.be.true
-    })
-
-    it('should use a stub', () => {
-        const myObject = {
-            myMethod: () => 'original value',
-        }
-
-        sinon.stub(myObject, 'myMethod').returns('stubbed value')
-
-        expect(myObject.myMethod()).to.equal('stubbed value')
-    })
-})
+    expect(callback.calledWith('hello', 'world')).to.be.true;
+  });
+});

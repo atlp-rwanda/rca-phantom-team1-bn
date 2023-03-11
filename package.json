@@ -39,6 +39,7 @@
         "transport",
         "typescript"
     ],
+    "require": "ts-node/register",
     "author": "ceelogre",
     "license": "ISC",
     "bugs": {
