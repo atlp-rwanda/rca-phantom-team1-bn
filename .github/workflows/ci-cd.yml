@@ -1,11 +1,10 @@
 name: ci-cd
-on: [push]
+on: [pull_request, push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
 
       - name: Setup node.js
         uses: actions/setup-node@v3
@@ -15,7 +14,7 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Build typescript
         run: npm run build -- --noEmit
 
@@ -25,7 +24,8 @@ jobs:
       - name: Run tests and instrument coverage
         run: npm run test
 
-      - name: Test & publish code coverage
+      - name: Publish code coverage
+        if: ${{ github.event_name == 'push' }}
         uses: paambaati/codeclimate-action@v3.2.0
         env:
           CC_TEST_REPORTER_ID: 944bb86ef4c84643b0711f0592ce7597c3e195e38c84e57888136ca2c850312f
