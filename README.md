@@ -38,18 +38,3 @@ $ npm run test
  # yarn start or pnpm start
 ```
 
-### Adding a new environment variable
-
-This is so simple
-
-1. To add a new environment variable, you will add it in the 3 different env files `.env.production`, `env.development` & in `.env.staging`.
-
-2. Export the environment in the `src/config/dotenv` directory.
-
-3. Add it to the `.env.example` without a value because `.env.example` is the only file to be pushed to github. This will aid others to updated their env files accordingly.
-
-4. Import the variable where you want to use it from `src/config/dotenv`
-
-4. Finally talk to the team to update them about it. 
-
-**example** Refer to how `PORT` was set
