@@ -1,3 +1,4 @@
+require('dotenv/config');
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -8,6 +9,7 @@ const busesRouter = require('./api/routes/buses.routes');
 const { PORT } = require('./config/dotenv');
 
 const FileSync = require('lowdb/adapters/FileSync');
+const locales = require('./config/languages');
 
 const adapter = new FileSync('src/config/db.json');
 const db = low(adapter);
@@ -35,6 +37,11 @@ const specs = swaggerJsDoc(options);
 
 const app = express();
 app.get('/', (_, res) => res.json({ message: 'Welcome to Phantom API' }));
+
+//testing multiple language support
+app.get('/welcome', (_, res) =>
+  res.send({ english: locales('home', 'en'), kinyarwanda: locales('home') })
+);
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 
