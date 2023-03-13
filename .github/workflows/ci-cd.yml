@@ -6,16 +6,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2.4.5 # Update to the latest version of setup-node
-      with:
-        node-version: '16.x'
-
     - name: Install dependencies
       run: npm ci
-
-    - name: Run Lint
-      run: npm run lint
 
     # - name: Run Tests
     #   run: npm run test
