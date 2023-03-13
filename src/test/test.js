@@ -1,4 +1,6 @@
+// eslint-disable-next-line node/no-unpublished-require
 const { expect } = require("chai");
+// eslint-disable-next-line node/no-unpublished-require
 const sinon = require("sinon");
 
 describe("Example Test Suite", () => {
@@ -11,6 +13,7 @@ describe("Example Test Suite", () => {
 
     callback("hello", "world");
 
+    // eslint-disable-next-line no-unused-expressions
     expect(callback.calledWith("hello", "world")).to.be.true;
   });
 });
