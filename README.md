@@ -2,30 +2,40 @@
 Elevate the public transport experience  
 [![ci-cd](https://github.com/atlp-rwanda/rca-phantom-team1-bn/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/atlp-rwanda/rca-phantom-team1-bn/actions/workflows/ci-cd.yml) 
 
-# Vision
-Make daily Kigali Commute easy and convenient for the thousands of people who use public transport to move to and from different areas of Kigali.
 
-# What we’re trying to do
-Currently in Rwanda, specifically in Kigali, commuters spend on average 45 minutes at the bus stations or in queues waiting for buses to come, and this number normally goes high in peak hours (7:00 - 8:00, 18:00 - 20:00).
+## Environment variables
 
-Commuters would love a solution to address this problem; they would like to have a way to check the location of buses on their respective routes and plan accordingly so they don’t have to wait for them.
+The app defines three different environment namely.
 
-This is the problem Phantom is here to solve: Create an application that allows simulating bus movements and enabling passengers to track their locations & movements. 
+### Getting started with env 
 
+After cloning or rebasing on main, just create three files named: **.env.development** , **.env.production** and **.env.staging**. 
 
-GETTING STARTED
+Copy all the environment variables shared in **.env.example** file to each of the three files. Assign values to each variable. eg: 
+`PORT=5500` in  `.env.development`
+`PORT=5000` in `.env.production`
+`PORT=6000` in `.env.staging`
 
-- Install requirements
+> You can assign ports as you wish.
 
-    npm install
+- **development environment**  : is the default development env that runs the app on port 5500. To be able to switch to **dev env** run. The dev environment watches changes and automatically recompile the app with new changes.
 
- - Runserver on port 5000
-    
-    npm start
-    
-    http://localhost:5000
-    
- - Review API Documentation
+```sh
+ $ npm run dev
+ # yarn dev or pnpm dev
+```
 
-    http://localhost:5000/api-docs
-   
+- **staging environment** : is the environment for testing (Running tests basically) the app before it goes into production. It runs on port 6000. To run the staging environment, use the following command:
+
+```sh
+$ npm run test
+ # yarn stage or pnpm stage
+```
+
+- **production environment** : is the environment for running the app in production. It runs on port 5000. To run the production environment, use the following command:
+
+```sh
+ $ npm run start
+ # yarn start or pnpm start
+```
+
