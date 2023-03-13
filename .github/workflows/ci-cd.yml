@@ -10,17 +10,16 @@ jobs:
           submodules: 'recursive'
           ref: ${{ github.head_ref }}
       # Update the Node.js version to 16
-      - runs-on: ubuntu-latest
-        steps:
-          - uses: actions/setup-node@v2
-            with:
-              node-version: '16.x'
-          - run: npm ci
-          - run: npm run lint
-          - name: Test & publish code coverage
-            uses: paambaati/codeclimate-action@v3.2.0
-            env:
-              CC_TEST_REPORTER_ID: 944bb86ef4c84643b0711f0592ce7597c3e195e38c84e57888136ca2c850312f
-            with:
-              coverageCommand: npm run test
-              debug: true
+      - name: Set up Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+      - run: npm ci
+      - run: npm run lint
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v3.2.0
+        env:
+          CC_TEST_REPORTER_ID: 944bb86ef4c84643b0711f0592ce7597c3e195e38c84e57888136ca2c850312f
+        with:
+          coverageCommand: npm run test
+          debug: true
