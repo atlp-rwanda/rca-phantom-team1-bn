@@ -1,5 +1,6 @@
 # phantom-backend
 Elevate the public transport experience  
+[![ci-cd](https://github.com/atlp-rwanda/rca-phantom-team1-bn/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/atlp-rwanda/rca-phantom-team1-bn/actions/workflows/ci-cd.yml) 
 
 # Vision
 Make daily Kigali Commute easy and convenient for the thousands of people who use public transport to move to and from different areas of Kigali.
