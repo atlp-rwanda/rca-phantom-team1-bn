@@ -28,7 +28,8 @@
     "pg": "^8.10.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.29.1",
-    "sequelize-cli": "^6.6.0"
+    "sequelize-cli": "^6.6.0",
+    "sinon": "^15.0.2"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
@@ -51,7 +52,6 @@
     "swagger-jsdoc": "^6.0.1",
     "swagger-ui-express": "^4.1.6",
     "ts-node": "^9.0.0",
-    "typescript": "^4.9.5",
-    "sinon": "^15.0.2"
+    "typescript": "^4.9.5"
   }
 }
