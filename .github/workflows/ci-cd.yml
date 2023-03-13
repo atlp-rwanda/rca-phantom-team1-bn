@@ -7,7 +7,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Setup Node.js
-      uses: actions/setup-node@v2.5.3 # Update to the latest version of setup-node
+      uses: actions/setup-node@v2.4.5 # Update to the latest version of setup-node
       with:
         node-version: '16.x'
 
