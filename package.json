@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/index.js",
-    "test": "nyc mocha --recursive ./src/test --check-coverage=true"
+    "test": "nyc mocha --recursive ./src/test --check-coverage=true",
+    "lint": "eslint ./src --ext .js --fix"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.17.1",
     "lowdb": "^1.0.0",
     "morgan": "^1.10.0",
@@ -19,9 +21,22 @@
     "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.4",
+    "@types/sinon": "^10.0.13",
     "chai": "^4.3.7",
+    "eslint": "^8.36.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-node": "^4.1.0",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
+    "prettier": "^2.8.4",
     "sinon": "^15.0.2"
   },
   "nyc": {
@@ -29,5 +44,8 @@
     "lines": "&gt;80",
     "functions": "&gt;80",
     "statements": "&gt;80"
+  },
+  "engines": {
+    "node": ">=16"
   }
 }
