@@ -72,7 +72,12 @@
     "branches": "&gt;80",
     "lines": "&gt;80",
     "functions": "&gt;80",
-    "statements": "&gt;80"
+    "statements": "&gt;80",
+    "check-coverage": true,
+    "reporter": [
+      "text-summary",
+      "lcov"
+    ]
   },
   "engines": {
     "node": ">=16"
