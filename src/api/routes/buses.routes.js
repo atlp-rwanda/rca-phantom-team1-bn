@@ -1,4 +1,5 @@
 const express = require("express");
+
 const router = express.Router();
 const { nanoid } = require("nanoid");
 
@@ -28,12 +29,12 @@ const idLength = 8;
  *         driver: Kellia Umuhire
  */
 
- /**
-  * @swagger
-  * tags:
-  *   name: Buses
-  *   description: The buses managing API
-  */
+/**
+ * @swagger
+ * tags:
+ *   name: Buses
+ *   description: The buses managing API
+ */
 
 /**
  * @swagger
@@ -53,9 +54,9 @@ const idLength = 8;
  */
 
 router.get("/", (req, res) => {
-	const buses = req.app.db.get("buses");
+  const buses = req.app.db.get("buses");
 
-	res.send(buses);
+  res.send(buses);
 });
 
 /**
@@ -85,11 +86,11 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   const bus = req.app.db.get("buses").find({ id: req.params.id }).value();
 
-  if(!bus){
-    res.sendStatus(404)
+  if (!bus) {
+    res.sendStatus(404);
   }
 
-	res.send(bus);
+  res.send(bus);
 });
 
 /**
@@ -115,19 +116,20 @@ router.get("/:id", (req, res) => {
  *         description: Some server error
  */
 
+// eslint-disable-next-line consistent-return
 router.post("/", (req, res) => {
-	try {
-		const bus = {
-			id: nanoid(idLength),
-			...req.body,
-		};
+  try {
+    const bus = {
+      id: nanoid(idLength),
+      ...req.body,
+    };
 
     req.app.db.get("buses").push(bus).write();
-    
-    res.send(bus)
-	} catch (error) {
-		return res.status(500).send(error);
-	}
+
+    res.send(bus);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 });
 
 /**
@@ -163,17 +165,17 @@ router.post("/", (req, res) => {
  */
 
 router.put("/:id", (req, res) => {
-	try {
-		req.app.db
-			.get("buses")
-			.find({ id: req.params.id })
-			.assign(req.body)
-			.write();
+  try {
+    req.app.db
+      .get("buses")
+      .find({ id: req.params.id })
+      .assign(req.body)
+      .write();
 
-		res.send(req.app.db.get("buses").find({ id: req.params.id }));
-	} catch (error) {
-		return res.status(500).send(error);
-	}
+    res.send(req.app.db.get("buses").find({ id: req.params.id }));
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 });
 
 /**
@@ -189,7 +191,7 @@ router.put("/:id", (req, res) => {
  *           type: string
  *         required: true
  *         description: The bus id
- * 
+ *
  *     responses:
  *       200:
  *         description: The bus was deleted
@@ -198,9 +200,9 @@ router.put("/:id", (req, res) => {
  */
 
 router.delete("/:id", (req, res) => {
-	req.app.db.get("buses").remove({ id: req.params.id }).write();
+  req.app.db.get("buses").remove({ id: req.params.id }).write();
 
-	res.sendStatus(200);
+  res.sendStatus(200);
 });
 
 module.exports = router;
