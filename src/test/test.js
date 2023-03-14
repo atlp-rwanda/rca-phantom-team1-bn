@@ -13,6 +13,7 @@ describe('Example Test Suite', () => {
 
     callback('hello', 'world');
 
+    // eslint-disable-next-line no-unused-expressions
     expect(callback.calledWith('hello', 'world')).to.be.true;
   });
 });
