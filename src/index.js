@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-require('dotenv').config()
+require('dotenv/config')
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
@@ -7,20 +6,8 @@ const low = require("lowdb");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const busesRouter = require("./api/routes/buses.routes");
-=======
-const express = require('express')
-const cors = require('cors')
-const morgan = require('morgan')
-const low = require('lowdb')
-const swaggerUI = require('swagger-ui-express')
-const swaggerJsDoc = require('swagger-jsdoc')
-const busesRouter = require('./api/routes/buses.routes')
 const { PORT } = require('./config/dotenv')
->>>>>>> bd31f7dd1b5cc506ff7d8eccd7a550c74bf43701
 
-const FileSync = require('lowdb/adapters/FileSync')
-
-<<<<<<< HEAD
 const db = require("./db/models/index.js");
 db.sequelize.sync()
   .then(() => {
@@ -46,29 +33,6 @@ const options = {
 	},
 	apis: ["./src/api/routes/*.js"],
 };
-=======
-const adapter = new FileSync('src/config/db.json')
-const db = low(adapter)
-
-db.defaults({ buses: [] }).write()
-
-const options = {
-    definition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'Phantom API',
-            version: '1.0.0',
-            description: 'Phantom API',
-        },
-        servers: [
-            {
-                url: 'http://localhost:5000',
-            },
-        ],
-    },
-    apis: ['./src/api/routes/*.js'],
-}
->>>>>>> bd31f7dd1b5cc506ff7d8eccd7a550c74bf43701
 
 const specs = swaggerJsDoc(options)
 
