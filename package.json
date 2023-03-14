@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/index.js",
-    "test": "nyc mocha --recursive ./src/test --check-coverage=true",
+    "test": "nyc mocha --recursive ./src/test",
     "lint": "eslint ./src --ext .js --fix"
   },
   "author": "",
@@ -43,7 +43,12 @@
     "branches": "&gt;80",
     "lines": "&gt;80",
     "functions": "&gt;80",
-    "statements": "&gt;80"
+    "statements": "&gt;80",
+    "check-coverage": true,
+    "reporter": [
+      "text-summary",
+      "lcov"
+    ]
   },
   "engines": {
     "node": ">=16"
