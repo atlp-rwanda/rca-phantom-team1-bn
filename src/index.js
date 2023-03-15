@@ -6,15 +6,18 @@ const low = require('lowdb');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const busesRouter = require('./api/routes/buses.routes');
+const locales = require('./config/languages');
 const { PORT } = require('./config/dotenv');
 
-const FileSync = require('lowdb/adapters/FileSync');
-const locales = require('./config/languages');
-
-const adapter = new FileSync('src/config/db.json');
-const db = low(adapter);
-
-db.defaults({ buses: [] }).write();
+const db = require('./db/models/index.js');
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log('Synced db.');
+  })
+  .catch((err) => {
+    console.log('Failed to sync db: ' + err.message);
+  });
 
 const options = {
   definition: {
@@ -26,7 +29,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000',
+        url: 'http://localhost:' + PORT,
       },
     ],
   },
