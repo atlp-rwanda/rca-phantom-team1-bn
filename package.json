@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=staging node src/index.js",
-    "prod": "cross-env NODE_ENV=production node src/index.js",
-    "dev": "cross-env NODE_ENV=development nodemon src/index.js",
+    "start": "cross-env NODE_ENV=staging babel-node src/index.js",
+    "prod": "cross-env NODE_ENV=production babel-node src/index.js",
+    "dev": "cross-env NODE_ENV=development nodemon --exec babel-node src/index.js",
     "test": "cross-env NODE_ENV=staging && nyc mocha",
     "lint": "eslint src",
     "db:create": "sequelize-cli db:create",
@@ -31,6 +31,10 @@
     "sequelize-cli": "^6.6.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.3",
+    "@babel/node": "^7.20.7",
+    "@babel/preset-env": "^7.20.2",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/mocha": "^8.0.3",
     "@types/node": "^13.13.15",
