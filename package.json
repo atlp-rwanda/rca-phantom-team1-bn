@@ -1,7 +1,7 @@
 {
   "name": "swagger-api-library",
   "version": "1.0.0",
-  "description": "",
+  "description": "Phantom project for elevating the public transport experience",
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=staging babel-node src/index.js",
