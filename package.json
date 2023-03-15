@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=staging babel-node src/index.js",
-    "prod": "cross-env NODE_ENV=production babel-node src/index.js",
-    "dev": "cross-env NODE_ENV=development nodemon --exec babel-node src/index.js",
+    "start": "cross-env NODE_ENV=staging node src/index.js",
+    "prod": "cross-env NODE_ENV=production node src/index.js",
+    "dev": "nodemon src/index.js",
     "test": "cross-env NODE_ENV=staging && nyc mocha",
     "lint": "eslint src",
     "db:create": "sequelize-cli db:create",
@@ -15,7 +15,8 @@
     "db:reset": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate",
     "db:g:seed": "sequelize-cli seed:generate --name",
     "db:seeds": "sequelize-cli db:seed:all",
-    "db:reseed": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all"
+    "db:reseed": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+    "db:create:admin":"babel-node src/database/createAdmin.js"
   },
   "author": "",
   "license": "ISC",
