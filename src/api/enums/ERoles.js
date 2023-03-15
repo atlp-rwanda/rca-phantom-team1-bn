@@ -6,4 +6,4 @@ const ERoles = {
 }
 Object.freeze(ERoles);
 
-module.exports = {ERoles}
+module.exports = ERoles;

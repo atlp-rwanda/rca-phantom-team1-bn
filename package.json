@@ -16,7 +16,7 @@
     "db:g:seed": "sequelize-cli seed:generate --name",
     "db:seeds": "sequelize-cli db:seed:all",
     "db:reseed": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
-    "db:create:admin":"babel-node src/database/createAdmin.js"
+    "db:create:admin": "node src/db/seeds/create-admin.js"
   },
   "author": "",
   "license": "ISC",

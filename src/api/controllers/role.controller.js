@@ -22,7 +22,14 @@ const getRoleById = async (req, res, next) => {
   }
 };
 
+const roleExists = async (role) => {
+  const roleData = await models.role.findOne({where: {role}})
+    if (!roleData) return false;
+    return roleData
+}
+
 module.exports = {
   getRoles,
   getRoleById,
+  roleExists
 };
