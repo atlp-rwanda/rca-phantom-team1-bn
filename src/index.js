@@ -6,14 +6,16 @@ const low = require('lowdb')
 const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
 const busesRouter = require('./api/routes/buses.routes')
+const rolesRouter = require('./api/routes/roles.routes')
+
 const { PORT } = require('./config/dotenv')
 
 const FileSync = require('lowdb/adapters/FileSync')
 
-const adapter = new FileSync('src/config/db.json')
-const db = low(adapter)
+// const adapter = new FileSync('src/config/db.json')
+// const db = low(adapter)
 
-db.defaults({ buses: [] }).write()
+// db.defaults({ buses: [] }).write()
 
 const options = {
     definition: {
@@ -35,16 +37,17 @@ const options = {
 const specs = swaggerJSDoc(options)
 
 const app = express()
-app.get('/', (_,res) => res.json({message: 'Welcome to Phantom API'}))
+app.get('/', (_,res) => res.json({message: 'Welcome to Phantom API.'}))
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs))
 
-app.db = db
+// app.db = db
 
 app.use(cors())
 app.use(express.json())
 app.use(morgan('dev'))
 
 app.use('/buses', busesRouter)
+app.use('/roles', rolesRouter)
 
 app.listen(PORT ? PORT : 5000, () => console.log(`The server is running on port ${(PORT) ? PORT : 5000}`))
