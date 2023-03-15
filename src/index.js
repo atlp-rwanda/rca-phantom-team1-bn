@@ -37,21 +37,19 @@ const options = {
   apis: ["./src/api/routes/*.js"],
 };
 
-const specs = swaggerJsDoc(options);
+const specs = swaggerJsDoc(options)
 
-const app = express();
-app.get("/", (_, res) => res.json({ message: "Welcome to Phantom API" }));
+const app = express()
+app.get('/', (_,res) => res.json({message: 'Welcome to Phantom API'}))
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs))
 
-app.db = db;
+app.db = db
 
-app.use(cors());
-app.use(express.json());
-app.use(morgan("dev"));
+app.use(cors())
+app.use(express.json())
+app.use(morgan('dev'))
 
-app.use("/buses", busesRouter);
+app.use('/buses', busesRouter)
 
-app.listen(PORT, () =>
-  console.log(`The server is running on port ${PORT || 5000}`)
-);
+app.listen(PORT, () => console.log(`The server is running on port ${(PORT) ? PORT : 5000}`))
