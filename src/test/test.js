@@ -1,6 +1,4 @@
-// eslint-disable-next-line node/no-unpublished-require
 import { expect } from "chai";
-// eslint-disable-next-line node/no-unpublished-require
 import sinon from "sinon";
 
 describe("Example Test Suite", () => {
