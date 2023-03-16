@@ -7,10 +7,14 @@ import swaggerUI from 'swagger-ui-express'
 import { PORT } from './config/dotenv'
 import busesRouter from './api/routes/buses.routes'
 import db from './db/models/index.js';
+import locales from './config/languages';
 
-db.sequelize.sync()
+const db = require("./db/models/index");
+
+db.sequelize
+  .sync()
   .then(() => {
-    console.log("Synced db.");
+    console.log('Synced db.');
   })
   .catch((err) => {
     console.log(`Failed to sync db: ${err.message}`);
@@ -37,6 +41,11 @@ const specs = swaggerJSDoc(options)
 
 const app = express();
 app.get("/", (_, res) => res.json({ message: "Welcome to Phantom API" }));
+
+//testing multiple language support
+app.get('/welcome', (_, res) =>
+  res.send({ english: locales('home', 'en'), kinyarwanda: locales('home') })
+);
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
