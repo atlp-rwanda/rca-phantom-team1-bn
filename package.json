@@ -7,7 +7,7 @@
     "start": "cross-env NODE_ENV=staging babel-node src/index.js",
     "prod": "cross-env NODE_ENV=production babel-node src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec babel-node src/index.js",
-    "test": "cross-env NODE_ENV=staging && nyc mocha",
+    "test": "nyc mocha --recursive ./src/test",
     "lint": "npm run format && eslint ./src --ext .js --fix",
     "format": "prettier --config .prettierrc 'src/**' --write",
     "db:create": "sequelize-cli db:create",
