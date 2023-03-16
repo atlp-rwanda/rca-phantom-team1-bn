@@ -1,4 +1,4 @@
-const models = require('../../db/models')
+const models = require("../../db/models");
 
 exports.getRoles = async (req, res, next) => {
   try {
@@ -12,9 +12,9 @@ exports.getRoles = async (req, res, next) => {
 exports.getRoleById = async (req, res, next) => {
   const { role } = req.params;
   try {
-    const roleData = await models.role.findOne({where: {role}});
+    const roleData = await models.role.findOne({ where: { role } });
     if (!roleData) {
-      return res.status(404).json({ message: 'Role not found' });
+      return res.status(404).json({ message: "Role not found" });
     }
     res.status(200).json({ roleData });
   } catch (error) {
@@ -23,8 +23,7 @@ exports.getRoleById = async (req, res, next) => {
 };
 
 exports.roleExists = async (role) => {
-  const roleData = await models.role.findOne({where: {role}})
-    if (!roleData) return false;
-    return roleData
-}
-
+  const roleData = await models.role.findOne({ where: { role } });
+  if (!roleData) return false;
+  return roleData;
+};

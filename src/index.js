@@ -6,11 +6,11 @@ const morgan = require("morgan");
 const low = require("lowdb");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
-const busesRouter = require("./api/routes/buses.routes")
+const busesRouter = require("./api/routes/buses.routes");
 const roleRouter = require("./api/routes/roles.router");
 const adminRouter = require("./api/routes/admin.routes");
 const driversRouter = require("./api/routes/operators.routes");
-const locales = require('./config/languages');
+const locales = require("./config/languages");
 const { PORT } = require("./config/dotenv");
 
 const db = require("./db/models/index");
@@ -18,47 +18,47 @@ const db = require("./db/models/index");
 db.sequelize
   .sync()
   .then(() => {
-    console.log('Synced db.');
+    console.log("Synced db.");
   })
   .catch((err) => {
     console.log(`Failed to sync db: ${err.message}`);
   });
 
-  const options = {
-    definition: {
-      openapi: "3.0.0",
-      info: {
-        title: "Phantom API",
-        version: "1.0.0",
-        description: "Phantom API",
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Phantom API",
+      version: "1.0.0",
+      description: "Phantom API",
+    },
+    servers: [
+      {
+        url: `http://localhost:${PORT}`,
       },
-      servers: [
-        {
-          url: `http://localhost:${PORT}`,
-        },
-      ],
-      components: {
-        securitySchemes: {
-          bearerAuth: {
-            type: 'http',
-            scheme: 'bearer',
-            bearerFormat: 'JWT',
-          },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
         },
       },
     },
-    apis: ["./src/api/routes/*.js"],
-    security: [{ bearerAuth: [] }],
-  };
+  },
+  apis: ["./src/api/routes/*.js"],
+  security: [{ bearerAuth: [] }],
+};
 
 const specs = swaggerJsDoc(options);
 
 const app = express();
 app.get("/", (_, res) => res.json({ message: "Welcome to Phantom API" }));
 
-//testing multiple language support
-app.get('/welcome', (_, res) =>
-  res.send({ english: locales('home', 'en'), kinyarwanda: locales('home') })
+// testing multiple language support
+app.get("/welcome", (_, res) =>
+  res.send({ english: locales("home", "en"), kinyarwanda: locales("home") })
 );
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
@@ -72,7 +72,7 @@ app.use(morgan("dev"));
 app.use("/buses", busesRouter);
 app.use("/roles", roleRouter);
 app.use("/admin", adminRouter);
-app.use('/drivers', driversRouter)
+app.use("/drivers", driversRouter);
 
 app.listen(PORT, () =>
   console.log(`The server is running on port ${PORT || 5000}`)

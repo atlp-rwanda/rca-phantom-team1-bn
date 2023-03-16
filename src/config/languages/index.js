@@ -1,12 +1,12 @@
-const en = require('../languages/en');
-const rw = require('../languages/rw');
+const en = require("./en");
+const rw = require("./rw");
 
 const translates = {
   en,
   rw,
 };
 
-const locales = (key, locale = 'rw') => {
+const locales = (key, locale = "rw") => {
   if (!translates[locale]) {
     throw new Error("Locale doesn't exist");
   }

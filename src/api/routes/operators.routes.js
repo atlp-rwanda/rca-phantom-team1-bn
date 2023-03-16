@@ -1,7 +1,8 @@
-const express = require('express');
+const express = require("express");
+
 const driversRouter = express.Router();
-const HttpStatusCodes = require('../enums/EHttpStatusCodes');
-const adminCheckMiddleware = require('../middlewares/adminCheck');
+const HttpStatusCodes = require("../enums/EHttpStatusCodes");
+const adminCheckMiddleware = require("../middlewares/adminCheck");
 
 /**
  * @swagger
@@ -42,9 +43,11 @@ const adminCheckMiddleware = require('../middlewares/adminCheck');
  *       500:
  *         description: Internal server error
  */
-driversRouter.post('/', adminCheckMiddleware, (req, res) => {
+driversRouter.post("/", adminCheckMiddleware, (req, res) => {
   // Here you can create a new driver user
-  res.status(HttpStatusCodes.CREATED).send({success: true, message: 'Driver user created successfully!'});
+  res
+    .status(HttpStatusCodes.CREATED)
+    .send({ success: true, message: "Driver user created successfully!" });
 });
 
 module.exports = driversRouter;

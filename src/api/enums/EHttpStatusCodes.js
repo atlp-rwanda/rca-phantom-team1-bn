@@ -14,7 +14,7 @@ const HttpStatusCodes = {
   SERVICE_UNAVAILABLE: 503,
   GATEWAY_TIMEOUT: 504,
   // add other status codes as needed
-}
+};
 
 Object.freeze(HttpStatusCodes);
 
