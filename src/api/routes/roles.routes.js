@@ -1,6 +1,6 @@
-const express = require('express');
-const router = express.Router();
-const roleController = require('../controllers/role.controller');
+import express,{Router} from 'express'
+import roleController from '../controllers/role.controller'
+const roleRouter = Router();
 
 /**
  * @swagger
@@ -21,7 +21,7 @@ const roleController = require('../controllers/role.controller');
  *       500:
  *         description: Internal server error
  */
-router.get('/', roleController.getRoles);
+roleRouter.get('/', roleController.getRoles);
 
 /**
  * @swagger
@@ -44,6 +44,6 @@ router.get('/', roleController.getRoles);
  *       500:
  *         description: Internal server error
  */
-router.get('/:role', roleController.getRoleById);
+roleRouter.get('/:role', roleController.getRoleById);
 
-module.exports = router;
+export default roleRouter;

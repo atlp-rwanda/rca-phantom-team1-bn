@@ -1,0 +1,10 @@
+{
+    "prettier.singleQuote": true,
+    "prettier.printWidth": 70,
+    "[javascript]": {
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": false,
+    },
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+}
