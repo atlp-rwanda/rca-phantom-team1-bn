@@ -9,8 +9,6 @@ import busesRouter from "./api/routes/buses.routes";
 import db from "./db/models/index.js";
 import locales from "./config/languages";
 
-const db = require("./db/models/index");
-
 db.sequelize
   .sync()
   .then(() => {
