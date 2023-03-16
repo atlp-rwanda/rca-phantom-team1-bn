@@ -12,13 +12,16 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Bus.init({
-    plate_number: DataTypes.STRING,
-    driver: DataTypes.STRING,
-    active: DataTypes.BOOLEAN
-  }, {
-    sequelize,
-    modelName: 'Bus',
-  });
+  Bus.init(
+    {
+      plate_number: DataTypes.STRING,
+      driver: DataTypes.STRING,
+      active: DataTypes.BOOLEAN,
+    },
+    {
+      sequelize,
+      modelName: "Bus",
+    }
+  );
   return Bus;
 };
