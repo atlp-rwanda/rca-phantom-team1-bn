@@ -1,6 +1,6 @@
-import dotenv from 'dotenv'
-dotenv.config()
-import fs from 'fs'
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default {
   development: {
@@ -22,7 +22,7 @@ export default {
     port: 5432,
     dialect: "postgres",
     dialectOptions: {
-      bigNumberStrings: true
-    }
-  }
+      bigNumberStrings: true,
+    },
+  },
 };

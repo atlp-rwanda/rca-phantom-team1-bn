@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { nanoid } from 'nanoid';
+import { Router } from "express";
+import { nanoid } from "nanoid";
 
 const router = Router();
 const idLength = 8;

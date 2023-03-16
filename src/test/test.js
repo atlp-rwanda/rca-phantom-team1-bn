@@ -1,7 +1,8 @@
 // eslint-disable-next-line node/no-unpublished-require
-import { expect } from 'chai';
+import { expect } from "chai";
 // eslint-disable-next-line node/no-unpublished-require
-import sinon from 'sinon'
+import sinon from "sinon";
+
 describe("Example Test Suite", () => {
   it("should pass", () => {
     expect(1 + 1).to.equal(2);
