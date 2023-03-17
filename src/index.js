@@ -1,21 +1,18 @@
-require("dotenv/config");
-
-const express = require("express");
-const cors = require("cors");
-const morgan = require("morgan");
-const low = require("lowdb");
-const swaggerUI = require("swagger-ui-express");
-const swaggerJsDoc = require("swagger-jsdoc");
-const busesRouter = require("./api/routes/buses.routes");
-const locales = require('./config/languages');
-const { PORT } = require("./config/dotenv");
-
-const db = require("./db/models/index");
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUI from "swagger-ui-express";
+import { PORT } from "./config/dotenv";
+import busesRouter from "./api/routes/buses.routes";
+import db from "./db/models/index.js";
+import locales from "./config/languages";
 
 db.sequelize
   .sync()
   .then(() => {
-    console.log('Synced db.');
+    console.log("Synced db.");
   })
   .catch((err) => {
     console.log(`Failed to sync db: ${err.message}`);
@@ -38,14 +35,14 @@ const options = {
   apis: ["./src/api/routes/*.js"],
 };
 
-const specs = swaggerJsDoc(options);
+const specs = swaggerJSDoc(options);
 
 const app = express();
 app.get("/", (_, res) => res.json({ message: "Welcome to Phantom API" }));
 
 //testing multiple language support
-app.get('/welcome', (_, res) =>
-  res.send({ english: locales('home', 'en'), kinyarwanda: locales('home') })
+app.get("/welcome", (_, res) =>
+  res.send({ english: locales("home", "en"), kinyarwanda: locales("home") })
 );
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
@@ -58,6 +55,6 @@ app.use(morgan("dev"));
 
 app.use("/buses", busesRouter);
 
-app.listen(PORT, () =>
-  console.log(`The server is running on port ${PORT || 5000}`)
+app.listen(PORT ? PORT : 5000, () =>
+  console.log(`The server is running on port ${PORT ? PORT : 5000}`)
 );

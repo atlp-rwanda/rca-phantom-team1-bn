@@ -1,7 +1,5 @@
-// eslint-disable-next-line node/no-unpublished-require
-const { expect } = require("chai");
-// eslint-disable-next-line node/no-unpublished-require
-const sinon = require("sinon");
+import { expect } from "chai";
+import sinon from "sinon";
 
 describe("Example Test Suite", () => {
   it("should pass", () => {

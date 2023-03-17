@@ -1,8 +1,7 @@
-const express = require("express");
+import { Router } from "express";
+import { nanoid } from "nanoid";
 
-const router = express.Router();
-const { nanoid } = require("nanoid");
-
+const router = Router();
 const idLength = 8;
 
 /**
@@ -205,4 +204,4 @@ router.delete("/:id", (req, res) => {
   res.sendStatus(200);
 });
 
-module.exports = router;
+export default router;
