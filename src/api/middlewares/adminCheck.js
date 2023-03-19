@@ -1,10 +1,13 @@
-const HttpStatusCodes = require("../enums/EHttpStatusCodes");
-const ERoles = require("../enums/ERole");
-const { decodeJwtToken } = require("../utils/jwt");
+import HttpStatusCodes from "../enums/EHttpStatusCodes";
+import ERoles from "../enums/ERole";
+import { decodeJwtToken } from "../utils/jwt";
 
 const adminCheck = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
+    console.log("Header: ");
+    console.log(req.headers);
+
     if (!authHeader) {
       return res
         .status(401)
@@ -29,4 +32,4 @@ const adminCheck = async (req, res, next) => {
   }
 };
 
-module.exports = adminCheck;
+export default adminCheck;

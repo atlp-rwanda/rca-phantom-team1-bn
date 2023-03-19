@@ -1,5 +1,12 @@
 import { Router } from "express";
-import { getRoleById, getRoles } from "../controllers/roles.controller";
+import {
+  getRoleById,
+  getRoles,
+  createRole,
+  updateRole,
+  deleteRoleById,
+} from "../controllers/roles.controller";
+import adminCheck from "../middlewares/adminCheck";
 
 const roleRouter = Router();
 
@@ -26,6 +33,42 @@ roleRouter.get("/", getRoles);
 
 /**
  * @swagger
+ * /roles:
+ *   post:
+ *     summary: Create a new role
+ *     tags: [Roles]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               role:
+ *                 type: string
+ *                 description: Name of the role to create
+ *               description:
+ *                 type: string
+ *                 description: Description of the role
+ *               privileges:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   description: Privileges of the role
+ *     responses:
+ *       201:
+ *         description: Returns the created role
+ *       400:
+ *         description: Invalid request data
+ *       500:
+ *         description: Internal server error
+ */
+roleRouter.post("/", adminCheck, createRole);
+
+/**
+ * @swagger
  * /roles/{role}:
  *   get:
  *     summary: Get a role by Role name
@@ -46,5 +89,71 @@ roleRouter.get("/", getRoles);
  *         description: Internal server error
  */
 roleRouter.get("/:role", getRoleById);
+
+/**
+ * @swagger
+ * /roles/{role}:
+ *   patch:
+ *     summary: Update a role by Role name
+ *     tags: [Roles]
+ *     parameters:
+ *       - in: path
+ *         name: role
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Name of the role to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               newRole:
+ *                 type: string
+ *                 description: New name of the role
+ *               description:
+ *                 type: string
+ *                 description: New description of the role
+ *               privileges:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   description: New privileges of the role
+ *     responses:
+ *       200:
+ *         description: Returns the updated role
+ *       400:
+ *         description: Invalid request data
+ *       404:
+ *         description: Role not found
+ *       500:
+ *         description: Internal server error
+ */
+roleRouter.patch("/:id", adminCheck, updateRole);
+
+/**
+ * @swagger
+ * /roles/{role}:
+ *   delete:
+ *     summary: Delete a role by Role name
+ *     tags: [Roles]
+ *     parameters:
+ *       - in: path
+ *         name: role
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Name of the role to delete
+ *     responses:
+ *       200:
+ *         description: Role deleted successfully
+ *       404:
+ *         description: Role not found
+ *       500:
+ *         description: Internal server error
+ */
+roleRouter.delete("/:id", deleteRoleById);
 
 export default roleRouter;
