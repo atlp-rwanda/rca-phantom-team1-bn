@@ -18,4 +18,4 @@ const HttpStatusCodes = {
 
 Object.freeze(HttpStatusCodes);
 
-module.exports = HttpStatusCodes;
+export default HttpStatusCodes;

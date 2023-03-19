@@ -1,11 +1,15 @@
 {
     "extends": [
-        "airbnb",
-        "plugin:node/recommended",
+        "eslint:recommended",
         "prettier"
     ],
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "ecmaVersion": "2022"
+    },
     "plugins": [
-        "prettier"
+        "prettier",
+        "@babel"
     ],
     "rules": {
         "prettier/prettier": "error",
@@ -13,17 +17,11 @@
         "func-names": "off",
         "no-process-exit": "off",
         "object-shorthand": "off",
-        "consistent-return": "off",
-        "import/no-extraneous-dependencies": [
-            "error",
-            {
-                "devDependencies": true
-            }
-        ]
+        "consistent-return": "off"
     },
     "env": {
-        "commonjs": true,
         "node": true,
-        "mocha": true
+        "mocha": true,
+        "es2021": true
     }
 }

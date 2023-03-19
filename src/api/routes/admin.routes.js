@@ -1,8 +1,8 @@
-const express = require("express");
-const adminController = require("../controllers/admin.controller");
-const { validateLogin } = require("../validations/auth.validator");
+import { Router } from "express";
+import { login } from "../controllers/admin.controller";
+import { validateLogin } from "../validations/auth.validator";
 
-const adminRouter = express.Router();
+const adminRouter = Router();
 
 /**
  * @swagger
@@ -36,6 +36,6 @@ const adminRouter = express.Router();
  *       500:
  *         description: Internal server error
  */
-adminRouter.post("/login", validateLogin, adminController.login);
+adminRouter.post("/login", validateLogin, login);
 
-module.exports = adminRouter;
+export default adminRouter;

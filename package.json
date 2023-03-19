@@ -1,13 +1,13 @@
 {
-  "name": "swagger-api-library",
+  "name": "phantom-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Phantom project for elevating the public transport experience",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=staging node src/index.js",
-    "prod": "cross-env NODE_ENV=production node src/index.js",
-    "dev": "cross-env NODE_ENV=development nodemon src/index.js",
-    "test": "nyc mocha --recursive ./src/test",
+    "start": "cross-env NODE_ENV=staging babel-node src/index.js",
+    "prod": "cross-env NODE_ENV=production babel-node src/index.js",
+    "dev": "cross-env NODE_ENV=development nodemon --exec babel-node src/index.js",
+    "test": "cross-env NODE_ENV=staging && nyc mocha --recursive ./src/test  --require @babel/register",
     "lint": "npm run format && eslint ./src --ext .js --fix",
     "format": "prettier --config .prettierrc 'src/**' --write",
     "db:create": "sequelize-cli db:create",
@@ -45,6 +45,14 @@
     "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.3",
+    "@babel/eslint-parser": "^7.21.3",
+    "@babel/eslint-plugin": "^7.19.1",
+    "@babel/node": "^7.20.7",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/register": "^7.21.0",
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/chai": "^4.3.4",
     "@types/express": "^4.17.6",
     "@types/mocha": "^8.0.3",
@@ -57,12 +65,8 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-node": "^4.1.0",
     "eslint-config-prettier": "^8.7.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "mocha": "^10.2.0",
     "morgan": "^1.10.0",
     "nanoid": "^3.1.20",
@@ -87,6 +91,6 @@
     ]
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=16.0.0"
   }
 }

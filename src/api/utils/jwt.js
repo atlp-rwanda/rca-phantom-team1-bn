@@ -1,17 +1,15 @@
-const jwt = require("jsonwebtoken");
+import { sign, verify } from "jsonwebtoken";
 
-const signJwtToken = (payload) => {
+export const signJwtToken = (payload) => {
   const secret = process.env.JWT_SECRET;
   const expiresIn = process.env.JWT_EXPIRES_IN;
 
-  const token = jwt.sign(payload, secret, { expiresIn });
+  const token = sign(payload, secret, { expiresIn });
   return token;
 };
 
-const decodeJwtToken = (token) => {
+export const decodeJwtToken = (token) => {
   const secret = process.env.JWT_SECRET;
-  const decoded = jwt.verify(token, secret);
+  const decoded = verify(token, secret);
   return decoded;
 };
-
-module.exports = { signJwtToken, decodeJwtToken };

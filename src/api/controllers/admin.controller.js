@@ -1,13 +1,13 @@
-const _ = require("lodash");
-const HttpStatusCodes = require("../enums/EHttpStatusCodes");
-const adminService = require("../services/admin.service");
-const { verifyPassword } = require("../utils/hash-password");
-const { signJwtToken } = require("../utils/jwt");
+import * as _ from "lodash";
+import HttpStatusCodes from "../enums/EHttpStatusCodes";
+import { verifyPassword } from "../utils/hash-password";
+import { signJwtToken } from "../utils/jwt";
+import { findOne } from "../services/admin.service";
 
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   const { email, password } = req.body;
 
-  const admin = await adminService.findOne({ email });
+  const admin = await findOne({ email });
   if (!admin)
     return res
       .status(HttpStatusCodes.UNAUTHORIZED)

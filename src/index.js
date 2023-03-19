@@ -1,19 +1,16 @@
-require("dotenv/config");
+import "dotenv";
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUI from "swagger-ui-express";
+import busesRouter from "./api/routes/buses.routes";
+import roleRouter from "./api/routes/roles.routes";
+import adminRouter from "./api/routes/admin.routes";
+import db from "./db/models/index.js";
+import locales from "./config/languages";
 
-const express = require("express");
-const cors = require("cors");
-const morgan = require("morgan");
-const low = require("lowdb");
-const swaggerUI = require("swagger-ui-express");
-const swaggerJsDoc = require("swagger-jsdoc");
-const busesRouter = require("./api/routes/buses.routes");
-const roleRouter = require("./api/routes/roles.router");
-const adminRouter = require("./api/routes/admin.routes");
-const driversRouter = require("./api/routes/operators.routes");
-const locales = require("./config/languages");
-const { PORT } = require("./config/dotenv");
-
-const db = require("./db/models/index");
+const PORT = process.env.PORT || 5000;
 
 db.sequelize
   .sync()
@@ -51,12 +48,12 @@ const options = {
   security: [{ bearerAuth: [] }],
 };
 
-const specs = swaggerJsDoc(options);
+const specs = swaggerJSDoc(options);
 
 const app = express();
 app.get("/", (_, res) => res.json({ message: "Welcome to Phantom API" }));
 
-// testing multiple language support
+//testing multiple language support
 app.get("/welcome", (_, res) =>
   res.send({ english: locales("home", "en"), kinyarwanda: locales("home") })
 );
@@ -72,8 +69,6 @@ app.use(morgan("dev"));
 app.use("/buses", busesRouter);
 app.use("/roles", roleRouter);
 app.use("/admin", adminRouter);
-app.use("/drivers", driversRouter);
+// app.use("/drivers", driversRouter);
 
-app.listen(PORT, () =>
-  console.log(`The server is running on port ${PORT || 5000}`)
-);
+app.listen(PORT, () => console.log(`The server is running on port ${PORT}`));

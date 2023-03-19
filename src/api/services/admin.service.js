@@ -1,10 +1,10 @@
-const { Op } = require("sequelize");
-const models = require("../../db/models");
-const ERoles = require("../enums/ERole");
+import { Op } from "sequelize";
+import models from "../../db/models";
+import ERoles from "../enums/ERole";
 
 const { Users } = models;
 
-exports.findOne = async (payload) => {
+export const findOne = async (payload) => {
   const exists = await Users.findOne({
     where: {
       ...payload,

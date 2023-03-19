@@ -1,7 +1,7 @@
-const Joi = require("joi");
-const HttpStatusCodes = require("../enums/EHttpStatusCodes");
+import * as Joi from "joi";
+import HttpStatusCodes from "../enums/EHttpStatusCodes";
 
-const validateLogin = (req, res, next) => {
+export const validateLogin = (req, res, next) => {
   const schema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
@@ -14,5 +14,3 @@ const validateLogin = (req, res, next) => {
   }
   next();
 };
-
-module.exports = { validateLogin };

@@ -1,5 +1,5 @@
-const dotenv = require("dotenv");
-const path = require("path");
+import dotenv from "dotenv";
+import path from "path";
 
 const env = process.env.NODE_ENV || "development";
 const envPath = path.join(
@@ -8,6 +8,6 @@ const envPath = path.join(
 );
 dotenv.config({ path: envPath });
 
-const { PORT } = process.env;
+const { PORT } = process.env || 5000;
 
-module.exports = { PORT };
+export default { PORT };
