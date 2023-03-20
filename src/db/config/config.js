@@ -4,7 +4,7 @@ dotenv.config();
 
 export default {
   development: {
-    url: process.env.DATABASE_URL,
+    url: process.env.DB_URL,
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
@@ -16,6 +16,7 @@ export default {
     },
   },
   test: {
+    url: process.env.DB_TEST_URL,
     username: process.env.DB_TEST_USERNAME,
     password: process.env.DB_TEST_PASSWORD,
     database: process.env.DB_TEST_NAME,
