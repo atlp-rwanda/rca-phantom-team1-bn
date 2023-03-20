@@ -6,7 +6,6 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
 import busesRouter from "./api/routes/buses.routes";
 import roleRouter from "./api/routes/roles.routes";
-import adminRouter from "./api/routes/admin.routes";
 import db from "./db/models/index.js";
 import locales from "./config/languages";
 
@@ -68,7 +67,9 @@ app.use(morgan("dev"));
 
 app.use("/buses", busesRouter);
 app.use("/roles", roleRouter);
-app.use("/admin", adminRouter);
-// app.use("/drivers", driversRouter);
 
-app.listen(PORT, () => console.log(`The server is running on port ${PORT}`));
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => console.log(`The server is running on port ${PORT}`));
+}
+
+export default app;

@@ -7,6 +7,10 @@ import {
   deleteRoleById,
 } from "../controllers/roles.controller";
 import adminCheck from "../middlewares/adminCheck";
+import {
+  validateCreateRole,
+  validateUpdateRole,
+} from "../validations/role.validator";
 
 const roleRouter = Router();
 
@@ -65,7 +69,7 @@ roleRouter.get("/", getRoles);
  *       500:
  *         description: Internal server error
  */
-roleRouter.post("/", adminCheck, createRole);
+roleRouter.post("/", adminCheck, validateCreateRole, createRole);
 
 /**
  * @swagger
@@ -92,13 +96,16 @@ roleRouter.get("/:role", getRoleById);
 
 /**
  * @swagger
- * /roles/{role}:
+ * /roles/{id}:
+
  *   patch:
- *     summary: Update a role by Role name
+ *     summary: Update a role by Role id
  *     tags: [Roles]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: role
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
@@ -110,7 +117,7 @@ roleRouter.get("/:role", getRoleById);
  *           schema:
  *             type: object
  *             properties:
- *               newRole:
+ *               role:
  *                 type: string
  *                 description: New name of the role
  *               description:
@@ -131,21 +138,23 @@ roleRouter.get("/:role", getRoleById);
  *       500:
  *         description: Internal server error
  */
-roleRouter.patch("/:id", adminCheck, updateRole);
+roleRouter.patch("/:id", adminCheck, validateUpdateRole, updateRole);
 
 /**
  * @swagger
- * /roles/{role}:
+ * /roles/{id}:
  *   delete:
- *     summary: Delete a role by Role name
+ *     summary: Delete a role by Role Id
  *     tags: [Roles]
+ *     security:
+ *      - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: role
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: Name of the role to delete
+ *         description: Id of the role to delete
  *     responses:
  *       200:
  *         description: Role deleted successfully

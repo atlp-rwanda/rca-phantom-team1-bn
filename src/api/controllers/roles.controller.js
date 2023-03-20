@@ -34,7 +34,7 @@ export const roleExists = async (role) => {
 export const createRole = async (req, res, next) => {
   const role = req.body;
   try {
-    const roleData = await models.role.create({ role });
+    const roleData = await models.role.create(role);
     res.status(HttpStatusCodes.CREATED).json({ roleData });
   } catch (error) {
     next(error);
@@ -61,7 +61,7 @@ export const updateRole = async (req, res, next) => {
 export const deleteRoleById = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const roleData = await roleExists(id);
+    const roleData = await models.role.findByPk(id);
     if (!roleData) {
       return res
         .status(HttpStatusCodes.NOT_FOUND)

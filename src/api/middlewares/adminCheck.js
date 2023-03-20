@@ -5,9 +5,6 @@ import { decodeJwtToken } from "../utils/jwt";
 const adminCheck = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    console.log("Header: ");
-    console.log(req.headers);
-
     if (!authHeader) {
       return res
         .status(401)
