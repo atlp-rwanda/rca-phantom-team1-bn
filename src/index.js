@@ -55,6 +55,8 @@ app.use(morgan("dev"));
 
 app.use("/buses", busesRouter);
 
+console.log("PORT", PORT);
+
 app.listen(PORT ? PORT : 5000, () =>
   console.log(`The server is running on port ${PORT ? PORT : 5000}`)
 );

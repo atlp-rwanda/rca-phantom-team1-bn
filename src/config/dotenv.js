@@ -8,6 +8,4 @@ const envPath = path.join(
 );
 dotenv.config({ path: envPath });
 
-const { PORT } = process.env;
-
-export default { PORT };
+export const { PORT } = process.env;
