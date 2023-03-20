@@ -26,28 +26,6 @@ describe("Role routes", () => {
         });
     });
 
-    // it("should return an array of roles when there are roles in the database", async (done) => {
-    //   // Create some roles to test with
-    //   const roles = [
-    //     {
-    //       role: "ADMINISTRATOR",
-    //       description: "Admin role",
-    //       privileges: ["create", "read", "update", "delete"],
-    //     },
-    //     { role: "user", description: "User role", privileges: ["read"] },
-    //   ];
-    //   await models.role.bulkCreate(roles);
-
-    //   chai
-    //     .request(app)
-    //     .get("/roles")
-    //     .end((err, response) => {
-    //       if (err) done();
-    //       expect(response.statusCode).to.equal(HttpStatusCodes.OK);
-    //       expect(response.body.roles.length).to.equal(roles.length);
-    //       done();
-    //     });
-    // });
     it("should return an array of roles when there are roles in the database", async () => {
       // Create some roles to test with
       const roles = [

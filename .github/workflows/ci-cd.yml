@@ -3,6 +3,13 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DB_TEST_USERNAME: ${{ secrets.DB_USER }}
+      DB_TEST_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_TEST_NAME: ${{ secrets.DB_NAME }}
+      DB_TEST_HOST: ${{ secrets.DB_HOST }}
+      JWT_SECRET: 3WJWcULn72ea&a42
+      JWT_EXPIRES_IN: 8h
     steps:
       - uses: actions/checkout@v3
 
