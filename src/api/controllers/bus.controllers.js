@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import locales from '../../config/languages'
-const BusService = require('../services/bus.service');
+const busService = require('../services/bus.service');
 
 var BusController = {
     addBus: addBus,
@@ -12,7 +12,7 @@ var BusController = {
 
 async function addBus(req, res) {
     try {
-        const bus = await BusService.create(req.body).
+        const bus = await busService.create(req.body).
             
         res.status(201).json({
             status: 'success',
@@ -35,7 +35,7 @@ async function addBus(req, res) {
 
 async function findBusById(req, res) {
     try {
-        const bus = await BusService.findById(req.params.id)
+        const bus = await busService.findById(req.params.id)
         
         res.send(200).json({
             status: 'success',
@@ -52,7 +52,7 @@ async function findBusById(req, res) {
 
 async function deleteBusById(req, res) {
     try {
-        await BusService.deleteById(req.params.id)
+        await busService.deleteById(req.params.id)
         
         res.send(200).json({
             status: 'success',
@@ -76,7 +76,7 @@ async function deleteBusById(req, res) {
 
 async function updateBus(req, res) {
     try {
-        const bus =  await BusService.updateBus(req.body, req.params.id)
+        const bus =  await busService.updateBus(req.body, req.params.id)
         
         res.status(200).json({
         status: 'success',
@@ -93,7 +93,7 @@ async function updateBus(req, res) {
 
 async function findBuses(req, res) {
     try {
-        const buses = await BusService.findAll()
+        const buses = await busService.findAll()
         
         res.send(200).json({
             status: 'success',

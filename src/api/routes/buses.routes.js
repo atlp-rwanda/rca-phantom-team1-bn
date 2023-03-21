@@ -152,24 +152,24 @@ router.put("/:id", BusController.updateBus);
 /**
  * @swagger
  * /buses/{id}:
- *   delete:
- *     summary: Remove the bus by id
- *     tags: [Buses]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: The bus id
+ *  delete:
+ *    summary: Remove the bus by id
+ *    tags: [Buses]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The bus id
  *
- *     responses:
- *       200:
- *         description: The bus was deleted
- *       404:
- *         description: The bus was not found
- *      500:
- *        description: Some error happened
+ *    responses:
+ *      200:
+ *        description: The bus was deleted
+ *      404:
+ *        description: The bus was not found
+ *     500:
+ *       description: Some error happened
  */
 
 router.delete("/:id", BusController.deleteBusById);
