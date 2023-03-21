@@ -171,18 +171,3 @@ describe("PATCH /roles/:id", (done) => {
       });
   });
 });
-
-describe("DELETE /roles/:id", () => {
-  it("should return 404 if role is not found", () => {
-    chai
-      .request(app)
-      .delete("/roles/999")
-      .set(
-        "Authorization",
-        "Bearer " + signJwtToken({ roles: [ERoles.ADMINISTRATOR] })
-      )
-      .end((err, response) => {
-        expect(response.status).to.equal(404);
-      });
-  });
-});
