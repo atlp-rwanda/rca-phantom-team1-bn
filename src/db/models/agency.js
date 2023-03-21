@@ -1,10 +1,9 @@
-/* eslint-disable prettier/prettier */
 'use strict';
 const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Bus extends Model {
+  class Agency extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,18 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Bus.belongsTo(models.Agency);
-      models.Agency.hasMany(Bus);
-
-      Bus.belongsTo(models.Route)
-      models.Route.hasMany(Bus)
     }
   }
-  Bus.init({
-    plate_number: DataTypes.STRING
+  Agency.init({
+    name: DataTypes.STRING,
+    destinations: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Bus',
+    modelName: 'Agency',
   });
-  return Bus;
+  return Agency;
 };
