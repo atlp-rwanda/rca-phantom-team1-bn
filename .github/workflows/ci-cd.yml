@@ -25,8 +25,21 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Run Tests
-        run: npm run test
+      - name: Log environment variables
+        run: |
+          echo "DB_TEST_USERNAME=$DB_TEST_USERNAME"
+          echo "DB_TEST_PASSWORD=$DB_TEST_PASSWORD"
+          echo "DB_TEST_NAME=$DB_TEST_NAME"
+          echo "DB_TEST_HOST=$DB_TEST_HOST"
+          echo "JWT_SECRET=$JWT_SECRET"
+          echo "JWT_EXPIRES_IN=$JWT_EXPIRES_IN"
+
+      - name: Log connection string
+        run: |
+          echo "postgresql://$DB_TEST_USERNAME:$DB_TEST_PASSWORD@$DB_TEST_HOST/$DB_TEST_NAME"
+
+      # - name: Run Tests
+        # run: npm run test
 
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v3.2.0

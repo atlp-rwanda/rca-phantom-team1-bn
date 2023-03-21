@@ -18,7 +18,6 @@ module.exports = {
     database: process.env.DB_TEST_NAME,
     host: process.env.DB_TEST_HOST || "127.0.0.1",
     port: 5432,
-    env: "test",
     dialect: "postgres",
     dialectOptions: {
       bigNumberStrings: true,
