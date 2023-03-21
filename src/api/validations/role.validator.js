@@ -1,5 +1,5 @@
 import Joi from "joi";
-import HttpStatusCodes from "../enums/EHttpStatusCodes";
+import { StatusCodes } from "http-status-codes";
 
 export const validateCreateRole = (req, res, next) => {
   const schema = Joi.object({
@@ -10,7 +10,7 @@ export const validateCreateRole = (req, res, next) => {
   const { error } = schema.validate(req.body);
   if (error) {
     return res
-      .status(HttpStatusCodes.BAD_REQUEST)
+      .status(StatusCodes.BAD_REQUEST)
       .json({ error: error.details[0].message });
   }
   next();
@@ -25,7 +25,7 @@ export const validateUpdateRole = (req, res, next) => {
   const { error } = schema.validate(req.body);
   if (error) {
     return res
-      .status(HttpStatusCodes.BAD_REQUEST)
+      .status(StatusCodes.BAD_REQUEST)
       .json({ error: error.details[0].message });
   }
   next();

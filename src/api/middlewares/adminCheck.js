@@ -1,4 +1,4 @@
-import HttpStatusCodes from "../enums/EHttpStatusCodes";
+import { StatusCodes } from "http-status-codes";
 import ERoles from "../enums/ERole";
 import { decodeJwtToken } from "../utils/jwt";
 
@@ -16,7 +16,7 @@ const adminCheck = async (req, res, next) => {
     const isAdmin = decoded.roles.includes(ERoles.ADMINISTRATOR);
     if (!isAdmin) {
       return res
-        .status(HttpStatusCodes.FORBIDDEN)
+        .status(StatusCodes.FORBIDDEN)
         .json({ message: "You are not authorized to access this resource" });
     }
 
@@ -24,7 +24,7 @@ const adminCheck = async (req, res, next) => {
     next();
   } catch (err) {
     return res
-      .status(401)
+      .status(StatusCodes.UNAUTHORIZED)
       .json({ message: "Invalid or expired token", error: err.message });
   }
 };

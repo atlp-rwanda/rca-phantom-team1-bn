@@ -1,8 +1,8 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
+import { StatusCodes } from "http-status-codes";
 import app from "../../index";
 import models from "../../db/models";
-import HttpStatusCodes from "../../api/enums/EHttpStatusCodes";
 import { signJwtToken } from "../../api/utils/jwt";
 import ERoles from "../../api/enums/ERole";
 const { expect } = chai;
@@ -20,7 +20,7 @@ describe("Role routes", () => {
         .get("/roles")
         .end((err, res) => {
           if (err) done();
-          expect(res.statusCode).to.equal(HttpStatusCodes.OK);
+          expect(res.statusCode).to.equal(StatusCodes.OK);
           expect(res.body.roles.length).to.equal(0);
           done();
         });
@@ -39,7 +39,7 @@ describe("Role routes", () => {
       await models.role.bulkCreate(roles);
 
       const response = await chai.request(app).get("/roles");
-      expect(response.statusCode).to.equal(HttpStatusCodes.OK);
+      expect(response.statusCode).to.equal(StatusCodes.OK);
       expect(response.body.roles.length).to.equal(roles.length);
     });
   });
@@ -62,7 +62,7 @@ describe("POST /roles", () => {
       )
       .end((err, response) => {
         if (err) done();
-        expect(response.statusCode).to.equal(HttpStatusCodes.CREATED);
+        expect(response.statusCode).to.equal(StatusCodes.CREATED);
         done();
       });
   });
@@ -82,7 +82,7 @@ describe("POST /roles", () => {
       )
       .end((err, response) => {
         if (err) done(err);
-        expect(response.status).to.equal(HttpStatusCodes.BAD_REQUEST);
+        expect(response.status).to.equal(StatusCodes.BAD_REQUEST);
         done();
       });
   });
@@ -102,7 +102,7 @@ describe("GET /roles/:role", () => {
       .get(`/roles/${role.role}`)
       .end((err, response) => {
         if (err) done(err);
-        expect(response.statusCode).to.equal(HttpStatusCodes.OK);
+        expect(response.statusCode).to.equal(StatusCodes.OK);
         done();
       });
   });
@@ -113,7 +113,7 @@ describe("GET /roles/:role", () => {
       .get(`/roles/nonexistentrole`)
       .end((err, response) => {
         if (err) done(err);
-        expect(response.status).to.equal(HttpStatusCodes.NOT_FOUND);
+        expect(response.status).to.equal(StatusCodes.NOT_FOUND);
         done();
       });
   });
@@ -166,7 +166,7 @@ describe("PATCH /roles/:id", (done) => {
       )
       .end((err, response) => {
         if (err) done(err);
-        expect(response.status).to.equal(404);
+        expect(response.status).to.equal(StatusCodes.NOT_FOUND);
         done();
       });
   });
