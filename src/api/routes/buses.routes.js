@@ -1,8 +1,8 @@
+/* eslint-disable prettier/prettier */
 import { Router } from "express";
-import { nanoid } from "nanoid";
+import BusController from "../controllers/bus.controllers";
 
 const router = Router();
-const idLength = 8;
 
 /**
  * @swagger
@@ -11,21 +11,26 @@ const idLength = 8;
  *     Bus:
  *       type: object
  *       required:
- *         - plate
- *         - driver
+ *         - plate_number
+ *         - agency_id
+ *         - route_id
  *       properties:
  *         id:
  *           type: string
  *           description: The auto-generated id of the bus
- *         plate:
+ *         plate_number:
  *           type: string
- *           description: The bus plate
- *         driver:
+ *           description: The bus plate number
+ *         agency_id:
  *           type: string
- *           description: The bus driver
+ *           description: The bus agency
+ *         route_id:
+ *           type: string
+ *           description: The bus route
  *       example:
- *         plate: KL3MS
- *         driver: Kellia Umuhire
+ *         plate_number: KL3MS
+ *         agency_id: 12321
+ *         route_id: 12324
  */
 
 /**
@@ -50,13 +55,11 @@ const idLength = 8;
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Bus'
+ *       500:
+ *         description: Some server error
  */
 
-router.get("/", (req, res) => {
-  const buses = req.app.db.get("buses");
-
-  res.send(buses);
-});
+router.get("/", BusController.findBuses);
 
 /**
  * @swagger
@@ -82,15 +85,7 @@ router.get("/", (req, res) => {
  *         description: The bus was not found
  */
 
-router.get("/:id", (req, res) => {
-  const bus = req.app.db.get("buses").find({ id: req.params.id }).value();
-
-  if (!bus) {
-    res.sendStatus(404);
-  }
-
-  res.send(bus);
-});
+router.get("/:id", BusController.findBusById);
 
 /**
  * @swagger
@@ -111,25 +106,14 @@ router.get("/:id", (req, res) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Bus'
+ *       409:
+ *         description: bus already registered
  *       500:
  *         description: Some server error
  */
 
 // eslint-disable-next-line consistent-return
-router.post("/", (req, res) => {
-  try {
-    const bus = {
-      id: nanoid(idLength),
-      ...req.body,
-    };
-
-    req.app.db.get("buses").push(bus).write();
-
-    res.send(bus);
-  } catch (error) {
-    return res.status(500).send(error);
-  }
-});
+router.post("/", BusController.addBus)
 
 /**
  * @swagger
@@ -157,25 +141,13 @@ router.post("/", (req, res) => {
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Bus'
- *      404:
- *        description: The bus was not found
+ *      409:
+ *        description: bus already registered
  *      500:
  *        description: Some error happened
  */
 
-router.put("/:id", (req, res) => {
-  try {
-    req.app.db
-      .get("buses")
-      .find({ id: req.params.id })
-      .assign(req.body)
-      .write();
-
-    res.send(req.app.db.get("buses").find({ id: req.params.id }));
-  } catch (error) {
-    return res.status(500).send(error);
-  }
-});
+router.put("/:id", BusController.updateBus);
 
 /**
  * @swagger
@@ -196,12 +168,10 @@ router.put("/:id", (req, res) => {
  *         description: The bus was deleted
  *       404:
  *         description: The bus was not found
+ *      500:
+ *        description: Some error happened
  */
 
-router.delete("/:id", (req, res) => {
-  req.app.db.get("buses").remove({ id: req.params.id }).write();
-
-  res.sendStatus(200);
-});
+router.delete("/:id", BusController.deleteBusById);
 
 export default router;
