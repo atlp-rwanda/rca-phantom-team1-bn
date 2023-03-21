@@ -3,14 +3,6 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      DB_TEST_USERNAME: ${{ secrets.DB_TEST_USERNAME }}
-      DB_TEST_PASSWORD: ${{ secrets.DB_TEST_PASSWORD }}
-      DB_TEST_NAME: ${{ secrets.DB_TEST_NAME }}
-      DB_TEST_HOST: ${{ secrets.DB_TEST_HOST }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      JWT_EXPIRES_IN: ${{ secrets.JWT_EXPIRES_IN }}
-      no-echo: true
     steps:
       - uses: actions/checkout@v3
 
@@ -19,28 +11,17 @@ jobs:
         with:
           node-version: 16
           cache: 'npm'
-
+      - name: 'Create env file'
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
       - name: Install dependencies
         run: npm ci
 
       - name: Lint
         run: npm run lint
 
-      - name: Log environment variables
-        run: |
-          echo "DB_TEST_USERNAME=$DB_TEST_USERNAME"
-          echo "DB_TEST_PASSWORD=$DB_TEST_PASSWORD"
-          echo "DB_TEST_NAME=$DB_TEST_NAME"
-          echo "DB_TEST_HOST=$DB_TEST_HOST"
-          echo "JWT_SECRET=$JWT_SECRET"
-          echo "JWT_EXPIRES_IN=$JWT_EXPIRES_IN"
-
-      - name: Log connection string
-        run: |
-          echo "postgresql://$DB_TEST_USERNAME:$DB_TEST_PASSWORD@$DB_TEST_HOST/$DB_TEST_NAME"
-
-      # - name: Run Tests
-        # run: npm run test
+      - name: Run Tests
+        run: npm run test
 
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v3.2.0
