@@ -10,6 +10,7 @@ jobs:
       DB_TEST_HOST: ${{ secrets.DB_TEST_HOST }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       JWT_EXPIRES_IN: ${{ secrets.JWT_EXPIRES_IN }}
+      no-echo: true
     steps:
       - uses: actions/checkout@v3
 
