@@ -5,8 +5,12 @@ import {
   createRole,
   updateRole,
   deleteRoleById,
+  getRoleByTitle,
 } from "../controllers/roles.controller";
-import adminCheck from "../middlewares/adminCheck";
+import {
+  roleExistsById,
+  roleExistsByTitle,
+} from "../middlewares/roles.middleware";
 import {
   validateCreateRole,
   validateUpdateRole,
@@ -27,6 +31,8 @@ const roleRouter = Router();
  *   get:
  *     summary: Get all roles
  *     tags: [Roles]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Returns a list of all roles
@@ -50,9 +56,9 @@ roleRouter.get("/", getRoles);
  *           schema:
  *             type: object
  *             properties:
- *               role:
+ *               title:
  *                 type: string
- *                 description: Name of the role to create
+ *                 description: Title of the role to create
  *               description:
  *                 type: string
  *                 description: Description of the role
@@ -69,21 +75,23 @@ roleRouter.get("/", getRoles);
  *       500:
  *         description: Internal server error
  */
-roleRouter.post("/", adminCheck, validateCreateRole, createRole);
+roleRouter.post("/", validateCreateRole, roleExistsByTitle, createRole);
 
 /**
  * @swagger
- * /roles/{role}:
+ * /roles/title/{title}:
  *   get:
- *     summary: Get a role by Role name
+ *     summary: Get a role by Role title
  *     tags: [Roles]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: role
+ *         name: title
  *         schema:
  *           type: string
  *         required: true
- *         description: Name of the role to get
+ *         description: Title of the role to get
  *     responses:
  *       200:
  *         description: Returns a role object
@@ -92,7 +100,32 @@ roleRouter.post("/", adminCheck, validateCreateRole, createRole);
  *       500:
  *         description: Internal server error
  */
-roleRouter.get("/:role", getRoleById);
+roleRouter.get("/title/:title", roleExistsByTitle, getRoleByTitle);
+
+/**
+ * @swagger
+ * /roles/id/{id}:
+ *   get:
+ *     summary: Get a role by Role Id
+ *     tags: [Roles]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Id of the role to get
+ *     responses:
+ *       200:
+ *         description: Returns a role object
+ *       404:
+ *         description: Role not found
+ *       500:
+ *         description: Internal server error
+ */
+roleRouter.get("/id/:id", roleExistsById, getRoleById);
 
 /**
  * @swagger
@@ -117,7 +150,7 @@ roleRouter.get("/:role", getRoleById);
  *           schema:
  *             type: object
  *             properties:
- *               role:
+ *               title:
  *                 type: string
  *                 description: New name of the role
  *               description:
@@ -138,7 +171,7 @@ roleRouter.get("/:role", getRoleById);
  *       500:
  *         description: Internal server error
  */
-roleRouter.patch("/:id", adminCheck, validateUpdateRole, updateRole);
+roleRouter.patch("/:id", validateUpdateRole, roleExistsById, updateRole);
 
 /**
  * @swagger
@@ -163,6 +196,6 @@ roleRouter.patch("/:id", adminCheck, validateUpdateRole, updateRole);
  *       500:
  *         description: Internal server error
  */
-roleRouter.delete("/:id", deleteRoleById);
+roleRouter.delete("/:id", roleExistsById, deleteRoleById);
 
 export default roleRouter;

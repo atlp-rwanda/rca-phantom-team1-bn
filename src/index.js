@@ -8,6 +8,9 @@ import busesRouter from "./api/routes/buses.routes";
 import roleRouter from "./api/routes/roles.routes";
 import db from "./db/models/index.js";
 import locales from "./config/languages";
+import checkUserLoggedIn from "./api/middlewares/protect.middleware";
+import restrictTo from "./api/middlewares/restrict.middleware";
+import ERoles from "./db/enums/ERole";
 
 const PORT = process.env.PORT || 5000;
 
@@ -66,7 +69,12 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 app.use("/buses", busesRouter);
-app.use("/roles", roleRouter);
+app.use(
+  "/roles",
+  checkUserLoggedIn,
+  restrictTo(ERoles.ADMINISTRATOR),
+  roleRouter
+);
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => console.log(`The server is running on port ${PORT}`));

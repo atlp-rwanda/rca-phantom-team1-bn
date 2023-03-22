@@ -18,6 +18,10 @@ describe("Role routes", () => {
       chai
         .request(app)
         .get("/roles")
+        .set(
+          "Authorization",
+          "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
+        )
         .end((err, res) => {
           if (err) done();
           expect(res.statusCode).to.equal(StatusCodes.OK);
@@ -30,15 +34,21 @@ describe("Role routes", () => {
       // Create some roles to test with
       const roles = [
         {
-          role: "ADMINISTRATOR",
+          title: "ADMINISTRATOR",
           description: "Admin role",
           privileges: ["create", "read", "update", "delete"],
         },
-        { role: "user", description: "User role", privileges: ["read"] },
+        { title: "user", description: "User role", privileges: ["read"] },
       ];
       await models.role.bulkCreate(roles);
 
-      const response = await chai.request(app).get("/roles");
+      const response = await chai
+        .request(app)
+        .get("/roles")
+        .set(
+          "Authorization",
+          "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
+        );
       expect(response.statusCode).to.equal(StatusCodes.OK);
       expect(response.body.roles.length).to.equal(roles.length);
     });
@@ -48,7 +58,7 @@ describe("Role routes", () => {
 describe("POST /roles", () => {
   it("should create a new role", (done) => {
     const role = {
-      role: "ADMINISTRATOR-TEST-1",
+      title: "SUPER-ADMINISTRATOR",
       description: "Admin role",
       privileges: ["create", "read", "update", "delete"],
     };
@@ -58,7 +68,7 @@ describe("POST /roles", () => {
       .send(role)
       .set(
         "Authorization",
-        "Bearer " + signJwtToken({ id: "100", roles: [ERoles.ADMINISTRATOR] })
+        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
       )
       .end((err, response) => {
         if (err) done();
@@ -78,7 +88,7 @@ describe("POST /roles", () => {
       .send(role)
       .set(
         "Authorization",
-        "Bearer " + signJwtToken({ roles: [ERoles.ADMINISTRATOR] })
+        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
       )
       .end((err, response) => {
         if (err) done(err);
@@ -88,10 +98,10 @@ describe("POST /roles", () => {
   });
 });
 
-describe("GET /roles/:role", () => {
+describe("GET /roles/title/:title", () => {
   it("should return a role by name", (done) => {
     const role = {
-      role: ERoles.ADMINISTRATOR,
+      title: ERoles.ADMINISTRATOR,
       description: "Admin role",
       privileges: ["create", "read", "update", "delete"],
     };
@@ -99,7 +109,11 @@ describe("GET /roles/:role", () => {
 
     chai
       .request(app)
-      .get(`/roles/${role.role}`)
+      .get(`/roles/title/${role.title}`)
+      .set(
+        "Authorization",
+        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
+      )
       .end((err, response) => {
         if (err) done(err);
         expect(response.statusCode).to.equal(StatusCodes.OK);
@@ -110,7 +124,45 @@ describe("GET /roles/:role", () => {
   it("should return 404 Not Found when role does not exist", (done) => {
     chai
       .request(app)
-      .get(`/roles/nonexistentrole`)
+      .get(`/roles/title/nonexistentrole`)
+      .set(
+        "Authorization",
+        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
+      )
+      .end((err, response) => {
+        if (err) done(err);
+        expect(response.status).to.equal(StatusCodes.NOT_FOUND);
+        done();
+      });
+  });
+});
+
+describe("GET /roles/id/:id", () => {
+  it("should return a role by id", async () => {
+    const role = {
+      title: "DUMMY-ROLE",
+      description: "Admin role",
+      privileges: ["create", "read", "update", "delete"],
+    };
+    const data = await models.role.create(role);
+    const response = await chai
+      .request(app)
+      .get(`/roles/id/${data.id}`)
+      .set(
+        "Authorization",
+        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
+      );
+    expect(response.statusCode).to.equal(StatusCodes.OK);
+  });
+
+  it("should return 404 Not Found when role id does not exist", (done) => {
+    chai
+      .request(app)
+      .get(`/roles/id/23233`)
+      .set(
+        "Authorization",
+        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
+      )
       .end((err, response) => {
         if (err) done(err);
         expect(response.status).to.equal(StatusCodes.NOT_FOUND);
@@ -122,12 +174,12 @@ describe("GET /roles/:role", () => {
 describe("PATCH /roles/:id", (done) => {
   it("should update a role by id", async () => {
     const role = {
-      role: "NEW-ADMINISTRATOR",
+      title: "NEW-ADMINISTRATOR",
       description: "Admin role",
       privileges: ["create", "read", "update", "delete"],
     };
     const updatedRole = {
-      role: "UPDATED-ADMINISTRATOR",
+      title: "UPDATED-ADMINISTRATOR",
       description: "New admin role",
       privileges: ["create", "read", "update"],
     };
@@ -139,7 +191,7 @@ describe("PATCH /roles/:id", (done) => {
       .set("Accept", "application/json")
       .set(
         "Authorization",
-        "Bearer " + signJwtToken({ roles: [ERoles.ADMINISTRATOR] })
+        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
       )
       .end((err, response) => {
         if (err) done(err);
@@ -151,7 +203,7 @@ describe("PATCH /roles/:id", (done) => {
 
   it("should return 404 if role is not found", (done) => {
     const updatedRole = {
-      role: "newadmin",
+      title: "newadmin",
       description: "New admin role",
       privileges: ["create", "read", "update"],
     };
@@ -162,11 +214,25 @@ describe("PATCH /roles/:id", (done) => {
       .set("Accept", "application/json")
       .set(
         "Authorization",
-        "Bearer " + signJwtToken({ roles: [ERoles.ADMINISTRATOR] })
+        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
       )
       .end((err, response) => {
         if (err) done(err);
         expect(response.status).to.equal(StatusCodes.NOT_FOUND);
+        done();
+      });
+  });
+});
+
+describe("Roles protected", () => {
+  it("should fail when not authorized", (done) => {
+    chai
+      .request(app)
+      .get(`/roles`)
+      .set("Accept", "application/json")
+      .end((err, response) => {
+        if (err) done(err);
+        expect(response.status).to.equal(StatusCodes.UNAUTHORIZED);
         done();
       });
   });

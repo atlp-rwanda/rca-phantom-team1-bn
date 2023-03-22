@@ -1,8 +1,7 @@
 import { StatusCodes } from "http-status-codes";
-import ERoles from "../enums/ERole";
 import { decodeJwtToken } from "../utils/jwt";
 
-const adminCheck = async (req, res, next) => {
+const checkUserLoggedIn = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -13,14 +12,11 @@ const adminCheck = async (req, res, next) => {
 
     const token = authHeader.replace("Bearer ", "");
     const decoded = await decodeJwtToken(token);
-    const isAdmin = decoded.roles.includes(ERoles.ADMINISTRATOR);
-    if (!isAdmin) {
+    if (!decoded)
       return res
-        .status(StatusCodes.FORBIDDEN)
-        .json({ message: "You are not authorized to access this resource" });
-    }
-
-    // If the user is an admin, pass control to the next middleware
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: "Invalid or expired token" });
+    req.user = decoded;
     next();
   } catch (err) {
     return res
@@ -29,4 +25,4 @@ const adminCheck = async (req, res, next) => {
   }
 };
 
-export default adminCheck;
+export default checkUserLoggedIn;
