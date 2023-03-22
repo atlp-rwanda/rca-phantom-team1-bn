@@ -34,7 +34,10 @@ export const getRoleById = async (req, res, next) => {
 export const createRole = async (req, res, next) => {
   const role = req.body;
   try {
-    const roleData = await saveRole(role);
+    const roleData = await saveRole({
+      ...role,
+      title: role?.title.toLowerCase(),
+    });
     res.status(StatusCodes.CREATED).json({
       success: true,
       message: "Role created successfully",
