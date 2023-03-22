@@ -6,6 +6,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
 import { PORT } from "./config/dotenv";
 import busesRouter from "./api/routes/buses.routes";
+import routesRouter from "./api/routes/routes.routes";
 import db from "./db/models/index.js";
 import locales from "./config/languages";
 
@@ -54,6 +55,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 app.use("/buses", busesRouter);
+app.use("/routes", routesRouter);
 
 app.listen(PORT ? PORT : 5000, () =>
   console.log(`The server is running on port ${PORT ? PORT : 5000}`)

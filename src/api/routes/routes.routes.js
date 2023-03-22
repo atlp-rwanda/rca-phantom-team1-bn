@@ -131,40 +131,38 @@ router.post("/", (req, res) => {
   }
 });
 
-
 /**
  * @swagger
  * /routes/{id}:
- *   put:
- *     summary: Update route by id
- *     tags: [Routes]
- *     parameters:
+ *  put:
+ *    summary: Update the routes by the id
+ *    tags: [Routes]
+ *    parameters:
  *      - in: path
- *       name: id
- *      schema:
+ *        name: id
+ *        schema:
  *          type: string
- *     required: true
- *     description: The route id
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Route'
- *     responses:
- *       200:
- *         description: The route was updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Route'
- *       404:
+ *        required: true
+ *        description: The route id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Route'
+ *    responses:
+ *      200:
+ *        description: The routes was updated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Route'
+ *      404:
  *        description: The route was not found
- *       500:
- *         description: Some server error
+ *      500:
+ *        description: Some error happened
  */
 
-// eslint-disable-next-line consistent-return
 router.put("/:id", (req, res) => {
 
     try {
@@ -179,8 +177,6 @@ router.put("/:id", (req, res) => {
         return res.status(500).send(error);
       }
   });
-
-
 
 /**
  * @swagger
