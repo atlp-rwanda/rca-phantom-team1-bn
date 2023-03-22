@@ -4,7 +4,7 @@ import { getRoleById, getRoleByTitle } from "../services/roles.service";
 export const roleExistsByTitle = async (req, res, next) => {
   const method = req.method;
   const roleTitle = method === "GET" ? req?.params?.title : req?.body?.title;
-  const roleExists = await getRoleByTitle(roleTitle.toUpperCase());
+  const roleExists = await getRoleByTitle(roleTitle.toLowerCase());
 
   if (method === "POST" && roleExists)
     return res

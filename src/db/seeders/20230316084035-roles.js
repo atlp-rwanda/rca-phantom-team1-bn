@@ -7,7 +7,7 @@ module.exports = {
       "roles",
       [
         {
-          title: "DRIVER",
+          title: "driver",
           description:
             "Control the bus movement i.e. start, stop, and change bus speed. View the bus movement. Edit their profile",
           privileges: [
@@ -19,7 +19,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          title: "OPERATOR",
+          title: "operator",
           description:
             "Manage (create, update, delete) routes. Manage (create, update, delete) buses. Manage (create, update, delete) bus to route assignment. Manage (create, update, delete) driver to bus assignment. View the bus movement. Edit their profile",
           privileges: [
@@ -34,7 +34,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          title: "ADMINISTRATOR",
+          title: "administrator",
           description:
             "Register and remove both drivers & operators. Manage (create, update, delete) routes. Manage (create, update, delete) buses. Manage (create, update, delete) bus to route assignment. Manage (create, update, delete) driver to bus assignment. View the bus movement",
           privileges: [
@@ -49,7 +49,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          title: "PASSENGER",
+          title: "passenger",
           description: "View the bus movement, routes and vehicles",
           privileges: ["view_bus_movements", "views_routes", "views_vehicles"],
           createdAt: new Date(),

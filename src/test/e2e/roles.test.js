@@ -25,7 +25,7 @@ describe("Role routes", () => {
         .end((err, res) => {
           if (err) done();
           expect(res.statusCode).to.equal(StatusCodes.OK);
-          expect(res.body.roles.length).to.equal(0);
+          expect(res.body.data.length).to.equal(0);
           done();
         });
     });
@@ -34,7 +34,7 @@ describe("Role routes", () => {
       // Create some roles to test with
       const roles = [
         {
-          title: "ADMINISTRATOR",
+          title: "administrator",
           description: "Admin role",
           privileges: ["create", "read", "update", "delete"],
         },
@@ -50,7 +50,7 @@ describe("Role routes", () => {
           "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
         );
       expect(response.statusCode).to.equal(StatusCodes.OK);
-      expect(response.body.roles.length).to.equal(roles.length);
+      expect(response.body.data.length).to.equal(roles.length);
     });
   });
 });
@@ -58,7 +58,7 @@ describe("Role routes", () => {
 describe("POST /roles", () => {
   it("should create a new role", (done) => {
     const role = {
-      title: "SUPER-ADMINISTRATOR",
+      title: "super-administrator",
       description: "Admin role",
       privileges: ["create", "read", "update", "delete"],
     };
@@ -98,33 +98,30 @@ describe("POST /roles", () => {
   });
 });
 
-describe("GET /roles/title/:title", () => {
-  it("should return a role by name", (done) => {
+describe("GET /roles?title=[title]", () => {
+  it("should return a role by title", async () => {
     const role = {
       title: ERoles.ADMINISTRATOR,
       description: "Admin role",
       privileges: ["create", "read", "update", "delete"],
     };
-    models.role.create(role);
+    await models.role.create(role);
 
-    chai
+    const res = await chai
       .request(app)
-      .get(`/roles/title/${role.title}`)
+      .get(`/roles?title=${role.title}`)
       .set(
         "Authorization",
         "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
-      )
-      .end((err, response) => {
-        if (err) done(err);
-        expect(response.statusCode).to.equal(StatusCodes.OK);
-        done();
-      });
+      );
+
+    expect(res.status).to.equal(StatusCodes.OK);
   });
 
-  it("should return 404 Not Found when role does not exist", (done) => {
+  it("should return empty when role title does not exist", (done) => {
     chai
       .request(app)
-      .get(`/roles/title/nonexistentrole`)
+      .get(`/roles?title=nonexistentrole`)
       .set(
         "Authorization",
         "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
@@ -137,17 +134,17 @@ describe("GET /roles/title/:title", () => {
   });
 });
 
-describe("GET /roles/id/:id", () => {
+describe("GET /roles/:id", () => {
   it("should return a role by id", async () => {
     const role = {
-      title: "DUMMY-ROLE",
+      title: "dummy-role",
       description: "Admin role",
       privileges: ["create", "read", "update", "delete"],
     };
     const data = await models.role.create(role);
     const response = await chai
       .request(app)
-      .get(`/roles/id/${data.id}`)
+      .get(`/roles/${data.id}`)
       .set(
         "Authorization",
         "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
@@ -158,7 +155,7 @@ describe("GET /roles/id/:id", () => {
   it("should return 404 Not Found when role id does not exist", (done) => {
     chai
       .request(app)
-      .get(`/roles/id/23233`)
+      .get(`/roles/23233`)
       .set(
         "Authorization",
         "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
@@ -174,12 +171,12 @@ describe("GET /roles/id/:id", () => {
 describe("PATCH /roles/:id", (done) => {
   it("should update a role by id", async () => {
     const role = {
-      title: "NEW-ADMINISTRATOR",
+      title: "new-administrator",
       description: "Admin role",
       privileges: ["create", "read", "update", "delete"],
     };
     const updatedRole = {
-      title: "UPDATED-ADMINISTRATOR",
+      title: "updated-administrator",
       description: "New admin role",
       privileges: ["create", "read", "update"],
     };
@@ -203,7 +200,7 @@ describe("PATCH /roles/:id", (done) => {
 
   it("should return 404 if role is not found", (done) => {
     const updatedRole = {
-      title: "newadmin",
+      title: "new-admin",
       description: "New admin role",
       privileges: ["create", "read", "update"],
     };

@@ -5,7 +5,6 @@ import {
   createRole,
   updateRole,
   deleteRoleById,
-  getRoleByTitle,
 } from "../controllers/roles.controller";
 import {
   roleExistsById,
@@ -33,12 +32,19 @@ const roleRouter = Router();
  *     tags: [Roles]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: title
+ *         schema:
+ *           type: string
+ *         description: Optional role title to filter results by
  *     responses:
  *       200:
  *         description: Returns a list of all roles
  *       500:
  *         description: Internal server error
  */
+
 roleRouter.get("/", getRoles);
 
 /**
@@ -79,32 +85,7 @@ roleRouter.post("/", validateCreateRole, roleExistsByTitle, createRole);
 
 /**
  * @swagger
- * /roles/title/{title}:
- *   get:
- *     summary: Get a role by Role title
- *     tags: [Roles]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: title
- *         schema:
- *           type: string
- *         required: true
- *         description: Title of the role to get
- *     responses:
- *       200:
- *         description: Returns a role object
- *       404:
- *         description: Role not found
- *       500:
- *         description: Internal server error
- */
-roleRouter.get("/title/:title", roleExistsByTitle, getRoleByTitle);
-
-/**
- * @swagger
- * /roles/id/{id}:
+ * /roles/{id}:
  *   get:
  *     summary: Get a role by Role Id
  *     tags: [Roles]
@@ -125,7 +106,7 @@ roleRouter.get("/title/:title", roleExistsByTitle, getRoleByTitle);
  *       500:
  *         description: Internal server error
  */
-roleRouter.get("/id/:id", roleExistsById, getRoleById);
+roleRouter.get("/:id", roleExistsById, getRoleById);
 
 /**
  * @swagger

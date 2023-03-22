@@ -8,8 +8,10 @@ import busesRouter from "./api/routes/buses.routes";
 import roleRouter from "./api/routes/roles.routes";
 import db from "./db/models/index.js";
 import locales from "./config/languages";
-import checkUserLoggedIn from "./api/middlewares/protect.middleware";
-import restrictTo from "./api/middlewares/restrict.middleware";
+import {
+  checkUserLoggedIn,
+  restrictTo,
+} from "./api/middlewares/protect.middleware";
 import ERoles from "./db/enums/ERole";
 
 const PORT = process.env.PORT || 5000;

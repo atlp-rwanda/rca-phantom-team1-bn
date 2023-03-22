@@ -1,19 +1,22 @@
 import { StatusCodes } from "http-status-codes";
-import { getAll, saveRole } from "../services/roles.service";
+import { getAll, saveRole, getRoleByTitle } from "../services/roles.service";
 
 export const getRoles = async (req, res, next) => {
-  try {
-    const roles = await getAll();
-    return res.status(StatusCodes.OK).json({ success: true, roles });
-  } catch (error) {
-    next(error);
-  }
-};
+  const { title } = req.query;
 
-export const getRoleByTitle = async (req, res, next) => {
   try {
-    const roleData = req.role;
-    res.status(StatusCodes.OK).json({ success: true, role: roleData });
+    let roles;
+    if (title) {
+      roles = await getRoleByTitle(title);
+    } else {
+      roles = await getAll();
+    }
+    if (!roles && title)
+      return res.status(StatusCodes.NOT_FOUND).json({
+        success: false,
+        message: `Role with title [${title}] is not founnd`,
+      });
+    return res.status(StatusCodes.OK).json({ success: true, data: roles });
   } catch (error) {
     next(error);
   }

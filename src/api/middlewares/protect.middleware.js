@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { decodeJwtToken } from "../utils/jwt";
 
-const checkUserLoggedIn = async (req, res, next) => {
+export const checkUserLoggedIn = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -25,4 +25,14 @@ const checkUserLoggedIn = async (req, res, next) => {
   }
 };
 
-export default checkUserLoggedIn;
+export const restrictTo = (...roles) => {
+  return (req, res, next) => {
+    const role = req.user.role;
+    if (!roles.includes(role.toLowerCase())) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: "You are not authorized to perform this action" });
+    }
+    next();
+  };
+};
