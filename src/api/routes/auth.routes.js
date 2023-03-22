@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { login } from "../controllers/auth.controller";
 import { validateLogin } from "../validations/auth.validator";
+import {checkUserExists} from "../middlewares/auth.middleware"
 
 const authRouter = Router();
 
@@ -36,6 +37,6 @@ const authRouter = Router();
  *       500:
  *         description: Internal server error
  */
-authRouter.post("/login", validateLogin, login);
+authRouter.post("/login", validateLogin, checkUserExists, login);
 
 export default authRouter;

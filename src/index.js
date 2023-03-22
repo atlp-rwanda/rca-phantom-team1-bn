@@ -12,10 +12,6 @@ import authRouter from "./api/routes/auth.routes";
 
 const PORT = process.env.PORT || 5000;
 
-console.log('===============')
-console.log('===PORT: '+PORT+'=========')
-console.log('===============')
-
 db.sequelize
   .sync()
   .then(() => {
