@@ -8,9 +8,10 @@ import busesRouter from "./api/routes/buses.routes";
 import roleRouter from "./api/routes/roles.routes";
 import db from "./db/models/index.js";
 import locales from "./config/languages";
+import authRouter from "./api/routes/auth.routes";
+import apiRouter from "./api/routes";
 
 const PORT = process.env.PORT || 5000;
-
 db.sequelize
   .sync()
   .then(() => {
@@ -67,6 +68,14 @@ app.use(morgan("dev"));
 
 app.use("/buses", busesRouter);
 app.use("/roles", roleRouter);
+app.use("/auth", authRouter);
+
+app.use("/api", apiRouter);
+
+// handling non existing routes
+app.use((req, res) => {
+  res.status(404).send({ message: "Route not found" });
+});
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => console.log(`The server is running on port ${PORT}`));
