@@ -1,9 +1,7 @@
-// Import the required modules
 const chai = require("chai");
 const request = require("supertest");
-const app = require("../index"); // Import your app
-const sinon = require("sinon"); // Import sinon for mocking and stubbing
-const { expect } = chai; // Destructure expect from chai
+const app = require("../index");
+const { expect } = chai; 
 const {signJwtToken} = require("../api/utils/jwt")
 import { StatusCodes } from "http-status-codes";
 import {} from "../api/services/auth.service"
@@ -12,7 +10,6 @@ import {} from "../api/services/auth.service"
 describe("Auth Controller", () => {
 
   it("should login a user with valid credentials", async () => {
-    // Arrange
     const email = "rideOrDie@demo.com";
     const password = "test1234";
     const user = {
@@ -47,17 +44,13 @@ describe("Auth Controller", () => {
   });
 
   it("should return an error if the email is not found", async () => {
-     // Arrange: set up the data and mocks for your test
      const email = "invalid@test.com";
      const password = "test1234";
 
-
-     // Act: make a request to the login endpoint with the email and password
      const response = await request(app)
        .post("/auth/login")
        .send({ email, password });
 
-     // Assert: check that the response matches the expected values 
      expect(response.status).to.equal(StatusCodes.UNAUTHORIZED);
      expect(response.body.success).to.be.false;
      expect(response.body.message).to.equal("Invalid credentials");
