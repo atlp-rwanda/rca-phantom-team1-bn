@@ -72,3 +72,5 @@ app.use("/auth", authRouter);
 app.listen(PORT ? PORT : 5000, () =>
   console.log(`The server is running on port ${PORT ? PORT : 5000}`)
 );
+
+module.exports = app
