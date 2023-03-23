@@ -14,7 +14,7 @@ export const getRoles = async (req, res, next) => {
     if (!roles && title)
       return res.status(StatusCodes.NOT_FOUND).json({
         success: false,
-        message: `Role with title [${title}] is not founnd`,
+        message: `Role with title [${title}] is not found`,
       });
     return res.status(StatusCodes.OK).json({ success: true, data: roles });
   } catch (error) {

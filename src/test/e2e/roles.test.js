@@ -101,15 +101,14 @@ describe("POST /roles", () => {
 describe("GET /roles?title=[title]", () => {
   it("should return a role by title", async () => {
     const role = {
-      title: ERoles.ADMINISTRATOR,
-      description: "Admin role",
+      title: "standard-user",
+      description: "Standard role",
       privileges: ["create", "read", "update", "delete"],
     };
     await models.role.create(role);
-
     const res = await chai
       .request(app)
-      .get(`/roles?title=${role.title}`)
+      .get(`/roles?title=user`)
       .set(
         "Authorization",
         "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
