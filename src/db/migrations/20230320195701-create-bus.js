@@ -15,8 +15,8 @@ module.exports = {
       agencyId: {
         type: Sequelize.INTEGER,
       },
-      routeId: {
-        type: Sequelize.INTEGER,
+      driverId: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

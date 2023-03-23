@@ -14,9 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Bus.belongsTo(models.Agency);
       models.Agency.hasMany(Bus);
-
-      Bus.belongsTo(models.Route)
-      models.Route.hasMany(Bus)
+      models.Driver.hasOne(Bus);
     }
   }
   Bus.init({
