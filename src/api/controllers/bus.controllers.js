@@ -1,111 +1,95 @@
 /* eslint-disable prettier/prettier */
 import locales from '../../config/languages'
-const busService = require('../services/bus.service');
+import { saveBus,findBusByPlateNumber, findAllBuses, findBusById, editBus } from '../services/bus.service';
+import { StatusCodes } from "http-status-codes";
 
-var BusController = {
-    addBus: addBus,
-    findBuses: findBuses,
-    findBusById: findBusById,
-    updateBus: updateBus,
-    deleteBusById: deleteBusById
-}
-
-async function addBus(req, res) {
+export const createBus = async (req, res, next)=> {
     try {
-        const bus = await busService.create(req.body).
+        const bus = await saveBus(req.body)
             
-        res.status(201).json({
-            status: 'success',
+        res.status(StatusCodes.CREATED).json({
+            success: true,
             data: bus,
             message: locales('bus_created')
         })
     } catch (err) {
-        if (err.code === '23505') {
-            return res.status(409).json({
-                status: err.status,
-                message: locales('bus_already_exist'),
-            });
+        next(err)
+    }
+}
+
+export const getBuses = async (req, res, next) => {
+    const { plate_number } = req.query;
+    try {
+        let buses;
+    
+        if (plate_number) {
+        roles = await findBusByPlateNumber(plate_number);
+        } else {
+        buses = await findAllBuses()
         }
-        res.status(err.statusCode).json({
-            status: err.status,
-            message: err.message,
-        });
-    }
-}
-
-async function findBusById(req, res) {
-    try {
-        const bus = await busService.findById(req.params.id)
         
-        res.send(200).json({
-            status: 'success',
-            data: bus
-        })
-        
-    } catch (err) {
-        return res.status(404).json({
-            status: err.status,
-            message: locales('bus_not_found'),
-        });
-    }
-}
-
-async function deleteBusById(req, res) {
-    try {
-        await busService.deleteById(req.params.id)
-        
-        res.send(200).json({
-            status: 'success',
-            data: null,
-            message: locales('bus_deleted')
-        })
-        
-    } catch (err) {
-        if (err.statusCode==404) {
-            return res.status(404).json({
-                status: err.status,
-                message: locales('bus_not_found'),
-            });
-        }
-        res.status(err.statusCode).json({
-            status: err.status,
-            message: err.message,
-        });
-    }
-}
-
-async function updateBus(req, res) {
-    try {
-        const bus =  await busService.updateBus(req.body, req.params.id)
-        
-        res.status(200).json({
-        status: 'success',
-        message: locales('bus_created'),
-        data: bus
-    })  
-    } catch (err) {
-        res.status(err.statusCode).json({
-            status: err.status,
-            message: err.message,
-        });
-    }
-}
-
-async function findBuses(req, res) {
-    try {
-        const buses = await busService.findAll()
-        
-        res.send(200).json({
-            status: 'success',
+        res.send(StatusCodes.OK).json({
+            success: true,
             data: buses
         })
         
     } catch (err) {
-        return res.status(500).json({
-            status: err.status,
-            message: err.message
-        });
+       next(err)
     }
 }
 
-module.exports = BusController;
+export const getBusById =  async (req, res, next) => {
+    try {
+        const bus = await findBusById(req.params.id)
+        
+        if (!buses) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                success: false,
+                message: locales('bus_not_found'),
+            });
+        }
+
+        res.send(StatusCodes.OK).json({
+            success: true,
+            data: bus,
+        })
+    } catch (err) {
+       next(err)
+    }
+}
+
+export const deleteBusById = async (req, res, next) => {
+    try {
+        const bus = await findBusById(req.params.id)
+        if (!bus) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                success: false,
+                message: locales('bus_not_found'),
+            });
+        }
+        
+        await removeBusById(req.params.id)
+        
+        res.send(StatusCodes.OK).json({
+            success: true,
+            message: locales('bus_deleted')
+        })
+        
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const updateBus = async (req, res, next)=> {
+    try {
+        const bus =  await editBus(req.body, req.params.id)
+        
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: locales('bus_created'),
+            data: bus
+        })  
+    } catch (err) {
+        next(err)
+    }
+}

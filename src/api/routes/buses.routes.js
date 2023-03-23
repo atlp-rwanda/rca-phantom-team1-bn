@@ -1,6 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { Router } from "express";
-import BusController from "../controllers/bus.controllers";
+import {
+    getBuses,
+    getBusById,
+    createBus,
+    updateBus,
+    deleteBusById
+  } from "../controllers/bus.controllers";
 
 const router = Router();
 
@@ -59,7 +65,7 @@ const router = Router();
  *         description: Some server error
  */
 
-router.get("/", BusController.findBuses);
+router.get("/", getBuses);
 
 /**
  * @swagger
@@ -85,7 +91,7 @@ router.get("/", BusController.findBuses);
  *         description: The bus was not found
  */
 
-router.get("/:id", BusController.findBusById);
+router.get("/:id", getBusById);
 
 /**
  * @swagger
@@ -113,7 +119,7 @@ router.get("/:id", BusController.findBusById);
  */
 
 // eslint-disable-next-line consistent-return
-router.post("/", BusController.addBus)
+router.post("/", createBus)
 
 /**
  * @swagger
@@ -147,7 +153,7 @@ router.post("/", BusController.addBus)
  *        description: Some error happened
  */
 
-router.put("/:id", BusController.updateBus);
+router.put("/:id", updateBus);
 
 /**
  * @swagger
@@ -172,6 +178,6 @@ router.put("/:id", BusController.updateBus);
  *       description: Some error happened
  */
 
-router.delete("/:id", BusController.deleteBusById);
+router.delete("/:id", deleteBusById);
 
 export default router;

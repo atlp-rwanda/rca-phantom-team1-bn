@@ -8,7 +8,7 @@ module.exports = {
      *
      */
     queryInterface.addConstraint('Buses', {
-      fields: ['agencyId'],
+      fields: ['agency_id'],
       type: 'foreign key',
       name: 'bus_agency_association',
       references:{
@@ -26,7 +26,7 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     queryInterface.removeConstraint('Buses', {
-      fields: ['agencyId'],
+      fields: ['agency_id'],
       type: 'foreign key',
       name: 'bus_agency_association',
       references:{
