@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   Route.init({
     route_name: DataTypes.STRING,
     bus_id: DataTypes.INTEGER
