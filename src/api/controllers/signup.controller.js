@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
-import { sendEmail } from './email.controller.js';
+import { sendEmail } from '../utils/rondom-email';
 
 const drivers = [];
 const operators = [];
