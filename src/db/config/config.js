@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export default {
+module.exports = {
   production: {
     url: process.env.PROD_DB_URL,
     username: process.env.PROD_DB_USER,

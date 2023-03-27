@@ -4,11 +4,11 @@ import locales from '../../config/languages'
 import models from "../../db/models";
 import CustomError from '../utils/custom-error';
 import { StatusCodes } from "http-status-codes";
-const { bus } = models
+const { Bus } = models
 
 export const findAllBuses = async () => {
     try {
-      const data = await bus.findAll();
+      const data = await Bus.findAll();
       return data;
     } catch (e) {
       throw new CustomError(
@@ -20,7 +20,7 @@ export const findAllBuses = async () => {
 
 export const findBusByPlateNumber = async (plate_number) => {
     try {
-      const busExists = await bus.findOne({ where: { plate_number } });
+      const busExists = await Bus.findOne({ where: { plate_number } });
       if (!busExists) return false;
       return busExists;
     } catch (e) {
@@ -34,7 +34,7 @@ export const findBusByPlateNumber = async (plate_number) => {
 
 export const findBusById = async (id) => {
     try {
-      const busData = await bus.findByPk(id);
+      const busData = await Bus.findByPk(id);
       if (!busData) return false;
       return busData;
     } catch (e) {
@@ -46,23 +46,23 @@ export const findBusById = async (id) => {
 };
 
 export const removeBusById = async (id)=> {
-    return await bus.destroy({ where: { id: id } });
+    return await Bus.destroy({ where: { id: id } });
 }
 
-export const saveBus = async () => {
-    return await bus.create();
+export const saveBus = async (newBus) => {
+    return await Bus.create(newBus);
 }
 
 export const editBus = async (bus, id) => {
-    const busData = await bus.findByPk(id)
+    const busData = await Bus.findByPk(id)
     if (!busData) {
         throw new Error(locales('bus_not_found'))
     }
     var updateBus = {
-        plate_number: bus.plate_number,
-        agency_id: bus.agency_id,
-        route_id: bus.route_id
+        plate_number: Bus.plate_number,
+        agency_id: Bus.agency_id,
+        route_id: Bus.route_id
     };
 
-    return await bus.update(updateBus, { where: { id: id } });
+    return await Bus.update(updateBus, { where: { id: id } });
 }
