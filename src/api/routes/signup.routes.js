@@ -1,5 +1,8 @@
-import express from 'express';
-import { signUpDriver, signUpOperator } from '../controllers/signup.controller.js';
+import express from "express";
+import {
+  signUpDriver,
+  signUpOperator,
+} from "../controllers/signup.controller.js";
 
 const router = express.Router();
 
@@ -33,7 +36,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
-router.post('/driver', signUpDriver);
+router.post("/driver", signUpDriver);
 
 /**
  * @swagger
@@ -65,6 +68,6 @@ router.post('/driver', signUpDriver);
  *       401:
  *         description: Unauthorized
  */
-router.post('/operator', signUpOperator);
+router.post("/operator", signUpOperator);
 
 export default router;

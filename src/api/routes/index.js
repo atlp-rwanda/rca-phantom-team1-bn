@@ -7,6 +7,8 @@ import {
   restrictTo,
 } from "../middlewares/protect.middleware";
 import ERoles from "../enums/ERole";
+import { userExistsByEmail } from "../middlewares/user.middleware";
+import { validateSignupPayload } from "../validations/user.validator";
 
 const appRouter = Router();
 
@@ -22,6 +24,8 @@ appRouter.use(
   "/signup",
   checkUserLoggedIn,
   restrictTo(ERoles.ADMINISTRATOR),
+  validateSignupPayload,
+  userExistsByEmail,
   signupRouter
 );
 

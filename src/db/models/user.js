@@ -22,12 +22,16 @@ module.exports = (sequelize, DataTypes) => {
       },
       fullname: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+      },
+      phone_number: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       password: {
         type: DataTypes.STRING,
