@@ -1,4 +1,5 @@
 import { StatusCodes } from "http-status-codes";
+import { pick } from "lodash";
 import { successResponse, errorResponse } from "../utils/responseHandler";
 import { updateProfile } from "../services/profile.services";
 
@@ -17,4 +18,18 @@ export const updateAProfile = async (req, res, next) => {
     next(error);
     return errorResponse(res, error.message, StatusCodes.INTERNAL_SERVER_ERROR);
   }
+};
+
+export const getProfile = async (req, res) => {
+  return res.status(StatusCodes.OK).json({
+    success: true,
+    data: pick(req.profile, [
+      "id",
+      "fullname",
+      "email",
+      "role",
+      "createdAt",
+      "updatedAt",
+    ]),
+  });
 };

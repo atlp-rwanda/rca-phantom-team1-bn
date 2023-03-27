@@ -3,9 +3,9 @@ import { StatusCodes } from "http-status-codes";
 
 export const validateUpdateUserPayload = (req, res, next) => {
   const schema = Joi.object({
-    title: Joi.string(),
-    description: Joi.string(),
-    privileges: Joi.array().items(Joi.string()),
+    fullName: Joi.string(),
+    phone_number: Joi.string(),
+    email: Joi.string().email(),
   }).min(1);
   const { error } = schema.validate(req.body);
   if (error) {

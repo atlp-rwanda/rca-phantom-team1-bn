@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { updateAProfile } from "../controllers/profile.controller";
+import { getProfile, updateAProfile } from "../controllers/profile.controller";
 import ERoles from "../enums/ERole";
 import {
   allowedToEditProfile,
@@ -9,8 +9,37 @@ import {
   checkUserLoggedIn,
   restrictTo,
 } from "../middlewares/protect.middleware";
+import { validateUpdateUserPayload } from "../validations/user.validator";
 
 const profileRouter = Router();
+
+/**
+ * @swagger
+ * /profile/{id}:
+ *  get:
+ *    summary: Get the profile by the id
+ *    tags: [Profiles]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The profile id
+ *    responses:
+ *      200:
+ *        description: The profile was retrieved
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Profile'
+ *      404:
+ *        description: The profile was not found
+ *      500:
+ *        description: Some error happened
+ */
+
+profileRouter.get("/:id", userProfileExists, getProfile);
 
 /**
  * @swagger
@@ -21,10 +50,7 @@ const profileRouter = Router();
  *       required:
  *         - fullName
  *         - email
- *         - password
- *         - roles
- *         - createdAt
- *         - updatedAt
+ *         - phone_number
  *       properties:
  *         id:
  *           type: UUID
@@ -35,22 +61,10 @@ const profileRouter = Router();
  *         email:
  *           type: string
  *           description: The profile email
- *         password:
- *           type: string
- *           description: The profile password
- *         roles:
- *           type: string
- *           description: The profile role
- *         createdAt:
- *           type: date
- *           description: The time profile was created
- *         updatedAt:
- *           type: date
- *           description: The time profile was updated
  *       example:
  *         fullName: Musa Moses
  *         email: musa@mit.edu
- *         password: ange@mit.edu
+ *         phone_number: 25078654653
  */
 
 /**
@@ -100,6 +114,7 @@ profileRouter.put(
   restrictTo(ERoles.OPERATOR, ERoles.DRIVER),
   userProfileExists,
   allowedToEditProfile,
+  validateUpdateUserPayload,
   updateAProfile
 );
 
