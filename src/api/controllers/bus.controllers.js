@@ -23,12 +23,12 @@ export const getBuses = async (req, res, next) => {
         let buses;
     
         if (plate_number) {
-        roles = await findBusByPlateNumber(plate_number);
+        buses = await findBusByPlateNumber(plate_number);
         } else {
         buses = await findAllBuses()
         }
         
-        res.send(StatusCodes.OK).json({
+        res.status(StatusCodes.OK).json({
             success: true,
             data: buses
         })
@@ -42,14 +42,14 @@ export const getBusById =  async (req, res, next) => {
     try {
         const bus = await findBusById(req.params.id)
         
-        if (!buses) {
+        if (!bus) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 success: false,
                 message: locales('bus_not_found'),
             });
         }
 
-        res.send(StatusCodes.OK).json({
+        res.status(StatusCodes.OK).json({
             success: true,
             data: bus,
         })
@@ -67,8 +67,8 @@ export const deleteBusById = async (req, res, next) => {
                 message: locales('bus_not_found'),
             });
         }
-        
-        await removeBusById(req.params.id)
+        /* the function bellow is not defined I just commented it */
+        // await removeBusById(req.params.id)
         
         res.send(StatusCodes.OK).json({
             success: true,
