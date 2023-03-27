@@ -1,5 +1,10 @@
 import { Router } from "express";
 import { updateAProfile } from "../controllers/profile.controller";
+import ERoles from "../enums/ERole";
+import {
+  checkUserLoggedIn,
+  restrictTo,
+} from "../middlewares/protect.middleware";
 
 const profileRouter = Router();
 
@@ -83,6 +88,11 @@ const profileRouter = Router();
  *        description: Some error happened
  */
 
-profileRouter.put("/:id", updateAProfile);
+profileRouter.put(
+  "/:id",
+  checkUserLoggedIn,
+  restrictTo(ERoles.OPERATOR, ERoles.DRIVER),
+  updateAProfile
+);
 
 export default profileRouter;

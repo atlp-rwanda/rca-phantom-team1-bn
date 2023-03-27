@@ -1,7 +1,22 @@
-import express from "express";
+import { Router } from "express";
+import busesRouter from "./buses.routes";
+import roleRouter from "./roles.routes";
 import profileRouter from "./profile.routes";
-const apiRouter = express.Router();
+import {
+  checkUserLoggedIn,
+  restrictTo,
+} from "../middlewares/protect.middleware";
+import ERoles from "../enums/ERole";
 
-apiRouter.use("/profile", profileRouter);
+const appRouter = Router();
 
-export default apiRouter;
+appRouter.use("/buses", busesRouter);
+appRouter.use(
+  "/roles",
+  checkUserLoggedIn,
+  restrictTo(ERoles.ADMINISTRATOR),
+  roleRouter
+);
+appRouter.use("/profile", profileRouter);
+
+export default appRouter;

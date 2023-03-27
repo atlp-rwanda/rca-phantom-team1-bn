@@ -6,12 +6,6 @@ export const updateAProfile = async (req, res, next) => {
   const { id } = req.params;
   const newProfile = req.body;
   try {
-    // Loggedin user is hard-coded for now
-    const loggedinUser = { id: 1 };
-    if (loggedinUser.id != id) {
-      return errorResponse(res, "Unauthorized", StatusCodes.UNAUTHORIZED);
-    }
-    console.log("PROFILE" + newProfile);
     const updatedProfile = await updateProfile(id, newProfile);
     return successResponse(
       res,

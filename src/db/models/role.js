@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Role.init(
     {
-      role: DataTypes.STRING,
+      title: DataTypes.STRING,
       description: DataTypes.TEXT,
       privileges: DataTypes.ARRAY(DataTypes.STRING),
     },
