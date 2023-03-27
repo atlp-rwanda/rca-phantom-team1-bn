@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { nanoid } from "nanoid";
+import { getRoute, routeDelete, routeUpdate, saveRoute } from "../controllers/routes.controller";
+import { getAllRoutes } from "../services/route.service";
 
 const router = Router();
 const idLength = 8;
@@ -52,11 +54,7 @@ const idLength = 8;
  *                 $ref: '#/components/schemas/Route'
  */
 
-router.get("/", (req, res) => {
-  const routes = req.app.db.get("routes");
-
-  res.send(routes);
-});
+router.get("/", getAllRoutes);
 
 /**
  * @swagger
@@ -82,15 +80,7 @@ router.get("/", (req, res) => {
  *         description: The route was not found
  */
 
-router.get("/:id", (req, res) => {
-  const route = req.app.db.get("routes").find({ id: req.params.id }).value();
-
-  if (!route) {
-    res.sendStatus(404);
-  }
-
-  res.send(route);
-});
+router.get("/:id", getRoute);
 
 /**
  * @swagger
@@ -116,20 +106,7 @@ router.get("/:id", (req, res) => {
  */
 
 // eslint-disable-next-line consistent-return
-router.post("/", (req, res) => {
-  try {
-    const route = {
-      id: nanoid(idLength),
-      ...req.body,
-    };
-
-    req.app.db.get("routes").push(route).write();
-
-    res.send(route);
-  } catch (error) {
-    return res.status(500).send(error);
-  }
-});
+router.post("/", saveRoute);
 
 /**
  * @swagger
@@ -163,20 +140,7 @@ router.post("/", (req, res) => {
  *        description: Some error happened
  */
 
-router.put("/:id", (req, res) => {
-
-    try {
-        req.app.db
-          .get("routes")
-          .find({ id: req.params.id })
-          .assign(req.body)
-          .write();
-    
-        res.send(req.app.db.get("routes").find({ id: req.params.id }));
-      } catch (error) {
-        return res.status(500).send(error);
-      }
-  });
+router.put("/:id", routeUpdate);
 
 /**
  * @swagger
@@ -199,11 +163,7 @@ router.put("/:id", (req, res) => {
  *         description: The route was not found
  */
 
-router.delete("/:id", (req, res) => {
-    req.app.db.get("routes").remove({ id: req.params.id }).write();
-  
-    res.sendStatus(200);
-  });
+router.delete("/:id", routeDelete);
   
   export default router;
   
