@@ -28,7 +28,7 @@ export const signUpDriver = async (req, res) => {
   drivers.push(newDriver);
 
   // Send an email to the provider email with the random password
-  await sendEmail(email, 'Your password for the app', `Your password is ${password}`);
+  // await sendEmail(email, 'Your password for the app', `Your password is ${password}`);
 
   // Return a success message
   res.json({ message: 'Driver registered successfully' });
@@ -55,7 +55,7 @@ export const signUpOperator = async (req, res) => {
   operators.push(newOperator);
 
   // Send an email to the provider email with the random password
-  await sendEmail(email, 'Your password for the app', `Your password is ${password}`);
+  // await sendEmail(email, 'Your password for the app', `Your password is ${password}`);
 
   // Return a success message
   res.json({ message: 'Operator registered successfully' });

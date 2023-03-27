@@ -4,8 +4,8 @@ const transporter = nodemailer.createTransport({
   // Configure your email provider here
   service: 'gmail',
   auth: {
-    user: 'your-email@gmail.com',
-    pass: 'your-email-password',
+    user: 'constance.nimuhire@gmail.com',
+    pass: 'evangelist',
   },
 });
 
