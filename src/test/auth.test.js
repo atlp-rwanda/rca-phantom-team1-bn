@@ -29,9 +29,9 @@ describe("Auth Controller", () => {
       .send({ email, password });
 
     // Assert
+    expect(response.body.message).to.equal("User Logged in successfully");
     expect(response.status).to.equal(StatusCodes.OK);
     expect(response.body.success).to.be.true;
-    expect(response.body.message).to.equal("User Logged in successfully");
     delete response.body.data.createdAt;
     delete response.body.data.updatedAt;
     delete response.body.data.roleId,

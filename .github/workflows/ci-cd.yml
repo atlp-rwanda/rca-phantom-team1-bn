@@ -19,6 +19,9 @@ jobs:
 
       - name: Lint
         run: npm run lint
+      
+      - name: Reseed
+        run: npm run db:reseed
 
       - name: Run Tests
         run: npm run test

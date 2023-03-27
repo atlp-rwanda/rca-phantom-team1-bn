@@ -20,11 +20,7 @@ export const login = async (req, res) => {
   
     const data = _.pick(user, [
       "id",
-      "fullname",
-      "email",
-      "role",
-      "createdAt",
-      "updatedAt",
+      "roleId",
     ]);
 
     return res.status(StatusCodes.OK).json({
