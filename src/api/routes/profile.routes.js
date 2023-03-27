@@ -2,6 +2,10 @@ import { Router } from "express";
 import { updateAProfile } from "../controllers/profile.controller";
 import ERoles from "../enums/ERole";
 import {
+  allowedToEditProfile,
+  userProfileExists,
+} from "../middlewares/profile.middleware";
+import {
   checkUserLoggedIn,
   restrictTo,
 } from "../middlewares/protect.middleware";
@@ -58,10 +62,12 @@ const profileRouter = Router();
 
 /**
  * @swagger
- * /api/profile/{id}:
+ * /profile/{id}:
  *  put:
  *    summary: Update the profile by the id
  *    tags: [Profiles]
+ *    security:
+ *      - bearerAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -92,6 +98,8 @@ profileRouter.put(
   "/:id",
   checkUserLoggedIn,
   restrictTo(ERoles.OPERATOR, ERoles.DRIVER),
+  userProfileExists,
+  allowedToEditProfile,
   updateAProfile
 );
 
