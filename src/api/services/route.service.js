@@ -1,8 +1,14 @@
-import { Route, Bus } from '../../db/models/index';
+import { StatusCodes } from "http-status-codes";
+import models from "../../db/models";
+import CustomError from "../utils/custom-error";
+
+
+const { route, Bus } = models;
+
 
 export async function getAllRoutes() {
   try {
-    const routes = await Route.findAll({
+    const routes = await route.findAll({
       include: [
         {
           model: Bus,
@@ -18,7 +24,7 @@ export async function getAllRoutes() {
 
 export async function getRouteById(id) {
   try {
-    const route = await Route.findByPk(id, {
+    const route = await route.findByPk(id, {
       include: [
         {
           model: Bus,
@@ -34,7 +40,7 @@ export async function getRouteById(id) {
 
 export async function createRoute(routeData) {
   try {
-    const route = await Route.create(routeData);
+    const route = await route.create(routeData);
     return route;
   } catch (error) {
     throw error;
@@ -43,7 +49,7 @@ export async function createRoute(routeData) {
 
 export async function updateRoute(id, routeData) {
   try {
-    const route = await Route.findByPk(id);
+    const route = await route.findByPk(id);
     if (!route) {
       return null;
     }
@@ -56,7 +62,7 @@ export async function updateRoute(id, routeData) {
 
 export async function deleteRoute(id) {
   try {
-    const route = await Route.findByPk(id);
+    const route = await route.findByPk(id);
     if (!route) {
       return null;
     }

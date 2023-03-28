@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     bus_id: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'Route',
+    modelName: 'route',
   });
   return Route;
 };
