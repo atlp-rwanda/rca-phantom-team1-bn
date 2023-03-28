@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Router } from "express";
 import { nanoid } from "nanoid";
 const busController = require("../controllers/bus.controllers");
@@ -207,8 +208,64 @@ router.delete("/:id", (req, res) => {
   res.sendStatus(200);
 });
 
-// Assign a driver to a bus
+/**
+ * @swagger
+ * /buses/assign-driver:
+ *  put:
+ *    summary: Assign a driver to a bus
+ *    tags: [Buses]
+ *    parameters:
+ *      - in: path
+ *        name: bus_id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The bus id
+ *      - in: path
+ *        name: driver_id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The driver id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Bus'
+ *    responses:
+ *      200:
+ *        description: The assignment was done successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Bus'
+ *      404:
+ *        description: The bus or driver was not found
+ *      500:
+ *        description: Some error happened
+ */
+
 router.put("/assign-driver", operatorCheck, busController.assignDriverToBus);
+
+/**
+ * @swagger
+ * /buses/get-all-bus-assignments:
+ *   get:
+ *     summary: Returns the list of all the bus assignments
+ *     tags: [Buses]
+ *     responses:
+ *       200:
+ *         description: The list of the bus assignments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Bus'
+ */
+
+router.get("/get-all-bus-assignments", operatorCheck, busController.getDriverToBusAssignments);
 
 module.exports = router;
 
