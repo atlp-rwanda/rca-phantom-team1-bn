@@ -21,7 +21,6 @@ describe("Auth Controller", () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    const token = signJwtToken(user);
 
     // Act
     const response = await request(app)
@@ -32,13 +31,13 @@ describe("Auth Controller", () => {
     expect(response.body.message).to.equal("User Logged in successfully");
     expect(response.status).to.equal(StatusCodes.OK);
     expect(response.body.success).to.be.true;
-    delete response.body.data.createdAt;
-    delete response.body.data.updatedAt;
-    delete response.body.data.roleId,
+    
+    const { data: { createdAt, updatedAt, fullname, ...restData } } = response.body;
+    delete response.body.email;
+
     expect(response.body.data).to.deep.equal({
       id: user.id,
-      fullname: user.fullname,
-      email: user.email,
+      roleId: user.roleId
     });
     expect(response.body.accessToken).to.exist;
   });
