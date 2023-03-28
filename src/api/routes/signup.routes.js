@@ -23,11 +23,8 @@ const router = express.Router();
  *             properties:
  *               email:
  *                 type: string
- *               name:
- *                 type: string
  *             required:
  *               - email
- *               - name
  *     responses:
  *       200:
  *         description: Successfully created driver account
@@ -55,11 +52,8 @@ router.post("/driver", signUpDriver);
  *             properties:
  *               email:
  *                 type: string
- *               name:
- *                 type: string
  *             required:
  *               - email
- *               - name
  *     responses:
  *       200:
  *         description: Successfully created operator account

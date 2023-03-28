@@ -9,6 +9,7 @@ export const signUpUser = async (data) => {
     const userData = await user.create(data);
     return userData;
   } catch (e) {
+    console.log(e);
     throw new CustomError(
       e.message || "Error signing up a user",
       StatusCodes.INTERNAL_SERVER_ERROR
