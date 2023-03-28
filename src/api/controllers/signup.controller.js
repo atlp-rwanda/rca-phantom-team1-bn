@@ -1,62 +1,62 @@
-import { v4 as uuidv4 } from 'uuid';
-import bcrypt from 'bcrypt';
-import { sendEmail } from '../utils/rondom-email';
-
-const drivers = [];
-const operators = [];
-
-const saltRounds = 10;
+import { v4 as uuidv4 } from "uuid";
+import bcrypt from "bcrypt";
+import { sendEmail } from "../utils/rondom-email";
+import { hashPassword } from "../utils/hash-password";
+import { signUpUser } from "../services/user.service";
+import ERoles from "../enums/ERole";
+import { StatusCodes } from "http-status-codes";
 
 export const signUpDriver = async (req, res) => {
-  const { name, email } = req.body;
-
-  // Check if the email is already registered
-  if (drivers.find((driver) => driver.email === email)) {
-    return res.status(400).json({ error: 'Email already registered' });
-  }
+ 
+  const { name,email } = req.body;
 
   // Generate a random password
   const password = uuidv4().substr(0, 8);
+  console.log("password: " + password);
 
   // Hash the password
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   // Create the new driver
-  const newDriver = { name, email, password: hashedPassword };
+  const newDriver = { name,email, password: hashedPassword, role: ERoles.DRIVER };
 
   // Add the new driver to the list
-  drivers.push(newDriver);
+  const driverData = await signUpUser(newDriver);
 
   // Send an email to the provider email with the random password
   // await sendEmail(email, 'Your password for the app', `Your password is ${password}`);
 
   // Return a success message
-  res.json({ message: 'Driver registered successfully' });
+  res.status(StatusCodes.CREATED).json({
+    success: true,
+    message: "Driver registered successfully",
+    data: driverData,
+  });
 };
 
 export const signUpOperator = async (req, res) => {
-  const { name, email } = req.body;
-
-  // Check if the email is already registered
-  if (operators.find((operator) => operator.email === email)) {
-    return res.status(400).json({ error: 'Email already registered' });
-  }
+  const { name,email } = req.body;
 
   // Generate a random password
   const password = uuidv4().substr(0, 8);
-
+  console.log("password: " + password);
   // Hash the password
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  
+  const hashedPassword = await hashPassword(password);
 
-  // Create the new operator
-  const newOperator = { name, email, password: hashedPassword };
+   // Create the new driver
+   const newDriver = { name,email, password: hashedPassword, role: ERoles.OPERATOR };
 
-  // Add the new operator to the list
-  operators.push(newOperator);
+  // Add the new driver to the list
+  const driverData = await signUpUser(newDriver);
 
   // Send an email to the provider email with the random password
   // await sendEmail(email, 'Your password for the app', `Your password is ${password}`);
 
   // Return a success message
-  res.json({ message: 'Operator registered successfully' });
+  res.status(StatusCodes.CREATED).json({
+    success: true,
+    message: "Operator registered successfully",
+    data: driverData,
+  });
 };
