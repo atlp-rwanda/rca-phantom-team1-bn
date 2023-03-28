@@ -10,6 +10,7 @@
     "test": "cross-env NODE_ENV=test nyc mocha --recursive ./src/test  --require @babel/register --exit --timeout 30000",
     "lint": "npm run format && eslint ./src --ext .js --fix",
     "format": "prettier --config .prettierrc 'src/**' --write",
+    "db:drop": "sequelize-cli db:drop",
     "db:create": "sequelize-cli db:create",
     "db:migrate": "sequelize-cli db:migrate",
     "db:migrate:undo": "sequelize-cli db:migrate:undo",
