@@ -1,5 +1,8 @@
 import { Router } from "express";
 import { nanoid } from "nanoid";
+const busController = require("../controllers/bus.controllers");
+
+import operatorCheck from "../middlewares/operatorCheck";
 
 const router = Router();
 const idLength = 8;
@@ -203,5 +206,10 @@ router.delete("/:id", (req, res) => {
 
   res.sendStatus(200);
 });
+
+// Assign a driver to a bus
+router.put("/assign-driver", operatorCheck, busController.assignDriverToBus);
+
+module.exports = router;
 
 export default router;

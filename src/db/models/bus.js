@@ -7,14 +7,11 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
-    }
   }
   Bus.init(
     {
       plate_number: DataTypes.STRING,
-      driver: DataTypes.STRING,
+      driverId: DataTypes.STRING,
       active: DataTypes.BOOLEAN,
     },
     {
@@ -22,5 +19,12 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Bus",
     }
   );
+
+  Bus.associate = function (models) {
+    Bus.belongsTo(models.Driver, {
+      foreignKey: "driverId",
+    });
+  };
+
   return Bus;
 };
