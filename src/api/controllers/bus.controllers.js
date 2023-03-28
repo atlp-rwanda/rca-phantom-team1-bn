@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import locales from '../../config/languages'
-import { saveBus,findBusByPlateNumber, findAllBuses, findBusById, editBus, removeBusById } from '../services/bus.service';
+import { saveBus,findBusByPlateNumber, findAllBuses, findBusById, editBus, removeBusById, findBusByAgency, findBusByDriver, findBusByRoute } from '../services/bus.service';
 import { StatusCodes } from "http-status-codes";
 
 export const createBus = async (req, res, next)=> {
@@ -18,14 +18,14 @@ export const createBus = async (req, res, next)=> {
 }
 
 export const getBuses = async (req, res, next) => {
-    const { plate_number } = req.query;
+    const { plate_number} = req.query;
     try {
         let buses;
     
         if (plate_number) {
-        buses = await findBusByPlateNumber(plate_number);
+            buses = await findBusByPlateNumber(plate_number);
         } else {
-        buses = await findAllBuses()
+            buses = await findAllBuses()
         }
         
         res.status(StatusCodes.OK).json({

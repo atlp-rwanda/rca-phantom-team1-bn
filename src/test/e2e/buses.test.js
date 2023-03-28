@@ -7,7 +7,7 @@ import { signJwtToken } from "../../api/utils/jwt";
 import ERoles from "../../api/enums/ERole";
 const { expect } = chai;
 chai.use(chaiHttp);
-describe("Role routes", () => {
+describe("Bus routes", () => {
   beforeEach(async () => {
     // Clear the database before each test
     await models.role.destroy({ where: {} });
@@ -30,14 +30,20 @@ describe("Role routes", () => {
       // Create some buses to test with
       const buses = [
         {
-          plate_number: "RAC001A",
-          agency_id: 12324,
-          driver_id: 12323,
+          plate_number: "RAA100B",
+          agency_id: 12321,
+          driver_id: 1,
+          router_id: 2,
+          av_seats: 15,
+          seats: 30,
         },
         {
           plate_number: "RAC002A",
           agency_id: 12324,
           driver_id: 12325,
+          router_id: 2,
+          av_seats: 15,
+          seats: 30,
         }
       ];
       await models.role.bulkCreate(buses);
@@ -57,11 +63,18 @@ describe("POST /buses", () => {
       plate_number: "RAC001A",
       agency_id: 12324,
       driver_id: 12323,
+      router_id: 2,
+      av_seats: 15,
+      seats: 30,
     }
     chai
       .request(app)
       .post("/buses")
       .send(bus)
+      .set(
+        "Authorization",
+        "Bearer " + signJwtToken({ role: ERoles.OPERATOR })
+      )
       .end((err, response) => {
         if (err) done();
         expect(response.statusCode).to.equal(StatusCodes.CREATED);
@@ -73,10 +86,17 @@ describe("POST /buses", () => {
     const bus = {
       plate_number: "RAC001A",
       agency_id: 12324,
+      router_id: 2,
+      av_seats: 15,
+      seats: 30,
     };
     chai
       .request(app)
       .post("/buses")
+      .set(
+        "Authorization",
+        "Bearer " + signJwtToken({ role: ERoles.OPERATOR })
+      )
       .send(bus)
       .end((err, response) => {
         if (err) done(err);
@@ -92,6 +112,9 @@ describe("GET /buses?plate_number=[plate_number]", () => {
       plate_number: "RAC001A",
       agency_id: 12324,
       driver_id: 12323,
+      router_id: 2,
+      av_seats: 15,
+      seats: 30,
     };
     await models.bus.create(bus);
     const res = await chai
@@ -119,6 +142,9 @@ describe("GET /buses/:id", () => {
       plate_number: "RAC001A",
       agency_id: 12324,
       driver_id: 12323,
+      router_id: 2,
+      av_seats: 15,
+      seats: 30,
     };
     const data = await models.bus.create(bus);
     const response = await chai
@@ -145,11 +171,17 @@ describe("PATCH /buses/:id", (done) => {
       plate_number: "RAC001A",
       agency_id: 12324,
       driver_id: 12323,
+      router_id: 2,
+      av_seats: 15,
+      seats: 30,
     };
     const updatedBus = {
       plate_number: "RAC010B",
       agency_id: 12325,
       driver_id: 12323,
+      router_id: 2,
+      av_seats: 15,
+      seats: 30,
     };
     const createdBus = await models.bus.create(bus);
     chai
@@ -157,6 +189,10 @@ describe("PATCH /buses/:id", (done) => {
       .patch(`/buses/${createdBus.id}`)
       .send(updatedBus)
       .set("Accept", "application/json")
+      .set(
+        "Authorization",
+        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
+      )
       .end((err, response) => {
         if (err) done(err);
         expect(response.status).to.equal(200);
@@ -170,12 +206,19 @@ describe("PATCH /buses/:id", (done) => {
       plate_number: "RAC001A",
       agency_id: 12324,
       driver_id: 12323,
+      router_id: 2,
+      av_seats: 15,
+      seats: 30,
     };
     chai
       .request(app)
       .patch("/buses/999")
       .send(updatedBus)
       .set("Accept", "application/json")
+      .set(
+        "Authorization",
+        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
+      )
       .end((err, response) => {
         if (err) done(err);
         expect(response.status).to.equal(StatusCodes.NOT_FOUND);

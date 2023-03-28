@@ -12,12 +12,12 @@ import { checkUserExists } from "../middlewares/auth.middleware";
 
 const appRouter = Router();
 
-appRouter.use("/buses", busesRouter);
 appRouter.use(
   "/roles",
   checkUserLoggedIn,
   restrictTo(ERoles.ADMINISTRATOR),
   roleRouter
-);
-appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
+  );
+  appRouter.use("/buses", busesRouter);
+  appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
 export default appRouter;

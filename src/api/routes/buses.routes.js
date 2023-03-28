@@ -7,6 +7,12 @@ import {
     updateBus,
     deleteBusById
   } from "../controllers/bus.controllers";
+import ERoles from "../enums/ERole";
+import { busExistsByPlateNumber } from "../middlewares/bus.middleware";
+import {
+  checkUserLoggedIn,
+  restrictTo,
+} from "../middlewares/protect.middleware";
 
 const router = Router();
 
@@ -20,6 +26,9 @@ const router = Router();
  *         - plate_number
  *         - agency_id
  *         - driver_id
+ *         - router_id
+ *         - seats
+ *         - av_seats
  *       properties:
  *         id:
  *           type: string
@@ -32,11 +41,23 @@ const router = Router();
  *           description: The bus agency
  *         driver_id:
  *           type: string
+ *           description: The bus driver
+ *         router_id:
+ *           type: string
  *           description: The bus route
+ *         seats:
+ *           type: string
+ *           description: The total number of seats in a bus
+ *         av_seats:
+ *           type: string
+ *           description: The available seats
  *       example:
  *         plate_number: KL3MS
  *         agency_id: 12321
- *         driver_id: 12324
+ *         router_id: 2
+ *         driver_id: 1
+ *         av_seats: 15
+ *         seats: 30
  */
 
 /**
@@ -52,6 +73,14 @@ const router = Router();
  *   get:
  *     summary: Returns the list of all the buses
  *     tags: [Buses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: plate_number
+ *         schema:
+ *           type: string
+ *         description: Optional plate number to filter results by
  *     responses:
  *       200:
  *         description: The list of the Buses
@@ -73,6 +102,8 @@ router.get("/", getBuses);
  *   get:
  *     summary: Get the bus by id
  *     tags: [Buses]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -99,9 +130,12 @@ router.get("/:id", getBusById);
  *   post:
  *     summary: Create a new bus
  *     tags: [Buses]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
+ *     parameters:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/Bus'
@@ -118,8 +152,7 @@ router.get("/:id", getBusById);
  *         description: Some server error
  */
 
-// eslint-disable-next-line consistent-return
-router.post("/", createBus)
+router.post("/", checkUserLoggedIn, restrictTo(ERoles.OPERATOR), busExistsByPlateNumber, createBus)
 
 /**
  * @swagger
@@ -127,6 +160,8 @@ router.post("/", createBus)
  *  put:
  *    summary: Update the bus by the id
  *    tags: [Buses]
+ *    security:
+ *      - bearerAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -153,31 +188,31 @@ router.post("/", createBus)
  *        description: Some error happened
  */
 
-router.put("/:id", updateBus);
+router.put("/:id", checkUserLoggedIn, restrictTo(ERoles.OPERATOR), updateBus);
 
 /**
  * @swagger
  * /buses/{id}:
- *  delete:
-  *       summary: Remove the bus by id
-  *       tags: [Buses]
-  *       parameters:
-  *         - in: path
-  *           name: id
-  *           schema:
-  *             type: string
-  *           required: true
-  *           description: The bus id
-  *
-  *       responses:
-  *         200:
-  *           description: The bus was deleted
-  *         404:
-  *           description: The bus was not found
-  *         500:
-  *           description: Some error happened
+ *   delete:
+ *     summary: Delete a bus by Id
+ *     tags: [Buses]
+ *     security:
+ *      - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Id of the bus to delete
+ *     responses:
+ *       200:
+ *         description: bus deleted successfully
+ *       404:
+ *         description: bus not found
+ *       500:
+ *         description: Internal server error
  */
-
-router.delete("/:id", deleteBusById);
+router.delete("/:id", checkUserLoggedIn, restrictTo(ERoles.OPERATOR), deleteBusById);
 
 export default router;

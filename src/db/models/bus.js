@@ -12,16 +12,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // Bus.belongsTo(models.User);
       // Bus.belongsTo(models.Agency);
+      // Bus.belongsTo(models.Router);
+      // models.User.hasMany(Bus);
       // models.Agency.hasMany(Bus);
-      // models.Driver.hasOne(Bus);
+      // models.Router.hasMany(Bus)
     }
   }
 
   Bus.init({
-    plate_number: DataTypes.STRING,
+    plate_number: DataTypes.INTEGER,
+    driver_id: DataTypes.INTEGER,
     agency_id: DataTypes.INTEGER,
-    driver_id: DataTypes.INTEGER
+    seats:  DataTypes.INTEGER,
+    av_seats: DataTypes.INTEGER,
+    router_id: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Bus',

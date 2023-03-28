@@ -31,6 +31,44 @@ export const findBusByPlateNumber = async (plate_number) => {
     }
 };
 
+export const findBusByAgency = async (agency_id) => {
+  try {
+    const busExists = await Bus.findOne({ where: { agency_id } });
+    if (!busExists) return false;
+    return busExists;
+  } catch (e) {
+    throw new CustomError(
+      e?.message || "Error fetching bus by agency",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
+export const findBusByRoute = async (route_id) => {
+  try {
+    const busExists = await Bus.findOne({ where: { route_id } });
+    if (!busExists) return false;
+    return busExists;
+  } catch (e) {
+    throw new CustomError(
+      e?.message || "Error fetching bus by route",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
+export const findBusByDriver = async (driver_id) => {
+  try {
+    const busExists = await Bus.findOne({ where: { driver_id } });
+    if (!busExists) return false;
+    return busExists;
+  } catch (e) {
+    throw new CustomError(
+      e?.message || "Error fetching bus by driver",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+};
 
 export const findBusById = async (id) => {
     try {
