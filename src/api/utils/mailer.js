@@ -1,49 +1,37 @@
-/* eslint-disable no-console */
-import ejs from "ejs";
-import path from "path";
-import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import nodemailer from "nodemailer";
+import nodemailerSendgrid from "nodemailer-sendgrid";
+import { template } from "../utils/account-created";
 
 dotenv.config();
 
 const mailer = async (email, password) => {
-  const transporter = await nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASSWORD,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-  });
-
-  let template = "../../public/templates/account-created.ejs";
-  let subject = "Your Phantom Account Created";
-
-  return ejs.renderFile(
-    path.join(__dirname, template),
-    password,
-    (error, data) => {
-      if (error) {
-        console.log(error);
-      } else {
-        const emailOptions = {
-          from: `Phantom <${process.env.PROJECT_EMAIL}>`,
-          to: email,
-          subject,
-          html: data,
-        };
-
-        transporter
-          .sendMail(emailOptions)
-          .then(() => console.log)
-          .catch(() => console.error);
-      }
-    }
+  const transporter = nodemailer.createTransport(
+    nodemailerSendgrid({
+      apiKey: process.env.SEND_GRID_API_KEY,
+    })
   );
+
+  // email details
+  const mailOptions = {
+    from: process.env.PROJECTEMAIL,
+    to: email,
+    subject: "Account Created",
+    html: template(password),
+    mail_settings: {
+      sandbox_mode: {
+        enable: process.env.NODE_ENV === "test" ? true : false,
+      },
+    },
+  };
+
+  await transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      console.log("Error:", err);
+    } else {
+      console.log("Message sent!!!");
+    }
+  });
 };
 
 export default mailer;

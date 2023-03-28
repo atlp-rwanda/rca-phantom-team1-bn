@@ -7,12 +7,10 @@ import { StatusCodes } from "http-status-codes";
 import mailer from "../utils/mailer";
 
 export const signUpDriver = async (req, res) => {
-  console.log("Here .....");
   const { email } = req.body;
 
   // Generate a random password
   const password = uuidv4().substr(0, 8);
-  console.log("password: " + password);
 
   // Hash the password
   const hashedPassword = await hashPassword(password);
@@ -39,7 +37,6 @@ export const signUpOperator = async (req, res) => {
 
   // Generate a random password
   const password = uuidv4().substr(0, 8);
-  console.log("password: " + password);
   // Hash the password
   const hashedPassword = await hashPassword(password);
 
