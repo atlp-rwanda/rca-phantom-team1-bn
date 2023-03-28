@@ -18,7 +18,6 @@ describe("Profile routes", () => {
   describe("GET /profile/:id", () => {
     it("should return a profile by id", async () => {
       const user = {
-        id: 5000,
         email: "rideOrDie@test.com",
         password:
           "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
@@ -49,7 +48,6 @@ describe("Profile routes", () => {
 describe("PUT /profile/:id", (done) => {
   it("Should update a profile by id", async () => {
     const profile = {
-      id: 7000,
       email: "rideOrDie@test.com",
       password: "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
       fullname: "Ride Or Die",
@@ -96,7 +94,7 @@ describe("PUT /profile/:id", (done) => {
         "Bearer " + signJwtToken({ role: ERoles.OPERATOR, id: profile.id })
       )
       .end((err, response) => {
-        if (err) done(err);
+        if (err) return done();
         expect(response.status).to.equal(StatusCodes.NOT_FOUND);
         done();
       });

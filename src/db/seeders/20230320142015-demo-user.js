@@ -7,6 +7,7 @@ export default {
       "users",
       [
         {
+          id: "10c6e431-de61-46d7-a5ca-65cb5d8d2085",
           email: "rideOrDie@demo.com",
           password:
             "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
@@ -17,6 +18,7 @@ export default {
           updatedAt: new Date(),
         },
         {
+          id: "1bb32847-9e61-4c8b-8b35-9a4dd71d7914",
           email: "DieOrRide@demo.com",
           password:
             "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
