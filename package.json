@@ -17,6 +17,7 @@
     "db:reset": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate",
     "db:g:seed": "sequelize-cli seed:generate --name",
     "db:seeds": "sequelize-cli db:seed:all",
+    "db:migrate:seed": "sequelize-cli db:migrate && sequelize-cli db:seed:all",
     "db:reseed": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all"
   },
   "author": "",

@@ -19,9 +19,12 @@ jobs:
 
       - name: Lint
         run: npm run lint
-      
-      - name: Reseed
-        run: npm run db:reseed
+
+      - name: Migrate
+        run: npm run db:migrate
+
+      - name: Seed
+        run: npm run db:seeds
 
       - name: Run Tests
         run: npm run test
