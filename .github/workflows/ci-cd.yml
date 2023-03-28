@@ -20,12 +20,6 @@ jobs:
       - name: Lint.
         run: npm run lint
 
-      - name: Drop database
-        run: npm run db:drop
-
-      - name: Re-create database
-        run: npm run db:create
-
       - name: Migrate
         run: npm run db:migrate
 
