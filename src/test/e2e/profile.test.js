@@ -5,7 +5,6 @@ import app from "../../index";
 import models from "../../db/models";
 import { signJwtToken } from "../../api/utils/jwt";
 import ERoles from "../../api/enums/ERole";
-import { profile } from "console";
 const { expect } = chai;
 chai.use(chaiHttp);
 
@@ -45,13 +44,13 @@ describe("Profile routes", () => {
   });
 });
 
-describe("PUT /profile/:id", (done) => {
+describe("PUT /profile/:id", () => {
   it("Should update a profile by id", async () => {
     const profile = {
-      email: "rideOrDie@test.com",
+      email: "rideOrDie2@test.com",
       password: "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
       fullname: "Ride Or Die",
-      phone_number: "+1234567890",
+      phone_number: "+1234567891",
       role: ERoles.OPERATOR,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -62,41 +61,72 @@ describe("PUT /profile/:id", (done) => {
       phone_number: "+1334567895",
     };
     const createdProfile = await models.user.create(profile);
-    chai
+    const response = await chai
       .request(app)
       .put(`/profile/${createdProfile.id}`)
       .send(updatedProfile)
       .set("Accept", "application/json")
       .set(
         "Authorization",
-        "Bearer " + signJwtToken({ role: ERoles.OPERATOR, id: profile.id })
-      )
-      .end((err, response) => {
-        if (err) done(err);
-        expect(response.status).to.equal(200);
-        done();
-      });
+        "Bearer " +
+          signJwtToken({ role: ERoles.OPERATOR, id: createdProfile.id })
+      );
+    expect(response.status).to.equal(StatusCodes.OK);
   });
 
-  it("should return 404 if profile is not found", (done) => {
-    const updatedRole = {
+  it("should return 404 if profile is not found", async () => {
+    const profile = {
+      email: "rideOrDie3@test.com",
+      password: "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
+      fullname: "Ride Or Die",
+      phone_number: "+1234567891",
+      role: ERoles.OPERATOR,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    const updatedProfile = {
       fullname: "Edited Or Die",
       email: "ride-updated@test.com",
       phone_number: "+1334567895",
     };
-    chai
+    const createdProfile = await models.user.create(profile);
+    const response = await chai
       .request(app)
-      .put("/profile/999")
-      .send(updatedRole)
+      .put(`/profile/4232323`)
+      .send(updatedProfile)
       .set("Accept", "application/json")
       .set(
         "Authorization",
-        "Bearer " + signJwtToken({ role: ERoles.OPERATOR, id: profile.id })
-      )
-      .end((err, response) => {
-        if (err) return done();
-        expect(response.status).to.equal(StatusCodes.NOT_FOUND);
-        done();
-      });
+        "Bearer " +
+          signJwtToken({ role: ERoles.OPERATOR, id: createdProfile.id })
+      );
+    expect(response.status).to.equal(StatusCodes.NOT_FOUND);
+  });
+
+  it("should return 400 for invalid format", async () => {
+    const profile = {
+      email: "rideOrDie4@test.com",
+      password: "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
+      fullname: "Ride Or Die",
+      phone_number: "+1234567891",
+      role: ERoles.OPERATOR,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    const updatedProfile = {
+      email: "ride-updated", // invalid email
+    };
+    const createdProfile = await models.user.create(profile);
+    const response = await chai
+      .request(app)
+      .put(`/profile/${createdProfile.id}`)
+      .send(updatedProfile)
+      .set("Accept", "application/json")
+      .set(
+        "Authorization",
+        "Bearer " +
+          signJwtToken({ role: ERoles.OPERATOR, id: createdProfile.id })
+      );
+    expect(response.status).to.equal(StatusCodes.BAD_REQUEST);
   });
 });
