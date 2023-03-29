@@ -2,6 +2,7 @@
 import locales from '../../config/languages'
 import { saveBus,findBusByPlateNumber, findAllBuses, findBusById, editBus, removeBusById, findBusByAgency, findBusByDriver, findBusByRoute } from '../services/bus.service';
 import { StatusCodes } from "http-status-codes";
+import { getPagination } from '../utils/pagination';
 
 export const createBus = async (req, res, next)=> {
     try {
@@ -18,14 +19,17 @@ export const createBus = async (req, res, next)=> {
 }
 
 export const getBuses = async (req, res, next) => {
-    const { plate_number} = req.query;
+    const { page, size, plate_number} = req.query;
+    var condition = plate_number ? { plate_number: { [Op.like]: `%${plate_number}%` } } : null;
+    const { limit, offset } = getPagination(page, size);
+
     try {
         let buses;
     
         if (plate_number) {
             buses = await findBusByPlateNumber(plate_number);
         } else {
-            buses = await findAllBuses()
+            buses = await findAllBuses(condition,limit, offset)
         }
         
         res.status(StatusCodes.OK).json({
