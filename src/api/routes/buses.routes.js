@@ -8,7 +8,7 @@ import {
     deleteBusById
   } from "../controllers/bus.controllers";
 import ERoles from "../enums/ERole";
-import { agencyExists, busExistsByPlateNumber } from "../middlewares/bus.middleware";
+import { agencyExists, busExistsById, busExistsByPlateNumber } from "../middlewares/bus.middleware";
 import {
   checkUserLoggedIn,
   restrictTo,
@@ -122,7 +122,7 @@ router.get("/", getBuses);
  *         description: The bus was not found
  */
 
-router.get("/:id", getBusById);
+router.get("/:id", busExistsById, getBusById);
 
 /**
  * @swagger
@@ -188,7 +188,7 @@ router.post("/", checkUserLoggedIn, restrictTo(ERoles.OPERATOR), busExistsByPlat
  *        description: Some error happened
  */
 
-router.put("/:id", checkUserLoggedIn, restrictTo(ERoles.OPERATOR), busExistsByPlateNumber, agencyExists, updateBus);
+router.put("/:id", checkUserLoggedIn, restrictTo(ERoles.OPERATOR), busExistsById, agencyExists, updateBus);
 
 /**
  * @swagger
@@ -213,6 +213,6 @@ router.put("/:id", checkUserLoggedIn, restrictTo(ERoles.OPERATOR), busExistsByPl
  *       500:
  *         description: Internal server error
  */
-router.delete("/:id", checkUserLoggedIn, restrictTo(ERoles.OPERATOR), busExistsByPlateNumber, deleteBusById);
+router.delete("/:id", checkUserLoggedIn, restrictTo(ERoles.OPERATOR), busExistsById, deleteBusById);
 
 export default router;

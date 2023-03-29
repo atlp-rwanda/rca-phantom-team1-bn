@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import locales from '../../config/languages'
 import models from "../../db/models";
 import CustomError from '../utils/custom-error';

@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import {  findBusByPlateNumber } from "../services/bus.service";
+import {  findBusById, findBusByPlateNumber } from "../services/bus.service";
 
 export const busExistsByPlateNumber = async (req, res, next) => {
   const method = req.method;
@@ -18,6 +18,18 @@ export const busExistsByPlateNumber = async (req, res, next) => {
         message: `Bus with plate number [${plateNumber}] is not found`,
       });
   }
+  next();
+};
+
+
+export const busExistsById = async (req, res, next) => {
+  const bus = await findBusById(req.params.id);
+  if (!bus)
+    return res.status(StatusCodes.NOT_FOUND).json({
+      success: false,
+      message: `Bus with id [${req.params.id}] is not found`,
+    });
+  req.bus = bus;
   next();
 };
 

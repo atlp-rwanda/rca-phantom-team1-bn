@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import locales from '../../config/languages'
-import { saveBus,findBusByPlateNumber, findAllBuses, findBusById, editBus, removeBusById, findBusByAgency, findBusByDriver, findBusByRoute } from '../services/bus.service';
+import { saveBus,findBusByPlateNumber, findAllBuses } from '../services/bus.service';
 import { StatusCodes } from "http-status-codes";
 import { getPagination } from '../utils/pagination';
 
@@ -44,15 +44,7 @@ export const getBuses = async (req, res, next) => {
 
 export const getBusById =  async (req, res, next) => {
     try {
-        const bus = await findBusById(req.params.id)
-        
-        if (!bus) {
-            return res.status(StatusCodes.NOT_FOUND).json({
-                success: false,
-                message: locales('bus_not_found'),
-            });
-        }
-
+        const bus = req.bus
         res.status(StatusCodes.OK).json({
             success: true,
             data: bus,
@@ -64,16 +56,7 @@ export const getBusById =  async (req, res, next) => {
 
 export const deleteBusById = async (req, res, next) => {
     try {
-        const bus = await findBusById(req.params.id)
-        if (!bus) {
-            return res.status(StatusCodes.NOT_FOUND).json({
-                success: false,
-                message: locales('bus_not_found'),
-            });
-        }
-        
-        await removeBusById(req.params.id)
-        
+        await req.bus.destroy()
         res.send(StatusCodes.OK).json({
             success: true,
             message: locales('bus_deleted')
@@ -86,12 +69,11 @@ export const deleteBusById = async (req, res, next) => {
 
 export const updateBus = async (req, res, next)=> {
     try {
-        await editBus(req.body, req.params.id)
-        
+        const updatedBus= await req.role.update(req.body);
         res.status(StatusCodes.OK).json({
             success: true,
             message: locales('bus_created'),
-            data: req.body
+            data: updatedBus
         })  
     } catch (err) {
         next(err)

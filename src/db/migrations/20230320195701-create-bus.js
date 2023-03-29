@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       plate_number: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       agency_id: {
         type: Sequelize.INTEGER,
