@@ -1,62 +1,53 @@
-import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
-import { sendEmail } from "../utils/rondom-email";
-import { hashPassword } from "../utils/hash-password";
-import { signUpUser } from "../services/user.service";
-import ERoles from "../enums/ERole";
 import { StatusCodes } from "http-status-codes";
+import { getRoleByTitle } from "../services/role.service";
+import { hashPassword } from "../utils/hash-password";
+import { sendEmail } from "../utils/rondom-email";
+import { signUpUser } from "../services/user.service";
 
-export const signUpDriver = async (req, res) => {
- 
-  const { name,email } = req.body;
+export const signUpUserWithRole = async (req, res) => {
+  try {
+    const { name, email,phone, role } = req.body;
 
-  // Generate a random password
-  const password = uuidv4().substr(0, 8);
-  console.log("password: " + password);
+    // Find role by title
+    const foundRole = await getRoleByTitle(role);
 
-  // Hash the password
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
+    if (!foundRole) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: `Role '${role}' not found` });
+    }
 
-  // Create the new driver
-  const newDriver = { name,email, password: hashedPassword, role: ERoles.DRIVER };
+    // Generate a random password
+    const password = uuidv4().substr(0, 8);
+    console.log("password: " + password);
 
-  // Add the new driver to the list
-  const driverData = await signUpUser(newDriver);
+    // Hash the password
+    const hashedPassword = await hashPassword(password);
 
-  // Send an email to the provider email with the random password
-  // await sendEmail(email, 'Your password for the app', `Your password is ${password}`);
+    // Create the new user
+    const newUser = {
+      name,
+      email,
+      phone,
+      password: hashedPassword,
+      role_id: foundRole.id,
+    };
 
-  // Return a success message
-  res.status(StatusCodes.CREATED).json({
-    success: true,
-    message: "Driver registered successfully",
-    data: driverData,
-  });
-};
+    // Save the new user
+    const userData = await signUpUser(newUser);
 
-export const signUpOperator = async (req, res) => {
-  const { name,email } = req.body;
+    // Send an email to the user with the random password
+    // await sendEmail(email, 'Your password for the app', `Your password is ${password}`);
 
-  // Generate a random password
-  const password = uuidv4().substr(0, 8);
-  console.log("password: " + password);
-  // Hash the password
-  
-  const hashedPassword = await hashPassword(password);
-
-   // Create the new driver
-   const newDriver = { name,email, password: hashedPassword, role: ERoles.OPERATOR };
-
-  // Add the new driver to the list
-  const driverData = await signUpUser(newDriver);
-
-  // Send an email to the provider email with the random password
-  // await sendEmail(email, 'Your password for the app', `Your password is ${password}`);
-
-  // Return a success message
-  res.status(StatusCodes.CREATED).json({
-    success: true,
-    message: "Operator registered successfully",
-    data: driverData,
-  });
+    // Return a success message
+    res.status(StatusCodes.CREATED).json({
+      success: true,
+      message: "User registered successfully",
+      data: userData,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error });
+  }
 };

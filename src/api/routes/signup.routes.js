@@ -1,14 +1,13 @@
 import express from 'express';
-import { signUpDriver, signUpOperator } from '../controllers/signup.controller.js';
-
+import {signUpUserWithRole } from '../controllers/signup.controller.js';
 const router = express.Router();
 
 /**
  * @swagger
- * /signup/driver:
+ * /signup:
  *   post:
- *     summary: Create a new driver account
- *     tags: [Driver]
+ *     summary: Create a new user account
+ *     tags: [User]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -20,51 +19,25 @@ const router = express.Router();
  *             properties:
  *               email:
  *                 type: string
+ *               phone:
+ *                 type: string
  *               name:
  *                 type: string
+ *               role:
+ *                 type: string
+ *                 enum: [driver, operator]
  *             required:
  *               - email
  *               - name
+ *               - role
  *     responses:
  *       200:
- *         description: Successfully created driver account
+ *         description: Successfully created user account
  *       400:
  *         description: Invalid request body
  *       401:
  *         description: Unauthorized
  */
-router.post('/driver', signUpDriver);
-
-/**
- * @swagger
- * /signup/operator:
- *   post:
- *     summary: Create a new operator account
- *     tags: [Operator]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *               name:
- *                 type: string
- *             required:
- *               - email
- *               - name
- *     responses:
- *       200:
- *         description: Successfully created operator account
- *       400:
- *         description: Invalid request body
- *       401:
- *         description: Unauthorized
- */
-router.post('/operator', signUpOperator);
+ router.post('/operator', signUpUserWithRole);
 
 export default router;
