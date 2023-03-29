@@ -17,7 +17,7 @@ appRouter.use(
   checkUserLoggedIn,
   restrictTo(ERoles.ADMINISTRATOR),
   roleRouter
-  );
-  appRouter.use("/buses", busesRouter);
-  appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
+);
+appRouter.use("/buses", busesRouter);
+appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
 export default appRouter;
