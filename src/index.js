@@ -8,7 +8,7 @@ import db from "./db/models/index.js";
 import locales from "./config/languages";
 import appRouter from "./api/routes/index.js";
 
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 5000;
 
 db.sequelize
   .sync()
