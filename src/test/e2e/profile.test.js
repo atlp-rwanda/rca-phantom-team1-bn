@@ -8,7 +8,7 @@ import ERoles from "../../api/enums/ERole";
 const { expect } = chai;
 chai.use(chaiHttp);
 
-describe("Profile routes", () => {
+describe("Profile routes", async () => {
   beforeEach(async () => {
     // Clear the database before each test
     await models.user.destroy({ where: {} });
@@ -17,12 +17,12 @@ describe("Profile routes", () => {
   describe("GET /profile/:id", () => {
     it("should return a profile by id", async () => {
       const user = {
-        email: "rideOrDie@test.com",
+        email: "ride12OrDie@test.com",
         password:
           "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
         fullname: "Ride Or Die",
         phone_number: "+1234567890",
-        role: "driver",
+        roleId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -51,7 +51,7 @@ describe("PUT /profile/:id", () => {
       password: "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
       fullname: "Ride Or Die",
       phone_number: "+1234567891",
-      role: ERoles.OPERATOR,
+      roleId: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -80,7 +80,7 @@ describe("PUT /profile/:id", () => {
       password: "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
       fullname: "Ride Or Die",
       phone_number: "+1234567891",
-      role: ERoles.OPERATOR,
+      roleId: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -109,7 +109,7 @@ describe("PUT /profile/:id", () => {
       password: "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
       fullname: "Ride Or Die",
       phone_number: "+1234567891",
-      role: ERoles.OPERATOR,
+      roleId: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
     };

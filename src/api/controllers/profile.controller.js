@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { pick } from "lodash";
 import { successResponse, errorResponse } from "../utils/responseHandler";
-import { updateProfile } from "../services/profile.services";
+import { updateProfile, getAllProfiles } from "../services/profile.services";
 
 export const updateAProfile = async (req, res, next) => {
   const { id } = req.params;
@@ -16,6 +16,15 @@ export const updateAProfile = async (req, res, next) => {
     );
   } catch (error) {
     next(error);
+    return errorResponse(res, error.message, StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+};
+
+export const getProfiles = async (req, res) => {
+  try {
+    const data = await getAllProfiles();
+    res.status(StatusCodes.OK).json(data);
+  } catch (error) {
     return errorResponse(res, error.message, StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };

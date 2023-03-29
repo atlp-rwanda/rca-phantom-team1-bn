@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { getProfile, updateAProfile } from "../controllers/profile.controller";
+import {
+  getProfile,
+  updateAProfile,
+  getProfiles,
+} from "../controllers/profile.controller";
 import ERoles from "../enums/ERole";
 import {
   allowedToEditProfile,
@@ -12,6 +16,25 @@ import {
 import { validateUpdateUserPayload } from "../validations/user.validator";
 
 const profileRouter = Router();
+
+/**
+ * @swagger
+ * /profile:
+ *  get:
+ *    summary: Get the profiles
+ *    tags: [Profiles]
+ *    responses:
+ *      200:
+ *        description: The profiles was retrieved
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Profile'
+ *      500:
+ *        description: Some error happened
+ */
+
+profileRouter.get("/", getProfiles);
 
 /**
  * @swagger

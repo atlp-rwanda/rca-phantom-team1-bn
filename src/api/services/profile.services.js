@@ -11,12 +11,25 @@ export const updateProfile = catchAsyncError(async (id, payload) => {
 
 export const getProfileById = async (id) => {
   try {
-    const roleData = await models.user.findByPk(id);
-    if (!roleData) return false;
-    return roleData;
+    const profileData = await models.user.findByPk(id);
+    if (!profileData) return false;
+    return profileData;
   } catch (e) {
     throw new CustomError(
       e?.message || "Error fetching profile by id",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
+export const getAllProfiles = async () => {
+  try {
+    return await models.user.findAll({
+      attributes: { exclude: ["password"] },
+    });
+  } catch (e) {
+    throw new CustomError(
+      e?.message || "Error fetching profiles",
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }

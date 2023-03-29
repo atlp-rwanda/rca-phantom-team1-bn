@@ -1,5 +1,6 @@
 import { Router } from "express";
 import busesRouter from "./buses.routes";
+import authRouter from "./auth.routes";
 import roleRouter from "./roles.routes";
 import profileRouter from "./profile.routes";
 import {
@@ -7,6 +8,8 @@ import {
   restrictTo,
 } from "../middlewares/protect.middleware";
 import ERoles from "../enums/ERole";
+import { validateLogin } from "../validations/auth.validator";
+import { checkUserExists } from "../middlewares/auth.middleware";
 
 const appRouter = Router();
 
@@ -18,5 +21,6 @@ appRouter.use(
   roleRouter
 );
 appRouter.use("/profile", profileRouter);
+appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
 
 export default appRouter;
