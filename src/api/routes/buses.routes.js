@@ -34,6 +34,24 @@ const idLength = 8;
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     BusDriver:
+ *       type: object
+ *       required:
+ *         - bus_id
+ *         - driver_id
+ *       properties:
+ *         bus_id:
+ *           type: number
+ *           description: The auto-generated id of the bus
+ *         driver_id:
+ *           type: number
+ *           description: The auto-generated id of the driver
+ */
+
+/**
+ * @swagger
  * tags:
  *   name: Buses
  *   description: The buses managing API
@@ -214,25 +232,12 @@ router.delete("/:id", (req, res) => {
  *  put:
  *    summary: Assign a driver to a bus
  *    tags: [Buses]
- *    parameters:
- *      - in: path
- *        name: bus_id
- *        schema:
- *          type: string
- *        required: true
- *        description: The bus id
- *      - in: path
- *        name: driver_id
- *        schema:
- *          type: string
- *        required: true
- *        description: The driver id
  *    requestBody:
  *      required: true
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/Bus'
+ *            $ref: '#/components/schemas/BusDriver'
  *    responses:
  *      200:
  *        description: The assignment was done successfully

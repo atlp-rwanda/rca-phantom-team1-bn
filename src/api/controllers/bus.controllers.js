@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 const { Bus, Driver } = require("../../db/models");
 
-const { sendEmail } = require("../utils/sendEmail");
+import { sendEmail } from "../utils/sendEmail";
 
 exports.assignDriverToBus = async (req, res, next) => {
   try {
@@ -11,6 +11,7 @@ exports.assignDriverToBus = async (req, res, next) => {
     if (!bus || !driver) {
       return res.status(404).json({ message: "Bus or driver not found" });
     }
+
     await bus.setDriver(driver);
 
     // Send email to notify the driver that they have been assigned to the bus
