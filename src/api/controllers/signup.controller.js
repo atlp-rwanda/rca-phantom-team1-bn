@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { StatusCodes } from "http-status-codes";
 import { getRoleByTitle } from "../services/role.service";
 import { hashPassword } from "../utils/hash-password";
-import { sendEmail } from "../utils/rondom-email";
+import { sendEmail } from "../utils/email";
 import { signUpUser } from "../services/user.service";
 
 export const signUpUserWithRole = async (req, res) => {
