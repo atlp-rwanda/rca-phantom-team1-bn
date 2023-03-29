@@ -4,11 +4,11 @@ import locales from '../../config/languages'
 import models from "../../db/models";
 import CustomError from '../utils/custom-error';
 import { StatusCodes } from "http-status-codes";
-const { Bus } = models
+const { bus } = models
 
 export const findAllBuses = async () => {
     try {
-      const data = await Bus.findAll();
+      const data = await bus.findAll();
       return data;
     } catch (e) {
       throw new CustomError(
@@ -20,7 +20,7 @@ export const findAllBuses = async () => {
 
 export const findBusByPlateNumber = async (plate_number) => {
     try {
-      const busExists = await Bus.findOne({ where: { plate_number } });
+      const busExists = await bus.findOne({ where: { plate_number } });
       if (!busExists) return false;
       return busExists;
     } catch (e) {
@@ -33,9 +33,9 @@ export const findBusByPlateNumber = async (plate_number) => {
 
 export const findBusByAgency = async (agency_id) => {
   try {
-    const busExists = await Bus.findOne({ where: { agency_id } });
-    if (!busExists) return false;
-    return busExists;
+    const busesExists = await bus.findOne({ where: { agency_id } });
+    if (!busesExists) return false;
+    return busesExists;
   } catch (e) {
     throw new CustomError(
       e?.message || "Error fetching bus by agency",
@@ -46,7 +46,7 @@ export const findBusByAgency = async (agency_id) => {
 
 export const findBusByRoute = async (route_id) => {
   try {
-    const busExists = await Bus.findOne({ where: { route_id } });
+    const busExists = await bus.findOne({ where: { route_id } });
     if (!busExists) return false;
     return busExists;
   } catch (e) {
@@ -59,7 +59,7 @@ export const findBusByRoute = async (route_id) => {
 
 export const findBusByDriver = async (driver_id) => {
   try {
-    const busExists = await Bus.findOne({ where: { driver_id } });
+    const busExists = await bus.findOne({ where: { driver_id } });
     if (!busExists) return false;
     return busExists;
   } catch (e) {
@@ -72,7 +72,7 @@ export const findBusByDriver = async (driver_id) => {
 
 export const findBusById = async (id) => {
     try {
-      const busData = await Bus.findByPk(id);
+      const busData = await bus.findByPk(id);
       if (!busData) return false;
       return busData;
     } catch (e) {
@@ -84,23 +84,23 @@ export const findBusById = async (id) => {
 };
 
 export const removeBusById = async (id)=> {
-    return await Bus.destroy({ where: { id: id } });
+    return await bus.destroy({ where: { id: id } });
 }
 
 export const saveBus = async (newBus) => {
-    return await Bus.create(newBus);
+    return await bus.create(newBus);
 }
 
 export const editBus = async (bus, id) => {
-    const busData = await Bus.findByPk(id)
+    const busData = await bus.findByPk(id)
     if (!busData) {
         throw new Error(locales('bus_not_found'))
     }
     var updateBus = {
-        plate_number: Bus.plate_number,
-        agency_id: Bus.agency_id,
-        route_id: Bus.route_id
+        plate_number: bus.plate_number,
+        agency_id: bus.agency_id,
+        route_id: bus.route_id
     };
 
-    return await Bus.update(updateBus, { where: { id: id } });
+    return await bus.update(updateBus, { where: { id: id } });
 }

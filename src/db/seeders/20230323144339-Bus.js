@@ -3,10 +3,10 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-      await queryInterface.bulkInsert('Buses', [{
+      await queryInterface.bulkInsert('buses', [{
         "id": 2,
         "plate_number": "KL3MS",
-        "agency_id": 12321,
+        "agency_id": 2,
         "driver_id": 1,
         "router_id": 2,
         "av_seats": 15,
@@ -17,7 +17,7 @@ module.exports = {
       {
         "id": 3,
         "plate_number": "KL3MS",
-        "agency_id": 12321,
+        "agency_id": 2,
         "driver_id": 1,
         "router_id": 2,
         "av_seats": 15,
@@ -28,8 +28,8 @@ module.exports = {
       {
         "id": 4,
         "plate_number": "KL2AS",
-        "agency_id": 12321,
-        "driver_id": 12324,
+        "agency_id": 2,
+        "driver_id": 3,
         "router_id": 2,
         "av_seats": 15,
         "seats": 30,
@@ -39,6 +39,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("roles", null, {});
+    await queryInterface.bulkDelete("buses", null, {});
   }
 };

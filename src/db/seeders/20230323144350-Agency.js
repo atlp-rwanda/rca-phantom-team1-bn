@@ -3,23 +3,29 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
+    await queryInterface.bulkInsert('buses', [{
+      "id": 1,
+      "name": "HORIZONTAL",
+      "destinations": "KIGALI-SOUTH",
+    },{
+      "id": 2,
+      "name": "RITCO",
+      "destinations": "KIGALI-KIGALI",
+    },
+    {
+      "id": 3,
+      "name": "VOLCANO",
+      "destinations": "KIGALI-SOUTH",
+    },
+    {
+      "id": 4,
+      "name": "NILE SAFARIS",
+      "destinations": "KIGALI-WEST",
+    },
+    ])
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    await queryInterface.bulkDelete("agencies", null, {});
   }
 };

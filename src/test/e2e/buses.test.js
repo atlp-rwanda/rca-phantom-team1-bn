@@ -31,7 +31,7 @@ describe("Bus routes", () => {
       const buses = [
         {
           plate_number: "RAA100B",
-          agency_id: 12321,
+          agency_id: 2,
           driver_id: 1,
           router_id: 2,
           av_seats: 15,
@@ -39,8 +39,8 @@ describe("Bus routes", () => {
         },
         {
           plate_number: "RAC002A",
-          agency_id: 12324,
-          driver_id: 12325,
+          agency_id: 1,
+          driver_id: 3,
           router_id: 2,
           av_seats: 15,
           seats: 30,
@@ -61,8 +61,8 @@ describe("POST /buses", () => {
   it("should create a new bus", (done) => {
     const bus = {
       plate_number: "RAC001A",
-      agency_id: 12324,
-      driver_id: 12323,
+      agency_id: 1,
+      driver_id: 2,
       router_id: 2,
       av_seats: 15,
       seats: 30,
@@ -85,7 +85,30 @@ describe("POST /buses", () => {
   it("should return 400 Bad Request when missing required fields", (done) => {
     const bus = {
       plate_number: "RAC001A",
-      agency_id: 12324,
+      agency_id: 1,
+      driver_id: 3,
+      router_id: 2,
+      av_seats: 15,
+      seats: 30,
+    };
+    chai
+      .request(app)
+      .post("/buses")
+      .set(
+        "Authorization",
+        "Bearer " + signJwtToken({ role: ERoles.OPERATOR })
+      )
+      .send(bus)
+      .end((err, response) => {
+        if (err) done(err);
+        expect(response.status).to.equal(StatusCodes.BAD_REQUEST);
+        done();
+      });
+  });
+  it("should return 400 Bad Request when agency does not exist", (done) => {
+    const bus = {
+      plate_number: "RAC001A",
+      agency_id: 14222,
       router_id: 2,
       av_seats: 15,
       seats: 30,
@@ -110,8 +133,8 @@ describe("GET /buses?plate_number=[plate_number]", () => {
   it("should return a bus by plate number", async () => {
     const bus = {
       plate_number: "RAC001A",
-      agency_id: 12324,
-      driver_id: 12323,
+      agency_id: 1,
+      driver_id: 3,
       router_id: 2,
       av_seats: 15,
       seats: 30,
@@ -140,8 +163,8 @@ describe("GET /buses/:id", () => {
   it("should return a bus by id", async () => {
     const bus = {
       plate_number: "RAC001A",
-      agency_id: 12324,
-      driver_id: 12323,
+      agency_id: 1,
+      driver_id: 2,
       router_id: 2,
       av_seats: 15,
       seats: 30,
@@ -169,15 +192,15 @@ describe("PATCH /buses/:id", (done) => {
   it("should update a bus by id", async () => {
     const bus = {
       plate_number: "RAC001A",
-      agency_id: 12324,
-      driver_id: 12323,
+      agency_id: 2,
+      driver_id: 3,
       router_id: 2,
       av_seats: 15,
       seats: 30,
     };
     const updatedBus = {
       plate_number: "RAC010B",
-      agency_id: 12325,
+      agency_id: 1,
       driver_id: 12323,
       router_id: 2,
       av_seats: 15,
@@ -204,8 +227,8 @@ describe("PATCH /buses/:id", (done) => {
   it("should return 404 if bus is not found", (done) => {
     const updatedBus = { 
       plate_number: "RAC001A",
-      agency_id: 12324,
-      driver_id: 12323,
+      agency_id: 1,
+      driver_id: 3,
       router_id: 2,
       av_seats: 15,
       seats: 30,
