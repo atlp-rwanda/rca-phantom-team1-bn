@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
   Bus.init(
     {
       plate_number: DataTypes.STRING,
-      driverId: DataTypes.STRING,
       active: DataTypes.BOOLEAN,
     },
     {
@@ -19,12 +18,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Bus",
     }
   );
-
-  Bus.associate = function (models) {
-    Bus.belongsTo(models.Driver, {
-      foreignKey: "driverId",
-    });
-  };
 
   return Bus;
 };

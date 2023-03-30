@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Router } from "express";
 import busesRouter from "./buses.routes";
 import authRouter from "./auth.routes";

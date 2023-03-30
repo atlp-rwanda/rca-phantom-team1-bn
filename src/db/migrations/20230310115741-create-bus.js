@@ -4,14 +4,12 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("Buses", {
       id: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
         allowNull: false,
       },
       plate_number: {
-        type: Sequelize.STRING,
-      },
-      driver: {
         type: Sequelize.STRING,
       },
       active: {
