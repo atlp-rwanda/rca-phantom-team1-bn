@@ -1,13 +1,12 @@
 import { StatusCodes } from "http-status-codes";
-import {getUser} from "../services/auth.service"
-
+import { getUser } from "../services/auth.service";
 
 export const checkUserExists = async (req, res, next) => {
   try {
     const { email } = req.body;
 
     const user = await getUser(email);
-    
+
     if (!user) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
@@ -15,7 +14,6 @@ export const checkUserExists = async (req, res, next) => {
     }
 
     next();
-
   } catch (e) {
     next(e);
   }

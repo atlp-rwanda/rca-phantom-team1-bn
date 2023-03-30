@@ -18,7 +18,7 @@ module.exports = {
       driver_id: {
         type: Sequelize.INTEGER,
       },
-      seats:  {
+      seats: {
         type: Sequelize.INTEGER,
       },
       av_seats: {

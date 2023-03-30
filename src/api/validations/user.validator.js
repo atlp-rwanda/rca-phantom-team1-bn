@@ -6,7 +6,7 @@ export const validateSignupPayload = (req, res, next) => {
     email: Joi.string().email().required(),
     fullname: Joi.string().required(),
     phone_number: Joi.string().required(),
-    role: Joi.string().required()
+    role: Joi.string().required(),
   });
   const { error } = schema.validate(req.body);
   if (error) {

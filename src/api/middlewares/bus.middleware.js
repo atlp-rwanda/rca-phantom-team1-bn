@@ -1,9 +1,11 @@
 import { StatusCodes } from "http-status-codes";
-import {  findBusById, findBusByPlateNumber } from "../services/bus.service";
+import { findAgencyById } from "../services/agency.service";
+import { findBusById, findBusByPlateNumber } from "../services/bus.service";
 
 export const busExistsByPlateNumber = async (req, res, next) => {
   const method = req.method;
-  const plateNumber = method === "GET" ? req?.params?.plate_number : req?.body?.plate_number;
+  const plateNumber =
+    method === "GET" ? req?.params?.plate_number : req?.body?.plate_number;
   const busExists = await findBusByPlateNumber(plateNumber.toLowerCase());
 
   if (method === "POST" && busExists)
@@ -21,7 +23,6 @@ export const busExistsByPlateNumber = async (req, res, next) => {
   next();
 };
 
-
 export const busExistsById = async (req, res, next) => {
   const bus = await findBusById(req.params.id);
   if (!bus)
@@ -35,14 +36,17 @@ export const busExistsById = async (req, res, next) => {
 
 export const agencyExists = async (req, res, next) => {
   const method = req.method;
-  const agencyId = method === "GET" ? req?.params?.agency_id : req?.body?.agency_id;
-  const agencyExist = await findAgencyById(agencyId.toLowerCase());
+  const agencyId =
+    method === "GET" ? req?.params?.agency_id : req?.body?.agency_id;
+  const agencyExist =
+    typeof agencyId === "string"
+      ? await findAgencyById(agencyId.toLowerCase())
+      : null;
 
   if (method === "POST" && !agencyExist)
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ success: false, message: "Agency does not exists." });
-      
+
   next();
 };
-

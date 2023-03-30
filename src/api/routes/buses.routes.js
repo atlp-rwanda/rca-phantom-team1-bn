@@ -1,14 +1,18 @@
 /* eslint-disable prettier/prettier */
 import { Router } from "express";
 import {
-    getBuses,
-    getBusById,
-    createBus,
-    updateBus,
-    deleteBusById
-  } from "../controllers/bus.controllers";
+  getBuses,
+  getBusById,
+  createBus,
+  updateBus,
+  deleteBusById,
+} from "../controllers/bus.controllers";
 import ERoles from "../enums/ERole";
-import { agencyExists, busExistsById, busExistsByPlateNumber } from "../middlewares/bus.middleware";
+import {
+  agencyExists,
+  busExistsById,
+  busExistsByPlateNumber,
+} from "../middlewares/bus.middleware";
 import {
   checkUserLoggedIn,
   restrictTo,
@@ -152,7 +156,14 @@ router.get("/:id", busExistsById, getBusById);
  *         description: Some server error
  */
 
-router.post("/", checkUserLoggedIn, restrictTo(ERoles.OPERATOR), busExistsByPlateNumber, agencyExists, createBus)
+router.post(
+  "/",
+  checkUserLoggedIn,
+  restrictTo(ERoles.OPERATOR),
+  busExistsByPlateNumber,
+  agencyExists,
+  createBus
+);
 
 /**
  * @swagger
@@ -188,7 +199,14 @@ router.post("/", checkUserLoggedIn, restrictTo(ERoles.OPERATOR), busExistsByPlat
  *        description: Some error happened
  */
 
-router.put("/:id", checkUserLoggedIn, restrictTo(ERoles.OPERATOR), busExistsById, agencyExists, updateBus);
+router.put(
+  "/:id",
+  checkUserLoggedIn,
+  restrictTo(ERoles.OPERATOR),
+  busExistsById,
+  agencyExists,
+  updateBus
+);
 
 /**
  * @swagger
@@ -213,6 +231,12 @@ router.put("/:id", checkUserLoggedIn, restrictTo(ERoles.OPERATOR), busExistsById
  *       500:
  *         description: Internal server error
  */
-router.delete("/:id", checkUserLoggedIn, restrictTo(ERoles.OPERATOR), busExistsById, deleteBusById);
+router.delete(
+  "/:id",
+  checkUserLoggedIn,
+  restrictTo(ERoles.OPERATOR),
+  busExistsById,
+  deleteBusById
+);
 
 export default router;

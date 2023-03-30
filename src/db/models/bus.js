@@ -1,8 +1,6 @@
 /* eslint-disable prettier/prettier */
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Bus extends Model {
     /**
@@ -21,16 +19,19 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
-  Bus.init({
-    plate_number: DataTypes.STRING,
-    driver_id: DataTypes.INTEGER,
-    agency_id: DataTypes.INTEGER,
-    seats:  DataTypes.INTEGER,
-    av_seats: DataTypes.INTEGER,
-    router_id: DataTypes.INTEGER,
-  }, {
-    sequelize,
-    modelName: 'Bus',
-  });
+  Bus.init(
+    {
+      plate_number: DataTypes.STRING,
+      driver_id: DataTypes.INTEGER,
+      agency_id: DataTypes.INTEGER,
+      seats: DataTypes.INTEGER,
+      av_seats: DataTypes.INTEGER,
+      router_id: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "bus"
+    }
+  );
   return Bus;
 };

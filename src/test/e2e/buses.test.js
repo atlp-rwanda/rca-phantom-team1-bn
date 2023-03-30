@@ -44,13 +44,11 @@ describe("Bus routes", () => {
           router_id: 2,
           av_seats: 15,
           seats: 30,
-        }
+        },
       ];
       await models.role.bulkCreate(buses);
 
-      const response = await chai
-        .request(app)
-        .get("/buses")
+      const response = await chai.request(app).get("/buses");
       expect(response.statusCode).to.equal(StatusCodes.OK);
       expect(response.body.data.length).to.equal(buses.length);
     });
@@ -66,15 +64,12 @@ describe("POST /buses", () => {
       router_id: 2,
       av_seats: 15,
       seats: 30,
-    }
+    };
     chai
       .request(app)
       .post("/buses")
       .send(bus)
-      .set(
-        "Authorization",
-        "Bearer " + signJwtToken({ role: ERoles.OPERATOR })
-      )
+      .set("Authorization", "Bearer " + signJwtToken({ role: ERoles.OPERATOR }))
       .end((err, response) => {
         if (err) done();
         expect(response.statusCode).to.equal(StatusCodes.CREATED);
@@ -94,10 +89,7 @@ describe("POST /buses", () => {
     chai
       .request(app)
       .post("/buses")
-      .set(
-        "Authorization",
-        "Bearer " + signJwtToken({ role: ERoles.OPERATOR })
-      )
+      .set("Authorization", "Bearer " + signJwtToken({ role: ERoles.OPERATOR }))
       .send(bus)
       .end((err, response) => {
         if (err) done(err);
@@ -116,10 +108,7 @@ describe("POST /buses", () => {
     chai
       .request(app)
       .post("/buses")
-      .set(
-        "Authorization",
-        "Bearer " + signJwtToken({ role: ERoles.OPERATOR })
-      )
+      .set("Authorization", "Bearer " + signJwtToken({ role: ERoles.OPERATOR }))
       .send(bus)
       .end((err, response) => {
         if (err) done(err);
@@ -140,9 +129,7 @@ describe("GET /buses?plate_number=[plate_number]", () => {
       seats: 30,
     };
     await models.bus.create(bus);
-    const res = await chai
-      .request(app)
-      .get(`/buses?title=user`)
+    const res = await chai.request(app).get(`/buses?title=user`);
 
     expect(res.status).to.equal(StatusCodes.OK);
   });
@@ -170,9 +157,7 @@ describe("GET /buses/:id", () => {
       seats: 30,
     };
     const data = await models.bus.create(bus);
-    const response = await chai
-      .request(app)
-      .get(`/buses/${data.id}`)
+    const response = await chai.request(app).get(`/buses/${data.id}`);
     expect(response.statusCode).to.equal(StatusCodes.OK);
   });
 
@@ -225,7 +210,7 @@ describe("PATCH /buses/:id", (done) => {
   });
 
   it("should return 404 if bus is not found", (done) => {
-    const updatedBus = { 
+    const updatedBus = {
       plate_number: "RAC001A",
       agency_id: 1,
       driver_id: 3,

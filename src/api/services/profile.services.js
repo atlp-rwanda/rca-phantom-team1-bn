@@ -1,4 +1,3 @@
-
 import models from "../../db/models";
 import CustomError from "../utils/custom-error";
 import { StatusCodes } from "http-status-codes";

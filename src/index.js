@@ -29,7 +29,7 @@ const options = {
     },
     servers: [
       {
-        url: `http://localhost:${PORT||5000}`,
+        url: `http://localhost:${PORT || 5000}`,
       },
     ],
     components: {
@@ -71,4 +71,4 @@ if (process.env.NODE_ENV !== "test") {
 
 export default app;
 
-module.exports = app
+module.exports = app;

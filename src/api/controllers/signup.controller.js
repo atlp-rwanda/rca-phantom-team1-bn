@@ -9,7 +9,7 @@ import { omit } from "lodash";
 
 export const signUpUserWithRole = async (req, res) => {
   try {
-    const { fullname, email,phone_number, role } = req.body;
+    const { fullname, email, phone_number, role } = req.body;
 
     // Find role by title
     const foundRole = await getRoleByTitle(role);
