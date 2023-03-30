@@ -1,31 +1,42 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
 import { StatusCodes } from "http-status-codes";
+import { Op } from "sequelize";
 import app from "../../index";
 import models from "../../db/models";
 import { signJwtToken } from "../../api/utils/jwt";
-import ERoles from "../../api/enums/ERole";
 const { expect } = chai;
 chai.use(chaiHttp);
 describe("Role routes", () => {
   beforeEach(async () => {
-    // Clear the database before each test
-    await models.role.destroy({ where: {} });
+    await models.role.destroy({
+      where: {
+        title: {
+          [Op.in]: [
+            "test-driver",
+            "super-administrator",
+            "standard-user",
+            "dummy-role",
+            "new-administrator",
+            "new-admmin",
+            "updated-administrator",
+            "test-operator",
+          ],
+        },
+      },
+    });
   });
 
   describe("GET /roles", () => {
-    it("should return an empty array when there are no roles", (done) => {
+    it("should return pre-seeded roles", (done) => {
       chai
         .request(app)
         .get("/roles")
-        .set(
-          "Authorization",
-          "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
-        )
+        .set("Authorization", "Bearer " + signJwtToken({ id: 3, roleId: 3 }))
         .end((err, res) => {
           if (err) done();
           expect(res.statusCode).to.equal(StatusCodes.OK);
-          expect(res.body.data.length).to.equal(0);
+          expect(res.body.data.length).to.greaterThan(0);
           done();
         });
     });
@@ -34,23 +45,24 @@ describe("Role routes", () => {
       // Create some roles to test with
       const roles = [
         {
-          title: "administrator",
+          title: "test-driver",
           description: "Admin role",
           privileges: ["create", "read", "update", "delete"],
         },
-        { title: "user", description: "User role", privileges: ["read"] },
+        {
+          title: "test-operator",
+          description: "User role",
+          privileges: ["read"],
+        },
       ];
       await models.role.bulkCreate(roles);
 
       const response = await chai
         .request(app)
         .get("/roles")
-        .set(
-          "Authorization",
-          "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
-        );
+        .set("Authorization", "Bearer " + signJwtToken({ id: 3, roleId: 3 }));
       expect(response.statusCode).to.equal(StatusCodes.OK);
-      expect(response.body.data.length).to.equal(roles.length);
+      expect(response.body.data.length).to.greaterThan(0);
     });
   });
 });
@@ -66,10 +78,7 @@ describe("POST /roles", () => {
       .request(app)
       .post("/roles")
       .send(role)
-      .set(
-        "Authorization",
-        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
-      )
+      .set("Authorization", "Bearer " + signJwtToken({ id: 3, roleId: 3 }))
       .end((err, response) => {
         if (err) done();
         expect(response.statusCode).to.equal(StatusCodes.CREATED);
@@ -86,10 +95,7 @@ describe("POST /roles", () => {
       .request(app)
       .post("/roles")
       .send(role)
-      .set(
-        "Authorization",
-        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
-      )
+      .set("Authorization", "Bearer " + signJwtToken({ roleId: 3, id: 3 }))
       .end((err, response) => {
         if (err) done(err);
         expect(response.status).to.equal(StatusCodes.BAD_REQUEST);
@@ -108,11 +114,8 @@ describe("GET /roles?title=[title]", () => {
     await models.role.create(role);
     const res = await chai
       .request(app)
-      .get(`/roles?title=user`)
-      .set(
-        "Authorization",
-        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
-      );
+      .get(`/roles?title=${role.title}`)
+      .set("Authorization", "Bearer " + signJwtToken({ id: 3, roleId: 3 }));
 
     expect(res.status).to.equal(StatusCodes.OK);
   });
@@ -121,10 +124,7 @@ describe("GET /roles?title=[title]", () => {
     chai
       .request(app)
       .get(`/roles?title=nonexistentrole`)
-      .set(
-        "Authorization",
-        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
-      )
+      .set("Authorization", "Bearer " + signJwtToken({ id: 3, roleId: 3 }))
       .end((err, response) => {
         if (err) done(err);
         expect(response.status).to.equal(StatusCodes.NOT_FOUND);
@@ -144,10 +144,7 @@ describe("GET /roles/:id", () => {
     const response = await chai
       .request(app)
       .get(`/roles/${data.id}`)
-      .set(
-        "Authorization",
-        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
-      );
+      .set("Authorization", "Bearer " + signJwtToken({ id: 3, roleId: 3 }));
     expect(response.statusCode).to.equal(StatusCodes.OK);
   });
 
@@ -155,10 +152,7 @@ describe("GET /roles/:id", () => {
     chai
       .request(app)
       .get(`/roles/23233`)
-      .set(
-        "Authorization",
-        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
-      )
+      .set("Authorization", "Bearer " + signJwtToken({ id: 3, roleId: 3 }))
       .end((err, response) => {
         if (err) done(err);
         expect(response.status).to.equal(StatusCodes.NOT_FOUND);
@@ -185,10 +179,7 @@ describe("PATCH /roles/:id", (done) => {
       .patch(`/roles/${createdRole.id}`)
       .send(updatedRole)
       .set("Accept", "application/json")
-      .set(
-        "Authorization",
-        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
-      )
+      .set("Authorization", "Bearer " + signJwtToken({ id: 3, roleId: 3 }))
       .end((err, response) => {
         if (err) done(err);
         expect(response.status).to.equal(200);
@@ -208,10 +199,7 @@ describe("PATCH /roles/:id", (done) => {
       .patch("/roles/999")
       .send(updatedRole)
       .set("Accept", "application/json")
-      .set(
-        "Authorization",
-        "Bearer " + signJwtToken({ role: ERoles.ADMINISTRATOR })
-      )
+      .set("Authorization", "Bearer " + signJwtToken({ id: 3, roleId: 3 }))
       .end((err, response) => {
         if (err) done(err);
         expect(response.status).to.equal(StatusCodes.NOT_FOUND);

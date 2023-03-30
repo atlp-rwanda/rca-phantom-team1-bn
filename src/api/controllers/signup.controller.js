@@ -4,6 +4,8 @@ import { getRoleByTitle } from "../services/roles.service";
 import { hashPassword } from "../utils/hash-password";
 import { sendEmail } from "../utils/email";
 import { signUpUser } from "../services/user.service";
+import { v4 as uuidv4 } from "uuid";
+import { omit } from "lodash";
 
 export const signUpUserWithRole = async (req, res) => {
   try {
@@ -31,7 +33,7 @@ export const signUpUserWithRole = async (req, res) => {
       phone_number,
       email,
       password: hashedPassword,
-      role_id: foundRole.id,
+      roleId: foundRole.id,
     };
 
     // Save the new user
@@ -44,7 +46,7 @@ export const signUpUserWithRole = async (req, res) => {
     res.status(StatusCodes.CREATED).json({
       success: true,
       message: "User registered successfully",
-      data: userData,
+      data: omit(userData.dataValues, "password"),
     });
   } catch (error) {
     console.error(error);

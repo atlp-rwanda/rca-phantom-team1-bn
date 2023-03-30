@@ -1,4 +1,6 @@
 import { StatusCodes } from "http-status-codes";
+import { getProfileById } from "../services/profile.services";
+import { getRoleById } from "../services/roles.service";
 import { decodeJwtToken } from "../utils/jwt";
 
 export const checkUserLoggedIn = async (req, res, next) => {
@@ -16,7 +18,18 @@ export const checkUserLoggedIn = async (req, res, next) => {
       return res
         .status(StatusCodes.UNAUTHORIZED)
         .json({ message: "Invalid or expired token" });
-    req.user = decoded;
+    try {
+      req.user = await getProfileById(decoded.id);
+      if (!req.user)
+        return res.status(StatusCodes.UNAUTHORIZED).json({
+          message: `User with id $[${decoded.id}] is not registered`,
+        });
+    } catch (err) {
+      res.status(StatusCodes.UNAUTHORIZED).json({
+        message: `User with id $[${decoded.id}] is not registered`,
+        error: err.message,
+      });
+    }
     next();
   } catch (err) {
     return res
@@ -26,11 +39,14 @@ export const checkUserLoggedIn = async (req, res, next) => {
 };
 
 export const restrictTo = (...roles) => {
-  return (req, res, next) => {
-    const role = req.user.role;
-    console.log(role);
-    if (!roles.includes(role.toLowerCase())) {
-     
+  return async (req, res, next) => {
+    const role = await getRoleById(req.user.roleId);
+    if (!role)
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: "You are not authorized to perform this action" });
+
+    if (!roles.includes(role.title.toLowerCase())) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
         .json({ message: "You are not authorized to perform this action" });
