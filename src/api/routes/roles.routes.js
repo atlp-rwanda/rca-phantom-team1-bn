@@ -44,7 +44,6 @@ const roleRouter = Router();
  *       500:
  *         description: Internal server error
  */
-
 roleRouter.get("/", getRoles);
 
 /**
