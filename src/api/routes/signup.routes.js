@@ -19,15 +19,16 @@ const router = express.Router();
  *             properties:
  *               email:
  *                 type: string
- *               phone:
+ *               phone_number:
  *                 type: string
- *               name:
+ *               fullname:
  *                 type: string
  *               role:
  *                 type: string
  *                 enum: [driver, operator]
  *             required:
  *               - email
+ *               - phone
  *               - name
  *               - role
  *     responses:
@@ -38,6 +39,6 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
- router.post('/operator', signUpUserWithRole);
+ router.post('/', signUpUserWithRole);
 
 export default router;

@@ -28,7 +28,9 @@ export const checkUserLoggedIn = async (req, res, next) => {
 export const restrictTo = (...roles) => {
   return (req, res, next) => {
     const role = req.user.role;
+    console.log(role);
     if (!roles.includes(role.toLowerCase())) {
+     
       return res
         .status(StatusCodes.UNAUTHORIZED)
         .json({ message: "You are not authorized to perform this action" });

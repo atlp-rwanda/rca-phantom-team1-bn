@@ -1,13 +1,13 @@
 import bcrypt from "bcrypt";
 import { StatusCodes } from "http-status-codes";
-import { getRoleByTitle } from "../services/role.service";
+import { getRoleByTitle } from "../services/roles.service";
 import { hashPassword } from "../utils/hash-password";
 import { sendEmail } from "../utils/email";
 import { signUpUser } from "../services/user.service";
 
 export const signUpUserWithRole = async (req, res) => {
   try {
-    const { name, email,phone, role } = req.body;
+    const { fullname, email,phone_number, role } = req.body;
 
     // Find role by title
     const foundRole = await getRoleByTitle(role);
@@ -27,9 +27,9 @@ export const signUpUserWithRole = async (req, res) => {
 
     // Create the new user
     const newUser = {
-      name,
+      fullname,
+      phone_number,
       email,
-      phone,
       password: hashedPassword,
       role_id: foundRole.id,
     };
