@@ -1,8 +1,9 @@
+/* eslint-disable prettier/prettier */
 const ERoles = {
-  DRIVER: "DRIVER",
-  OPERATOR: "OPERATOR",
-  ADMINISTRATOR: "ADMINISTRATOR",
-  PASSENGER: "PASSENGER",
+  DRIVER: "driver",
+  OPERATOR: "operator",
+  ADMINISTRATOR: "administrator",
+  PASSENGER: "passenger",
 };
 Object.freeze(ERoles);
 

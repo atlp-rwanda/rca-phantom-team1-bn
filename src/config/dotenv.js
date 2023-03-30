@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import dotenv from "dotenv";
 import path from "path";
 
@@ -8,6 +9,4 @@ const envPath = path.join(
 );
 dotenv.config({ path: envPath });
 
-const { PORT } = process.env || 5000;
-
-export default { PORT };
+export const { PORT } = process.env || 5000;
