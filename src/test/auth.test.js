@@ -2,7 +2,6 @@ const chai = require("chai");
 const request = require("supertest");
 const app = require("../index");
 const { expect } = chai;
-const { signJwtToken } = require("../api/utils/jwt");
 import { StatusCodes } from "http-status-codes";
 import {} from "../api/services/auth.service";
 

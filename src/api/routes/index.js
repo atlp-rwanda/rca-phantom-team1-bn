@@ -2,6 +2,7 @@ import { Router } from "express";
 import busesRouter from "./buses.routes";
 import authRouter from "./auth.routes";
 import roleRouter from "./roles.routes";
+import profileRouter from "./profile.routes";
 import signupRouter from "./signup.routes";
 import {
   checkUserLoggedIn,
@@ -21,7 +22,6 @@ appRouter.use(
   restrictTo(ERoles.ADMINISTRATOR),
   roleRouter
 );
-
 appRouter.use(
   "/signup",
   checkUserLoggedIn,
@@ -31,6 +31,7 @@ appRouter.use(
   signupRouter
 );
 appRouter.use("/buses", busesRouter);
-
 appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
+appRouter.use(profileRouter);
+
 export default appRouter;

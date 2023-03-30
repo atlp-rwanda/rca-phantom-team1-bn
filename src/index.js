@@ -65,6 +65,11 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(appRouter);
 
+// handling non existing routes
+app.use((req, res) => {
+  res.status(404).send({ message: "Route not found" });
+});
+
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => console.log(`The server is running on port ${PORT}`));
 }
