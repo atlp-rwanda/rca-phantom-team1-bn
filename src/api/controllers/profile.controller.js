@@ -4,7 +4,7 @@ import { successResponse, errorResponse } from "../utils/responseHandler";
 import { updateProfile, getAllProfiles } from "../services/profile.services";
 
 export const updateAProfile = async (req, res, next) => {
-  const { id } = req.params;
+  const { id } = req.user;
   const newProfile = req.body;
   try {
     const updatedProfile = await updateProfile(id, newProfile);
@@ -32,11 +32,12 @@ export const getProfiles = async (req, res) => {
 export const getProfile = async (req, res) => {
   return res.status(StatusCodes.OK).json({
     success: true,
-    data: pick(req.profile, [
+    data: pick(req.user, [
       "id",
       "fullname",
+      "phone_number",
       "email",
-      "role",
+      "roleId",
       "createdAt",
       "updatedAt",
     ]),

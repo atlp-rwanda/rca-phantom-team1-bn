@@ -32,6 +32,17 @@ export default {
             createdAt: new Date(),
             updatedAt: new Date(),
           },
+          {
+            id: 3,
+            email: "admin@phantom.com",
+            password:
+              "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
+            fullname: "Phantom Admin",
+            phone_number: "+1234567894",
+            roleId: 3, // admin role
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
         ],
         {}
       );

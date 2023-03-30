@@ -4,22 +4,14 @@ import {
   updateAProfile,
   getProfiles,
 } from "../controllers/profile.controller";
-import ERoles from "../enums/ERole";
-import {
-  allowedToEditProfile,
-  userProfileExists,
-} from "../middlewares/profile.middleware";
-import {
-  checkUserLoggedIn,
-  restrictTo,
-} from "../middlewares/protect.middleware";
-import { validateUpdateUserPayload } from "../validations/user.validator";
+import { checkUserLoggedIn } from "../middlewares/protect.middleware";
+import { validateUpdateUserPayload as validation } from "../validations/user.validator";
 
 const profileRouter = Router();
 
 /**
  * @swagger
- * /profile:
+ * /profiles:
  *  get:
  *    summary: Get the profiles
  *    tags: [Profiles]
@@ -34,21 +26,16 @@ const profileRouter = Router();
  *        description: Some error happened
  */
 
-profileRouter.get("/", getProfiles);
+profileRouter.get("/profiles", getProfiles);
 
 /**
  * @swagger
- * /profile/{id}:
+ * /profile:
  *  get:
- *    summary: Get the profile by the id
+ *    summary: Get logged in user profile
  *    tags: [Profiles]
- *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: string
- *        required: true
- *        description: The profile id
+ *    security:
+ *      - bearerAuth: []
  *    responses:
  *      200:
  *        description: The profile was retrieved
@@ -62,7 +49,7 @@ profileRouter.get("/", getProfiles);
  *        description: Some error happened
  */
 
-profileRouter.get("/:id", userProfileExists, getProfile);
+profileRouter.get("/profile", checkUserLoggedIn, getProfile);
 
 /**
  * @swagger
@@ -71,21 +58,24 @@ profileRouter.get("/:id", userProfileExists, getProfile);
  *     Profile:
  *       type: object
  *       required:
- *         - fullName
+ *         - fullname
  *         - email
  *         - phone_number
  *       properties:
  *         id:
  *           type: UUID
  *           description: The auto-generated id of the profile
- *         fullName:
+ *         fullname:
  *           type: string
  *           description: The profile full name
  *         email:
  *           type: string
  *           description: The profile email
+ *         phone_number:
+ *           type: string
+ *           description: The profile phone number
  *       example:
- *         fullName: Musa Moses
+ *         fullname: Musa Moses
  *         email: musa@mit.edu
  *         phone_number: 25078654653
  */
@@ -99,19 +89,12 @@ profileRouter.get("/:id", userProfileExists, getProfile);
 
 /**
  * @swagger
- * /profile/{id}:
+ * /profile:
  *  put:
- *    summary: Update the profile by the id
+ *    summary: Update the profile
  *    tags: [Profiles]
  *    security:
  *      - bearerAuth: []
- *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: string
- *        required: true
- *        description: The profile id
  *    requestBody:
  *      required: true
  *      content:
@@ -131,14 +114,6 @@ profileRouter.get("/:id", userProfileExists, getProfile);
  *        description: Some error happened
  */
 
-profileRouter.put(
-  "/:id",
-  checkUserLoggedIn,
-  restrictTo(ERoles.OPERATOR, ERoles.DRIVER),
-  userProfileExists,
-  allowedToEditProfile,
-  validateUpdateUserPayload,
-  updateAProfile
-);
+profileRouter.put("/profile", checkUserLoggedIn, validation, updateAProfile);
 
 export default profileRouter;

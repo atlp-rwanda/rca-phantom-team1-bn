@@ -20,7 +20,7 @@ appRouter.use(
   restrictTo(ERoles.ADMINISTRATOR),
   roleRouter
 );
-appRouter.use("/profile", profileRouter);
 appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
+appRouter.use(profileRouter);
 
 export default appRouter;
