@@ -11,7 +11,6 @@ export default {
         "users",
         [
           {
-            id: 1,
             email: "rideOrDie@demo.com",
             password:
               "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
@@ -22,7 +21,6 @@ export default {
             updatedAt: new Date(),
           },
           {
-            id: 2,
             email: "DieOrRide@demo.com",
             password:
               "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
@@ -33,7 +31,6 @@ export default {
             updatedAt: new Date(),
           },
           {
-            id: 3,
             email: "admin@phantom.com",
             password:
               "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
