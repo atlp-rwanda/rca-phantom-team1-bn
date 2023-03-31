@@ -2,6 +2,7 @@ import { Router } from "express";
 import busesRouter from "./buses.routes";
 import authRouter from "./auth.routes";
 import roleRouter from "./roles.routes";
+import locationRouter from "./locations.routes";
 import {
   checkUserLoggedIn,
   restrictTo,
@@ -20,4 +21,5 @@ appRouter.use(
   roleRouter
 );
 appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
+appRouter.use("/locations", locationRouter);
 export default appRouter;
