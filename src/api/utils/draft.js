@@ -1,5 +1,8 @@
-import express from 'express';
-import { signUpDriver, signUpOperator } from '../controllers/signup.controller.js';
+import express from "express";
+import {
+  signUpDriver,
+  signUpOperator,
+} from "../controllers/signup.controller.js";
 
 const router = express.Router();
 
@@ -33,7 +36,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
-router.post('/driver', signUpDriver);
+router.post("/driver", signUpDriver);
 
 /**
  * @swagger
@@ -65,12 +68,9 @@ router.post('/driver', signUpDriver);
  *       401:
  *         description: Unauthorized
  */
-router.post('/operator', signUpOperator);
+router.post("/operator", signUpOperator);
 
 export default router;
-
-
-
 
 ////////////////////////////////
 
@@ -83,7 +83,7 @@ export default router;
 // import { StatusCodes } from "http-status-codes";
 
 // export const signUpDriver = async (req, res) => {
- 
+
 //   const { name,email } = req.body;
 
 //   // Generate a random password
@@ -117,7 +117,7 @@ export default router;
 //   const password = uuidv4().substr(0, 8);
 //   console.log("password: " + password);
 //   // Hash the password
-  
+
 //   const hashedPassword = await hashPassword(password);
 
 //    // Create the new operator
@@ -136,5 +136,3 @@ export default router;
 //     data: operatorData,
 //   });
 // };
-
-
