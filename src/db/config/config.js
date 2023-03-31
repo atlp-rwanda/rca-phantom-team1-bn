@@ -1,7 +1,5 @@
 require("dotenv").config();
 
-dotenv.config();
-
 module.exports = {
   production: {
     url: process.env.PROD_DB_URL,
