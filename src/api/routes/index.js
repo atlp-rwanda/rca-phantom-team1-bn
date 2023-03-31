@@ -16,7 +16,6 @@ import { checkUserExists } from "../middlewares/auth.middleware";
 
 const appRouter = Router();
 
-appRouter.use("/buses", busesRouter);
 appRouter.use(
   "/roles",
   checkUserLoggedIn,
@@ -31,6 +30,7 @@ appRouter.use(
   userExistsByEmail,
   signupRouter
 );
+appRouter.use("/buses", busesRouter);
 appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
 appRouter.use(profileRouter);
 

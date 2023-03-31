@@ -29,7 +29,7 @@ const options = {
     },
     servers: [
       {
-        url: `http://localhost:${PORT}`,
+        url: `http://localhost:${PORT || 5000}`,
       },
     ],
     components: {

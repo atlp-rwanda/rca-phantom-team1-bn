@@ -36,7 +36,7 @@ describe("Profile routes", async () => {
   describe("GET /profile", () => {
     it("should return a profile of a logged in user", async () => {
       const profile = {
-        id: 4,
+        id: 6,
         email: "rideOrDie2@test.com",
         password:
           "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
@@ -63,7 +63,7 @@ describe("Profile routes", async () => {
   describe("PUT /profile", () => {
     it("Should update of a logged in user", async () => {
       const profile = {
-        id: 5,
+        id: 7,
         email: "rideOrDie3@test.com",
         password:
           "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
@@ -94,7 +94,7 @@ describe("Profile routes", async () => {
 
     it("should return 400 for invalid format", async () => {
       const profile = {
-        id: 6,
+        id: 8,
         email: "rideOrDie5@test.com",
         password:
           "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",

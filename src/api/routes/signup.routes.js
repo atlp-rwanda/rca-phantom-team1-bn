@@ -1,5 +1,5 @@
-import express from 'express';
-import {signUpUserWithRole } from '../controllers/signup.controller.js';
+import express from "express";
+import { signUpUserWithRole } from "../controllers/signup.controller.js";
 const router = express.Router();
 
 /**
@@ -39,6 +39,6 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
- router.post('/', signUpUserWithRole);
+router.post("/", signUpUserWithRole);
 
 export default router;
