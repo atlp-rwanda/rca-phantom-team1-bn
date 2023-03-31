@@ -1,8 +1,24 @@
+/* eslint-disable prettier/prettier */
 import { Router } from "express";
-import { nanoid } from "nanoid";
+import {
+  getBuses,
+  getBusById,
+  createBus,
+  updateBus,
+  deleteBusById,
+} from "../controllers/bus.controllers";
+import ERoles from "../enums/ERole";
+import {
+  agencyExists,
+  busExistsById,
+  busExistsByPlateNumber,
+} from "../middlewares/bus.middleware";
+import {
+  checkUserLoggedIn,
+  restrictTo,
+} from "../middlewares/protect.middleware";
 
 const router = Router();
-const idLength = 8;
 
 /**
  * @swagger
@@ -11,21 +27,41 @@ const idLength = 8;
  *     Bus:
  *       type: object
  *       required:
- *         - plate
- *         - driver
+ *         - plate_number
+ *         - agency_id
+ *         - driver_id
+ *         - router_id
+ *         - seats
+ *         - av_seats
  *       properties:
  *         id:
  *           type: string
  *           description: The auto-generated id of the bus
- *         plate:
+ *         plate_number:
  *           type: string
- *           description: The bus plate
- *         driver:
+ *           description: The bus plate number
+ *         agency_id:
+ *           type: string
+ *           description: The bus agency
+ *         driver_id:
  *           type: string
  *           description: The bus driver
+ *         router_id:
+ *           type: string
+ *           description: The bus route
+ *         seats:
+ *           type: string
+ *           description: The total number of seats in a bus
+ *         av_seats:
+ *           type: string
+ *           description: The available seats
  *       example:
- *         plate: KL3MS
- *         driver: Kellia Umuhire
+ *         plate_number: KL3MS
+ *         agency_id: 12321
+ *         router_id: 2
+ *         driver_id: 1
+ *         av_seats: 15
+ *         seats: 30
  */
 
 /**
@@ -41,6 +77,14 @@ const idLength = 8;
  *   get:
  *     summary: Returns the list of all the buses
  *     tags: [Buses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: plate_number
+ *         schema:
+ *           type: string
+ *         description: Optional plate number to filter results by
  *     responses:
  *       200:
  *         description: The list of the Buses
@@ -50,13 +94,11 @@ const idLength = 8;
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Bus'
+ *       500:
+ *         description: Some server error
  */
 
-router.get("/", (req, res) => {
-  const buses = req.app.db.get("buses");
-
-  res.send(buses);
-});
+router.get("/", getBuses);
 
 /**
  * @swagger
@@ -64,6 +106,8 @@ router.get("/", (req, res) => {
  *   get:
  *     summary: Get the bus by id
  *     tags: [Buses]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -82,15 +126,7 @@ router.get("/", (req, res) => {
  *         description: The bus was not found
  */
 
-router.get("/:id", (req, res) => {
-  const bus = req.app.db.get("buses").find({ id: req.params.id }).value();
-
-  if (!bus) {
-    res.sendStatus(404);
-  }
-
-  res.send(bus);
-});
+router.get("/:id", busExistsById, getBusById);
 
 /**
  * @swagger
@@ -98,9 +134,12 @@ router.get("/:id", (req, res) => {
  *   post:
  *     summary: Create a new bus
  *     tags: [Buses]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
+ *     parameters:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/Bus'
@@ -111,25 +150,20 @@ router.get("/:id", (req, res) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Bus'
+ *       409:
+ *         description: bus already registered
  *       500:
  *         description: Some server error
  */
 
-// eslint-disable-next-line consistent-return
-router.post("/", (req, res) => {
-  try {
-    const bus = {
-      id: nanoid(idLength),
-      ...req.body,
-    };
-
-    req.app.db.get("buses").push(bus).write();
-
-    res.send(bus);
-  } catch (error) {
-    return res.status(500).send(error);
-  }
-});
+router.post(
+  "/",
+  checkUserLoggedIn,
+  restrictTo(ERoles.OPERATOR),
+  busExistsByPlateNumber,
+  agencyExists,
+  createBus
+);
 
 /**
  * @swagger
@@ -137,6 +171,8 @@ router.post("/", (req, res) => {
  *  put:
  *    summary: Update the bus by the id
  *    tags: [Buses]
+ *    security:
+ *      - bearerAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -157,51 +193,50 @@ router.post("/", (req, res) => {
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Bus'
- *      404:
- *        description: The bus was not found
+ *      409:
+ *        description: bus already registered
  *      500:
  *        description: Some error happened
  */
 
-router.put("/:id", (req, res) => {
-  try {
-    req.app.db
-      .get("buses")
-      .find({ id: req.params.id })
-      .assign(req.body)
-      .write();
-
-    res.send(req.app.db.get("buses").find({ id: req.params.id }));
-  } catch (error) {
-    return res.status(500).send(error);
-  }
-});
+router.put(
+  "/:id",
+  checkUserLoggedIn,
+  restrictTo(ERoles.OPERATOR),
+  busExistsById,
+  agencyExists,
+  updateBus
+);
 
 /**
  * @swagger
  * /buses/{id}:
  *   delete:
- *     summary: Remove the bus by id
+ *     summary: Delete a bus by Id
  *     tags: [Buses]
+ *     security:
+ *      - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The bus id
- *
+ *         description: Id of the bus to delete
  *     responses:
  *       200:
- *         description: The bus was deleted
+ *         description: bus deleted successfully
  *       404:
- *         description: The bus was not found
+ *         description: bus not found
+ *       500:
+ *         description: Internal server error
  */
-
-router.delete("/:id", (req, res) => {
-  req.app.db.get("buses").remove({ id: req.params.id }).write();
-
-  res.sendStatus(200);
-});
+router.delete(
+  "/:id",
+  checkUserLoggedIn,
+  restrictTo(ERoles.OPERATOR),
+  busExistsById,
+  deleteBusById
+);
 
 export default router;

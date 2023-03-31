@@ -8,14 +8,7 @@ const { route, Bus } = models;
 
 export async function getAllRoutes() {
   try {
-    const routes = await route.findAll({
-      include: [
-        {
-          model: Bus,
-          as: 'bus'
-        }
-      ]
-    });
+    const routes = await route.findAll();
     return routes;
   } catch (error) {
     throw error;
