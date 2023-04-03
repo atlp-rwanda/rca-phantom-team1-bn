@@ -33,7 +33,7 @@ appRouter.use(
 );
 appRouter.use("/buses", busesRouter);
 appRouter.use(
-  "/routes",  
+  "/routes",
   // checkUserLoggedIn,
   // restrictTo(ERoles.OPERATOR),
   routeRouter

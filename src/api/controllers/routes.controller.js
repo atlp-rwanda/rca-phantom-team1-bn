@@ -1,5 +1,11 @@
 import { StatusCodes } from "http-status-codes";
-import { createRoute, editRoute, findAllRoutes, findRouteById, removeRouteById} from "../services/route.service";
+import {
+  createRoute,
+  editRoute,
+  findAllRoutes,
+  findRouteById,
+  removeRouteById,
+} from "../services/route.service";
 
 export const getRoutes = async (req, res, next) => {
   try {

@@ -1,6 +1,12 @@
 import { Router } from "express";
 import { nanoid } from "nanoid";
-import { getRoute, getRoutes, routeDelete, routeUpdate, saveRoute } from "../controllers/routes.controller";
+import {
+  getRoute,
+  getRoutes,
+  routeDelete,
+  routeUpdate,
+  saveRoute,
+} from "../controllers/routes.controller";
 
 const routeRouter = Router();
 const idLength = 8;
@@ -177,6 +183,5 @@ routeRouter.put("/:id", routeUpdate);
  */
 
 routeRouter.delete("/:id", routeDelete);
-  
-  export default routeRouter;
-  
+
+export default routeRouter;

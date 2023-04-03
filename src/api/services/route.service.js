@@ -13,7 +13,6 @@
 //   }
 // }
 
-
 // export async function getRouteById(id) {
 //   try {
 //     const RouteModel = await route.findByPk(id);
@@ -58,7 +57,6 @@
 //   }
 // }
 
-
 import locales from "../../config/languages";
 import models from "../../db/models";
 import CustomError from "../utils/custom-error";
@@ -68,7 +66,11 @@ const { route } = models;
 
 export const findAllRoutes = async (limit, offset, condition, page) => {
   try {
-    const data = await route.findAndCountAll({ where: condition, limit, offset });
+    const data = await route.findAndCountAll({
+      where: condition,
+      limit,
+      offset,
+    });
     const response = getPagingData(data, page, limit);
     return response;
   } catch (e) {
