@@ -13,6 +13,7 @@ import { userExistsByEmail } from "../middlewares/user.middleware";
 import { validateSignupPayload } from "../validations/user.validator";
 import { validateLogin } from "../validations/auth.validator";
 import { checkUserExists } from "../middlewares/auth.middleware";
+import routeRouter from "./routes.routes";
 
 const appRouter = Router();
 
@@ -31,6 +32,12 @@ appRouter.use(
   signupRouter
 );
 appRouter.use("/buses", busesRouter);
+appRouter.use(
+  "/routes",  
+  // checkUserLoggedIn,
+  // restrictTo(ERoles.OPERATOR),
+  routeRouter
+);
 appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
 appRouter.use(profileRouter);
 

@@ -1,67 +1,116 @@
-import { StatusCodes } from "http-status-codes";
+// import { StatusCodes } from "http-status-codes";
+// import models from "../../db/models";
+// import CustomError from "../utils/custom-error";
+
+// const { route } = models;
+
+// export async function getAllRoutes() {
+//   try {
+//     const routes = await route.findAll();
+//     return routes;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+
+
+// export async function getRouteById(id) {
+//   try {
+//     const RouteModel = await route.findByPk(id);
+//     return RouteModel;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+
+// export async function createRoute(routeData) {
+//   try {
+//     const RouteModel = await route.create(routeData);
+//     return RouteModel;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+
+// export async function updateRoute(id, routeData) {
+//   try {
+//     const RouteModel = await route.findByPk(id);
+//     if (!RouteModel) {
+//       return null;
+//     }
+//     await RouteModel.update(routeData);
+//     return RouteModel;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+
+// export async function deleteRoute(id) {
+//   try {
+//     const RouteModel = await route.findByPk(id);
+//     if (!RouteModel) {
+//       return null;
+//     }
+//     await RouteModel.destroy();
+//     return RouteModel;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+
+
+import locales from "../../config/languages";
 import models from "../../db/models";
 import CustomError from "../utils/custom-error";
+import { StatusCodes } from "http-status-codes";
+import { getPagingData } from "../utils/pagination";
+const { route } = models;
 
-
-const { route, Bus } = models;
-
-
-export async function getAllRoutes() {
+export const findAllRoutes = async (limit, offset, condition, page) => {
   try {
-    const routes = await route.findAll();
-    return routes;
-  } catch (error) {
-    throw error;
+    const data = await route.findAndCountAll({ where: condition, limit, offset });
+    const response = getPagingData(data, page, limit);
+    return response;
+  } catch (e) {
+    throw new CustomError(
+      e?.message || "Error fetching routes",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
   }
-}
+};
 
-export async function getRouteById(id) {
+export const findRouteById = async (id) => {
   try {
-    const route = await route.findByPk(id, {
-      include: [
-        {
-          model: Bus,
-          as: 'bus'
-        }
-      ]
-    });
-    return route;
-  } catch (error) {
-    throw error;
+    const routeData = await route.findByPk(id);
+    if (!routeData) return false;
+    return routeData;
+  } catch (e) {
+    throw new CustomError(
+      e?.message || "Error fetching route by id",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
   }
-}
+};
 
-export async function createRoute(routeData) {
-  try {
-    const route = await route.create(routeData);
-    return route;
-  } catch (error) {
-    throw error;
-  }
-}
+export const createRoute = async (newRoute) => {
+  return await route.create(newRoute);
+};
 
-export async function updateRoute(id, routeData) {
-  try {
-    const route = await route.findByPk(id);
-    if (!route) {
-      return null;
-    }
-    await route.update(routeData);
-    return route;
-  } catch (error) {
-    throw error;
+export const editRoute = async (route, id) => {
+  const routeData = await route.findByPk(id);
+  if (!routeData) {
+    throw new Error(locales("route_not_found"));
   }
-}
+  var updateRoute = {
+    route_name: route.route_name,
+    origin_id: route.origin_id,
+    destination_id: route.destination_id,
+    bus_stop_id: route.bus_stop_id,
+  };
 
-export async function deleteRoute(id) {
-  try {
-    const route = await route.findByPk(id);
-    if (!route) {
-      return null;
-    }
-    await route.destroy();
-    return route;
-  } catch (error) {
-    throw error;
-  }
-}
+  return await route.update(updateRoute, { where: { id: id } });
+};
+
+export const removeRouteById = async (id) => {
+  return await route.destroy({ where: { id: id } });
+};

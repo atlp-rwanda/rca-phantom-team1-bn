@@ -1,9 +1,9 @@
 import { StatusCodes } from "http-status-codes";
-import { createRoute, deleteRoute, getAllRoutes, getRouteById, updateRoute } from "../services/route.service";
+import { createRoute, editRoute, findAllRoutes, findRouteById, removeRouteById} from "../services/route.service";
 
 export const getRoutes = async (req, res, next) => {
   try {
-    const routes = await getAllRoutes();
+    const routes = await findAllRoutes();
     res.status(StatusCodes.OK).json({ success: true, data: routes });
   } catch (error) {
     next(error);
@@ -13,7 +13,7 @@ export const getRoutes = async (req, res, next) => {
 export const getRoute = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const route = await getRouteById(id);
+    const route = await findRouteById(id);
     if (!route) {
       return res.status(StatusCodes.NOT_FOUND).json({
         success: false,
@@ -44,7 +44,7 @@ export const routeUpdate = async (req, res, next) => {
   const { id } = req.params;
   const { body } = req;
   try {
-    const updatedRoute = await updateRoute(id, body);
+    const updatedRoute = await editRoute(id, body);
     if (!updatedRoute) {
       return res.status(StatusCodes.NOT_FOUND).json({
         success: false,
@@ -64,7 +64,7 @@ export const routeUpdate = async (req, res, next) => {
 export const routeDelete = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const deletedRoute = await deleteRoute(id);
+    const deletedRoute = await removeRouteById(id);
     if (!deletedRoute) {
       return res.status(StatusCodes.NOT_FOUND).json({
         success: false,

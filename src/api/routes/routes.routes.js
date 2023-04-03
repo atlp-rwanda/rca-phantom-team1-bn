@@ -1,11 +1,9 @@
 import { Router } from "express";
 import { nanoid } from "nanoid";
-import { getRoute, routeDelete, routeUpdate, saveRoute } from "../controllers/routes.controller";
-import { getAllRoutes } from "../services/route.service";
+import { getRoute, getRoutes, routeDelete, routeUpdate, saveRoute } from "../controllers/routes.controller";
 
-const router = Router();
+const routeRouter = Router();
 const idLength = 8;
-
 /**
  * @swagger
  * components:
@@ -14,7 +12,10 @@ const idLength = 8;
  *       type: object
  *       required:
  *         - route_name
- *         - bus_id
+ *         - origin_id
+ *         - destination_id
+ *         - bus_stop_id
+ *         - created_at
  *       properties:
  *         id:
  *           type: string
@@ -22,12 +23,24 @@ const idLength = 8;
  *         route_name:
  *           type: string
  *           description: The name of the route
- *         bus_id:
- *           type: number
- *           description: The origin of the route
+ *         origin_id:
+ *           type: integer
+ *           description: The id of the origin point of the route
+ *         destination_id:
+ *           type: integer
+ *           description: The id of the destination point of the route
+ *         bus_stop_id:
+ *           type: integer
+ *           description: The id of the bus stop for the route
+ *         created_at:
+ *           type: date
+ *           description: The date of creation of the route
  *       example:
  *         route_name: GISOZI
- *         bus_id: 234353545
+ *         origin_id: 1
+ *         destination_id: 2
+ *         bus_stop_id: 3
+ *         created_at: "2021-05-01T00:00:00.000Z"
  */
 
 /**
@@ -54,7 +67,7 @@ const idLength = 8;
  *                 $ref: '#/components/schemas/Route'
  */
 
-router.get("/", getAllRoutes);
+routeRouter.get("/", getRoutes);
 
 /**
  * @swagger
@@ -80,7 +93,7 @@ router.get("/", getAllRoutes);
  *         description: The route was not found
  */
 
-router.get("/:id", getRoute);
+routeRouter.get("/:id", getRoute);
 
 /**
  * @swagger
@@ -106,7 +119,7 @@ router.get("/:id", getRoute);
  */
 
 // eslint-disable-next-line consistent-return
-router.post("/", saveRoute);
+routeRouter.post("/", saveRoute);
 
 /**
  * @swagger
@@ -140,7 +153,7 @@ router.post("/", saveRoute);
  *        description: Some error happened
  */
 
-router.put("/:id", routeUpdate);
+routeRouter.put("/:id", routeUpdate);
 
 /**
  * @swagger
@@ -163,7 +176,7 @@ router.put("/:id", routeUpdate);
  *         description: The route was not found
  */
 
-router.delete("/:id", routeDelete);
+routeRouter.delete("/:id", routeDelete);
   
-  export default router;
+  export default routeRouter;
   
