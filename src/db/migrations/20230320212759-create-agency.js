@@ -1,19 +1,20 @@
+/* eslint-disable prettier/prettier */
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
-
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Buses", {
+    await queryInterface.createTable("agencies", {
       id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
         allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
       },
-      plate_number: {
+      name: {
         type: Sequelize.STRING,
       },
-      active: {
-        type: Sequelize.BOOLEAN,
+      destinations: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -26,6 +27,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Buses");
+    await queryInterface.dropTable("agencies");
   },
 };

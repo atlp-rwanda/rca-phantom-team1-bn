@@ -1,5 +1,6 @@
-import { Model } from "sequelize";
-
+/* eslint-disable prettier/prettier */
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Bus extends Model {
     /**
@@ -7,15 +8,29 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    static associate(models) {
+      // define association here
+      // Bus.belongsTo(models.User);
+      // Bus.belongsTo(models.Agency);
+      // Bus.belongsTo(models.Router);
+      // models.User.hasMany(Bus);
+      // models.Agency.hasMany(Bus);
+      // models.Router.hasMany(Bus)
+    }
   }
+
   Bus.init(
     {
       plate_number: DataTypes.STRING,
-      active: DataTypes.BOOLEAN,
+      driver_id: DataTypes.INTEGER,
+      agency_id: DataTypes.INTEGER,
+      seats: DataTypes.INTEGER,
+      av_seats: DataTypes.INTEGER,
+      router_id: DataTypes.INTEGER,
     },
     {
       sequelize,
-      modelName: "Bus",
+      modelName: "bus",
     }
   );
 
