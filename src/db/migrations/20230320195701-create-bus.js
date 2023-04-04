@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

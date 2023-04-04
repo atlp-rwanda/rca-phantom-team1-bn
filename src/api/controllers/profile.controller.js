@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { StatusCodes } from "http-status-codes";
 import { pick } from "lodash";
 import { successResponse, errorResponse } from "../utils/responseHandler";

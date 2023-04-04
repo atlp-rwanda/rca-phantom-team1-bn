@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { StatusCodes } from "http-status-codes";
 import models from "../../db/models";
 
