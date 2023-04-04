@@ -8,6 +8,7 @@ import {
   saveRoute,
 } from "../controllers/routes.controller";
 import { routeExistsById, routeExistsByRouteName } from "../middlewares/route.middleware";
+import { validateCreateRoute, validateUpdateRoute } from "../validations/route.validator";
 
 const routeRouter = Router();
 const idLength = 8;
@@ -128,6 +129,7 @@ routeRouter.get("/:id", routeExistsById, getRoute);
 // eslint-disable-next-line consistent-return
 routeRouter.post(
   "/", 
+  validateCreateRoute,
   routeExistsByRouteName, 
   saveRoute
 );
@@ -164,7 +166,12 @@ routeRouter.post(
  *        description: Some error happened
  */
 
-routeRouter.put("/:id", routeExistsById, routeUpdate);
+routeRouter.put(
+  "/:id", 
+  validateUpdateRoute,
+  routeExistsById, 
+  routeUpdate
+  );
 
 /**
  * @swagger
