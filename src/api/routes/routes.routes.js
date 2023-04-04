@@ -7,6 +7,7 @@ import {
   routeUpdate,
   saveRoute,
 } from "../controllers/routes.controller";
+import { routeExistsById, routeExistsByRouteName } from "../middlewares/route.middleware";
 
 const routeRouter = Router();
 const idLength = 8;
@@ -99,7 +100,7 @@ routeRouter.get("/", getRoutes);
  *         description: The route was not found
  */
 
-routeRouter.get("/:id", getRoute);
+routeRouter.get("/:id", routeExistsById, getRoute);
 
 /**
  * @swagger
@@ -125,7 +126,11 @@ routeRouter.get("/:id", getRoute);
  */
 
 // eslint-disable-next-line consistent-return
-routeRouter.post("/", saveRoute);
+routeRouter.post(
+  "/", 
+  routeExistsByRouteName, 
+  saveRoute
+);
 
 /**
  * @swagger
@@ -159,7 +164,7 @@ routeRouter.post("/", saveRoute);
  *        description: Some error happened
  */
 
-routeRouter.put("/:id", routeUpdate);
+routeRouter.put("/:id", routeExistsById, routeUpdate);
 
 /**
  * @swagger
@@ -182,6 +187,6 @@ routeRouter.put("/:id", routeUpdate);
  *         description: The route was not found
  */
 
-routeRouter.delete("/:id", routeDelete);
+routeRouter.delete("/:id", routeExistsById, routeDelete);
 
 export default routeRouter;
