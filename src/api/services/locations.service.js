@@ -60,8 +60,8 @@ export const deleteLocation = async (id) => {
 
 export const getLocationByName = async (name) => {
   try {
-    const location = await location.findOne({ where: { name } });
-    return location;
+    const foundLocation = await location.findOne({ where: { name } });
+    return foundLocation;
   } catch (e) {
     const error = new Error(e?.message || "Error checking location by name");
     error.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
