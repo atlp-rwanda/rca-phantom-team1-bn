@@ -22,6 +22,52 @@ const router = Router();
 
 /**
  * @swagger
+ * /buses:
+ *   get:
+ *     summary: Get a paginated list of buses
+ *     tags: [Buses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *         required: false
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 100
+ *           default: 10
+ *         required: false
+ *     responses:
+ *       200:
+ *         description: A list of buses
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 count:
+ *                   type: integer
+ *                   description: Total number of buses
+ *                 buses:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Bus'
+ *                   description: List of buses for the requested page
+ *       500:
+ *         description: Internal server error
+ */
+
+router.get("/", getBuses);
+
+/**
+ * @swagger
  * components:
  *   schemas:
  *     Bus:
@@ -70,35 +116,6 @@ const router = Router();
  *   name: Buses
  *   description: The buses managing API
  */
-
-/**
- * @swagger
- * /buses:
- *   get:
- *     summary: Returns the list of all the buses
- *     tags: [Buses]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: query
- *         name: plate_number
- *         schema:
- *           type: string
- *         description: Optional plate number to filter results by
- *     responses:
- *       200:
- *         description: The list of the Buses
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Bus'
- *       500:
- *         description: Some server error
- */
-
-router.get("/", getBuses);
 
 /**
  * @swagger
