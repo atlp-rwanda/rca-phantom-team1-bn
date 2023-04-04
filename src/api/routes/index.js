@@ -34,8 +34,8 @@ appRouter.use(
 appRouter.use("/buses", busesRouter);
 appRouter.use(
   "/routes",
-  // checkUserLoggedIn,
-  // restrictTo(ERoles.OPERATOR),
+  checkUserLoggedIn,
+  restrictTo(ERoles.OPERATOR),
   routeRouter
 );
 appRouter.use("/auth", validateLogin, checkUserExists, authRouter);

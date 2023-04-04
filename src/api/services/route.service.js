@@ -54,7 +54,6 @@ export const findRouteByRouteName = async (route_name) => {
   }
 };
 
-
 export const createRoute = async (newRoute) => {
   return await route.create(newRoute);
 };
