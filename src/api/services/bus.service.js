@@ -24,14 +24,14 @@ export const getBus = async (busId) => {
   try {
 
     const bus = await getBus(busId);
-    bus.driverId = driverId;
+    bus.driver_id = driverId;
     
     const driver = await getDriver(driverId);
     driver.isAssigned = true; // fix: assign to driver, not user
     
     await bus.save();
     await driver.save(); // fix: save the updated driver instead of user
-    
+
     // Send an email to the user with the updated assignment
     await sendEmail(
       "Bus Assignment",
