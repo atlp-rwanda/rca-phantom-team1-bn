@@ -1,12 +1,13 @@
 /* eslint-disable prettier/prettier */
 import { StatusCodes } from "http-status-codes";
 import { Op } from "sequelize";
-import { assignDriver, getAll } from "../services/driver-bus-assignment.service";
 import locales from "../../config/languages";
 import {
   saveBus,
   findBusByPlateNumber,
   findAllBuses,
+  getAllAssignments,
+  assignDriver
 } from "../services/bus.service";
 import { getPagination } from "../utils/pagination";
 
@@ -104,7 +105,7 @@ export const assignDriverToBus = async (req, res, next) => {
 
 export const getDriverToBusAssignments = async (req, res, next) => {
   try {
-    const assignments = await getAll();
+    const assignments = await getAllAssignments();
     return res.status(StatusCodes.OK).json({
       success: true,
       data: assignments
