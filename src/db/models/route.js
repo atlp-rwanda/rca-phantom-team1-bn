@@ -16,8 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       route_name: DataTypes.STRING,
       origin_id: DataTypes.INTEGER,
       destination_id: DataTypes.INTEGER,
-      bus_stop_id: DataTypes.INTEGER,
-      created_at: DataTypes.DATE,
+      bus_stop_id: DataTypes.INTEGER
     },
     {
       sequelize,

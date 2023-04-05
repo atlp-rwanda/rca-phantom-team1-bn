@@ -29,7 +29,6 @@ const idLength = 8;
  *         - origin_id
  *         - destination_id
  *         - bus_stop_id
- *         - created_at
  *       properties:
  *         id:
  *           type: string
@@ -46,15 +45,11 @@ const idLength = 8;
  *         bus_stop_id:
  *           type: integer
  *           description: The id of the bus stop for the route
- *         created_at:
- *           type: date
- *           description: The date of creation of the route
  *       example:
  *         route_name: GISOZI
  *         origin_id: 1
  *         destination_id: 2
  *         bus_stop_id: 3
- *         created_at: "2021-05-01T00:00:00.000Z"
  */
 
 /**
@@ -70,6 +65,8 @@ const idLength = 8;
  *   get:
  *     summary: Returns the list of all the routes
  *     tags: [Routes]
+ *     security:
+ *      - bearerAuth: []
  *     responses:
  *       200:
  *         description: The list of the routes
@@ -89,6 +86,8 @@ routeRouter.get("/", getRoutes);
  *   get:
  *     summary: Get the route by id
  *     tags: [Routes]
+ *     security:
+ *      - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -115,6 +114,8 @@ routeRouter.get("/:id", routeExistsById, getRoute);
  *   post:
  *     summary: Create a new route
  *     tags: [Routes]
+ *     security:
+ *      - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -140,6 +141,8 @@ routeRouter.post("/", validateCreateRoute, routeExistsByRouteName, saveRoute);
  * /routes/{id}:
  *  put:
  *    summary: Update the routes by the id
+ *     security:
+ *      - bearerAuth: []
  *    tags: [Routes]
  *    parameters:
  *      - in: path
@@ -175,6 +178,8 @@ routeRouter.put("/:id", validateUpdateRoute, routeExistsById, routeUpdate);
  *   delete:
  *     summary: Remove the route by id
  *     tags: [Routes]
+ *     security:
+ *      - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
