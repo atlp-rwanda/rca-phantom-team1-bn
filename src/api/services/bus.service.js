@@ -2,12 +2,15 @@ import locales from "../../config/languages";
 import models from "../../db/models";
 import CustomError from "../utils/custom-error";
 import { StatusCodes } from "http-status-codes";
-import { getPagingData } from "../utils/pagination";
 const { bus } = models;
-export const findAllBuses = async (limit, offset, condition, page) => {
+
+export const findAllBuses = async (limit, offset) => {
   try {
-    const data = await bus.findAndCountAll({ where: condition, limit, offset });
-    const response = getPagingData(data, page, limit);
+    // const response = await bus.findAndCountAll({
+    //   limit,
+    //   offset,
+    // });
+    const response = await bus.findAll();
     return response;
   } catch (e) {
     throw new CustomError(

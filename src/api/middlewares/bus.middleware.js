@@ -20,6 +20,7 @@ export const busExistsByPlateNumber = async (req, res, next) => {
         message: `Bus with plate number [${plateNumber}] is not found`,
       });
   }
+  req.bus = bus;
   next();
 };
 

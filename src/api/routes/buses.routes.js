@@ -6,6 +6,7 @@ import {
   createBus,
   updateBus,
   deleteBusById,
+  getBusesByPlateNumber,
 } from "../controllers/bus.controllers";
 import ERoles from "../enums/ERole";
 import {
@@ -75,27 +76,44 @@ const router = Router();
  * @swagger
  * /buses:
  *   get:
- *     summary: Returns the list of all the buses
+ *     summary: Get a paginated list of buses
  *     tags: [Buses]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: query
- *         name: plate_number
+ *         name: page
  *         schema:
- *           type: string
- *         description: Optional plate number to filter results by
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *         required: false
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 100
+ *           default: 10
+ *         required: false
  *     responses:
  *       200:
- *         description: The list of the Buses
+ *         description: A list of buses
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Bus'
+ *               type: object
+ *               properties:
+ *                 count:
+ *                   type: integer
+ *                   description: Total number of buses
+ *                 buses:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Bus'
+ *                   description: List of buses for the requested page
  *       500:
- *         description: Some server error
+ *         description: Internal server error
  */
 
 router.get("/", getBuses);
@@ -130,6 +148,36 @@ router.get("/:id", busExistsById, getBusById);
 
 /**
  * @swagger
+ * /buses/plate/{plate_number}:
+ *   get:
+ *     summary: Get the bus by id
+ *     tags: [Buses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: plate_number
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The bus plate number
+ *     responses:
+ *       200:
+ *         description: The bus description by plate number
+ *         contens:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Bus'
+ *       404:
+ *         description: The bus was not found
+ *       500:
+ *         description: Internal server error
+ */
+
+router.get("/plate/:plate_number", busExistsByPlateNumber, getBusesByPlateNumber);
+
+/**
+ * @swagger
  * /buses:
  *   post:
  *     summary: Create a new bus
@@ -139,12 +187,11 @@ router.get("/:id", busExistsById, getBusById);
  *     requestBody:
  *       required: true
  *       content:
- *     parameters:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/Bus'
  *     responses:
- *       200:
+ *       201:
  *         description: The bus was successfully created
  *         content:
  *           application/json:
@@ -159,7 +206,7 @@ router.get("/:id", busExistsById, getBusById);
 router.post(
   "/",
   checkUserLoggedIn,
-  restrictTo(ERoles.OPERATOR),
+  restrictTo(ERoles.OPERATOR|| ERoles.ADMINISTRATOR),
   busExistsByPlateNumber,
   agencyExists,
   createBus
@@ -174,12 +221,9 @@ router.post(
  *    security:
  *      - bearerAuth: []
  *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: string
- *        required: true
- *        description: The bus id
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Bus'
  *    requestBody:
  *      required: true
  *      content:
@@ -202,7 +246,7 @@ router.post(
 router.put(
   "/:id",
   checkUserLoggedIn,
-  restrictTo(ERoles.OPERATOR),
+  restrictTo(ERoles.OPERATOR || ERoles.ADMINISTRATOR),
   busExistsById,
   agencyExists,
   updateBus
@@ -234,7 +278,7 @@ router.put(
 router.delete(
   "/:id",
   checkUserLoggedIn,
-  restrictTo(ERoles.OPERATOR),
+  restrictTo(ERoles.OPERATOR|| ERoles.ADMINISTRATOR),
   busExistsById,
   deleteBusById
 );

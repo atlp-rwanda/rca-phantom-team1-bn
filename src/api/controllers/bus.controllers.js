@@ -24,24 +24,32 @@ export const createBus = async (req, res, next) => {
 };
 
 export const getBuses = async (req, res, next) => {
-  const { page, size, plate_number } = req.query;
-  var condition = plate_number
-    ? { plate_number: { [Op.like]: `%${plate_number}%` } }
-    : null;
+  const { page, size } = req.query;
   const { limit, offset } = getPagination(page, size);
 
   try {
-    let buses;
-
-    if (plate_number) {
-      buses = await findBusByPlateNumber(plate_number);
-    } else {
-      buses = await findAllBuses(condition, limit, offset, page);
-    }
+    const data = await findAllBuses(limit, offset);
+    const totalPages = Math.ceil(data.count / limit);
 
     res.status(StatusCodes.OK).json({
+      data: data,
+      page: parseInt(page),
+      limit: parseInt(limit),
+      totalPages,
+      totalItems: data.count,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export const getBusesByPlateNumber = async (req, res, next) => {
+  try {
+    const bus = req.bus;
+    res.status(StatusCodes.OK).json({
       success: true,
-      data: buses,
+      data: bus,
     });
   } catch (err) {
     next(err);
