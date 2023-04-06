@@ -20,10 +20,14 @@ export const getBus = async (busId) => {
    }
  };
 
- export const assignDriver = async (busId, driverId) => {
+ export const assignDriver = async (id, driverId) => {
   try {
 
-    const bus = await getBus(busId);
+    const bus = await getBus(id);
+    if (!bus) {
+    throw new Error(locales("bus_not_found"));
+    }
+    
     bus.driver_id = driverId;
     
     const driver = await getDriver(driverId);
@@ -52,23 +56,19 @@ export const getBus = async (busId) => {
   }
 };
 
-
-export const getAllAssignments = async () => {
-  try {
-    const data = await user.findAll({ where: { isAssigned: "true" } });
-    return data;
-  } catch (e) {
-    throw new CustomError(
-      e?.message || "Error fetching assignments",
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
-  }
-};
-
-
 export const findAllBuses = async (limit, offset, condition, page) => {
   try {
-    const data = await bus.findAndCountAll({ where: condition, limit, offset });
+    const data = await bus.findAndCountAll({ 
+      where: condition, 
+      limit, 
+      offset,
+      include: [
+        {
+          model: user,
+          as: 'driver'
+        }
+      ]
+    });
     const response = getPagingData(data, page, limit);
     return response;
   } catch (e) {
@@ -78,6 +78,7 @@ export const findAllBuses = async (limit, offset, condition, page) => {
     );
   }
 };
+
 
 export const findBusByPlateNumber = async (plate_number) => {
   try {

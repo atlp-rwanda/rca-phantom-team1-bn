@@ -19,7 +19,6 @@ import {
 } from "../middlewares/protect.middleware";
 
 import {assignDriverToBus, getDriverToBusAssignments} from "../controllers/bus.controllers";
-import { busExists } from "../middlewares/bus.middleware";
 import { driverExists } from "../middlewares/driver.middleware";
 
 const router = Router();
@@ -75,12 +74,8 @@ const router = Router();
  *     BusDriver:
  *       type: object
  *       required:
- *         - bus_id
  *         - driver_id
  *       properties:
- *         bus_id:
- *           type: number
- *           description: The auto-generated id of the bus
  *         driver_id:
  *           type: number
  *           description: The auto-generated id of the driver
@@ -89,12 +84,19 @@ const router = Router();
 
 /**
  * @swagger
- * /buses/assign-driver:
+ * /buses/assign-driver/{id}:
  *  put:
  *    summary: Assign a driver to a bus
  *    tags: [Buses]
  *    security:
  *       - bearerAuth: []
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The bus id
  *    requestBody:
  *      required: true
  *      content:
@@ -114,28 +116,7 @@ const router = Router();
  *        description: Some error happened
  */
 
-router.put("/assign-driver",checkUserLoggedIn,restrictTo("operator"),busExists,driverExists,assignDriverToBus);
-
-/**
- * @swagger
- * /buses/get-all-bus-assignments:
- *   get:
- *     summary: Returns the list of all the bus assignments
- *     tags: [Buses]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: The list of the bus assignments
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Bus'
- */
-
-router.get("/get-all-bus-assignments", checkUserLoggedIn,restrictTo("operator"), getDriverToBusAssignments);
+router.put("/assign-driver/:id",checkUserLoggedIn,restrictTo("operator"),driverExists,assignDriverToBus);
 
 /**
  * @swagger

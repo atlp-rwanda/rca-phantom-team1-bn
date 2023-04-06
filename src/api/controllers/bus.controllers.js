@@ -89,9 +89,12 @@ export const updateBus = async (req, res, next) => {
 
 export const assignDriverToBus = async (req, res, next) => {
   try {
-    const { bus_id, driver_id } = req.body;
+
+    const { driver_id } = req.body;
+
+    const {id} = req.params;
     
-    const assignment = await assignDriver(bus_id, driver_id);
+    const assignment = await assignDriver(id, driver_id);
     // send email
     return res.status(StatusCodes.CREATED).json({
       success: true,
