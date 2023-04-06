@@ -6,7 +6,7 @@ export const busExistsByPlateNumber = async (req, res, next) => {
   const method = req.method;
   const plateNumber =
     method === "GET" ? req?.params?.plate_number : req?.body?.plate_number;
-  const busExists = await findBusByPlateNumber(plateNumber.toLowerCase());
+  const busExists = await findBusByPlateNumber(plateNumber);
 
   if (method === "POST" && busExists)
     return res
@@ -20,7 +20,7 @@ export const busExistsByPlateNumber = async (req, res, next) => {
         message: `Bus with plate number [${plateNumber}] is not found`,
       });
   }
-  req.bus = bus;
+  req.bus = busExists;
   next();
 };
 
@@ -39,11 +39,8 @@ export const agencyExists = async (req, res, next) => {
   const method = req.method;
   const agencyId =
     method === "GET" ? req?.params?.agency_id : req?.body?.agency_id;
-  const agencyExist =
-    typeof agencyId === "string"
-      ? await findAgencyById(agencyId.toLowerCase())
-      : null;
-
+  const agencyExist = await findAgencyById(agencyId)
+  
   if (method === "POST" && !agencyExist)
     return res
       .status(StatusCodes.BAD_REQUEST)

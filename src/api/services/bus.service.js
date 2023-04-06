@@ -6,11 +6,10 @@ const { bus } = models;
 
 export const findAllBuses = async (limit, offset) => {
   try {
-    // const response = await bus.findAndCountAll({
-    //   limit,
-    //   offset,
-    // });
-    const response = await bus.findAll();
+    const response = await bus.findAndCountAll({
+      limit,
+      offset,
+    });
     return response;
   } catch (e) {
     throw new CustomError(

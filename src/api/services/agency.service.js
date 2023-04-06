@@ -1,11 +1,11 @@
 import { StatusCodes } from "http-status-codes";
 import models from "../../db/models";
 import CustomError from "../utils/custom-error";
-const { agency } = models;
+const { Agency } = models;
 
-export const findAgencyById = async (agencyId) => {
+export const findAgencyById = async (id) => {
   try {
-    const agencyExists = await agency.findOne({ where: { agencyId } });
+    const agencyExists = await Agency.findOne({where:{ id:id }});
     if (!agencyExists) return false;
     return agencyExists;
   } catch (e) {

@@ -1,13 +1,10 @@
 /* eslint-disable prettier/prettier */
 import { StatusCodes } from "http-status-codes";
-import { Op } from "sequelize";
 import locales from "../../config/languages";
 import {
   saveBus,
-  findBusByPlateNumber,
   findAllBuses,
 } from "../services/bus.service";
-import { getPagination } from "../utils/pagination";
 
 export const createBus = async (req, res, next) => {
   try {
@@ -24,8 +21,8 @@ export const createBus = async (req, res, next) => {
 };
 
 export const getBuses = async (req, res, next) => {
-  const { page, size } = req.query;
-  const { limit, offset } = getPagination(page, size);
+  const { page = 1, limit = 10 } = req.query;
+  const offset = (page - 1) * limit;
 
   try {
     const data = await findAllBuses(limit, offset);
