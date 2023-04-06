@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { getLocation, getAllLocations, createNewLocation, updateExistingLocation, deleteLocation } from "../services/locations.service";
+import { getLocation, getAllLocations, createNewLocation, updateExistingLocation, deleteLocation, getLocationByName } from "../services/locations.service";
 
 export const getLocations = async (req, res, next) => {
   const { name } = req.query;
@@ -7,7 +7,7 @@ export const getLocations = async (req, res, next) => {
   try {
     let locations;
     if (name) {
-      locations = await getLocation(name); // use the service method
+      locations = await getLocationByName(name); // use the service method
     } else {
       locations = await getAllLocations();
     }
