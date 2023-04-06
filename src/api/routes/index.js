@@ -2,6 +2,7 @@ import { Router } from "express";
 import busesRouter from "./buses.routes";
 import authRouter from "./auth.routes";
 import roleRouter from "./roles.routes";
+import locationRouter from "./locations.routes";
 import profileRouter from "./profile.routes";
 import signupRouter from "./signup.routes";
 import {
@@ -32,6 +33,7 @@ appRouter.use(
 );
 appRouter.use("/buses", busesRouter);
 appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
+appRouter.use("/locations", locationRouter);
 appRouter.use(profileRouter);
 
 export default appRouter;
