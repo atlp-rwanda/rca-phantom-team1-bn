@@ -29,7 +29,7 @@ const options = {
     },
     servers: [
       {
-        url: `http://localhost:${PORT}`,
+        url: `http://localhost:${PORT || 5000}`,
       },
     ],
     components: {
@@ -65,10 +65,15 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(appRouter);
 
+// handling non existing routes
+app.use((req, res) => {
+  res.status(404).send({ message: "Route not found" });
+});
+
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => console.log(`The server is running on port ${PORT}`));
 }
 
 export default app;
 
-module.exports = app
+module.exports = app;

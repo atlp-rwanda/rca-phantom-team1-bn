@@ -55,7 +55,11 @@ module.exports = {
           {
             title: "passenger",
             description: "View the bus movement, routes and vehicles",
-            privileges: ["view_bus_movements", "views_routes", "views_vehicles"],
+            privileges: [
+              "view_bus_movements",
+              "views_routes",
+              "views_vehicles",
+            ],
             createdAt: new Date(),
             updatedAt: new Date(),
           },
