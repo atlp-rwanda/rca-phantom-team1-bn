@@ -5,7 +5,7 @@ const { agency } = models;
 
 export const findAgencyById = async (id) => {
   try {
-    const agencyExists = await agency.findOne({where:{ id:id }});
+    const agencyExists = await agency.findOne({where: id });
     if (!agencyExists) return false;
     return agencyExists;
   } catch (e) {

@@ -28,26 +28,26 @@ const router = Router();
  *     Bus:
  *       type: object
  *       required:
- *         - plate_number
- *         - agency_id
- *         - driver_id
- *         - router_id
+ *         - plateNumber
+ *         - agencyId
+ *         - driverId
+ *         - routerId
  *         - seats
  *         - av_seats
  *       properties:
  *         id:
  *           type: string
  *           description: The auto-generated id of the bus
- *         plate_number:
+ *         plateNumber:
  *           type: string
  *           description: The bus plate number
- *         agency_id:
+ *         agencyId:
  *           type: string
  *           description: The bus agency
- *         driver_id:
+ *         driverId:
  *           type: string
  *           description: The bus driver
- *         router_id:
+ *         routerId:
  *           type: string
  *           description: The bus route
  *         seats:
@@ -57,10 +57,10 @@ const router = Router();
  *           type: string
  *           description: The available seats
  *       example:
- *         plate_number: KL3MS
- *         agency_id: 12321
- *         router_id: 2
- *         driver_id: 1
+ *         plateNumber: KL3MS
+ *         agencyId: 12321
+ *         routerId: 2
+ *         driverId: 1
  *         av_seats: 15
  *         seats: 30
  */
@@ -148,7 +148,7 @@ router.get("/:id", busExistsById, getBusById);
 
 /**
  * @swagger
- * /buses/plate/{plate_number}:
+ * /buses/plate/{plateNumber}:
  *   get:
  *     summary: Get the bus by id
  *     tags: [Buses]
@@ -156,7 +156,7 @@ router.get("/:id", busExistsById, getBusById);
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: plate_number
+ *         name: plateNumber
  *         schema:
  *           type: string
  *         required: true
@@ -174,7 +174,7 @@ router.get("/:id", busExistsById, getBusById);
  *         description: Internal server error
  */
 
-router.get("/plate/:plate_number", busExistsByPlateNumber, getBusesByPlateNumber);
+router.get("/plate/:plateNumber", busExistsByPlateNumber, getBusesByPlateNumber);
 
 /**
  * @swagger
