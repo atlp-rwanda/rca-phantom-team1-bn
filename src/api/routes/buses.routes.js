@@ -221,9 +221,12 @@ router.post(
  *    security:
  *      - bearerAuth: []
  *    parameters:
- *        application/json:
- *          schema:
- *            $ref: '#/components/schemas/Bus'
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: id of the bus to update
  *    requestBody:
  *      required: true
  *      content:

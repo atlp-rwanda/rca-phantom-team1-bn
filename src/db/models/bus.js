@@ -10,9 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // Bus.belongsTo(models.User);
-      // Bus.belongsTo(models.Agency);
-      // Bus.belongsTo(models.Router);
+      Bus.belongsTo(models.user);
+      Bus.belongsTo(models.agency);
+      // Bus.belongsTo(models.router);
       // models.User.hasMany(Bus);
       // models.Agency.hasMany(Bus);
       // models.Router.hasMany(Bus)
