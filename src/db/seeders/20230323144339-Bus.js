@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert("buses", [
       {
-        id: 2,
+        id: 5,
         plateNumber: "KL3MS",
         agencyId: 2,
         driverId: 1,
@@ -16,7 +16,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 3,
+        id: 6,
         plateNumber: "KL3MS",
         agencyId: 2,
         driverId: 1,
@@ -27,7 +27,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 4,
+        id: 7,
         plateNumber: "KL2AS",
         agencyId: 2,
         driverId: 3,
