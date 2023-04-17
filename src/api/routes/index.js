@@ -2,6 +2,7 @@ import { Router } from "express";
 import busesRouter from "./buses.routes";
 import authRouter from "./auth.routes";
 import roleRouter from "./roles.routes";
+import locationRouter from "./locations.routes";
 import profileRouter from "./profile.routes";
 import signupRouter from "./signup.routes";
 import {
@@ -31,7 +32,12 @@ appRouter.use(
   signupRouter
 );
 appRouter.use("/buses", busesRouter);
+<<<<<<< HEAD
 appRouter.use("/auth", authRouter);
+=======
+appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
+appRouter.use("/locations", locationRouter);
+>>>>>>> 81d5016fd44a473c795b148258000348c9e3976a
 appRouter.use(profileRouter);
 
 export default appRouter;
