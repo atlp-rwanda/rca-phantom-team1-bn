@@ -15,6 +15,20 @@ const authRouter = Router();
 
 /**
  * @swagger
+ * /auth/logout:
+ *  get:
+ *    summary: User Logout
+ *    tags: [Auth]
+ *    responses:
+ *      200:
+ *        description: User logged out successfully
+ *      500:
+ *        description: Some error happened
+ */
+ authRouter.get("/logout", checkUserLoggedIn, logout);
+
+/**
+ * @swagger
  * /auth/login:
  *   post:
  *     summary: User login
@@ -39,6 +53,5 @@ const authRouter = Router();
  *         description: Internal server error
  */
 authRouter.post("/login", validateLogin, checkUserExists, login);
-authRouter.get("/logout",checkUserLoggedIn, logout);
 
 export default authRouter;

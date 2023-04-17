@@ -27,24 +27,14 @@ export const login = async (req, res) => {
 };
 
 export const logout = async (req,res) =>{
-  const token = req.headers.authorization
-  // if (!token){
-  //   return res
-  //   .status(StatusCodes.BAD_REQUEST)
-  //   .json({success: false, message: "Missing authorization token"})
-
-  // }
-  // if(!verifyToken(token)){
-  //   return res
-  //   .status(StatusCodes.UNAUTHORIZED)
-  //   .json({success: false, message: "Invalid Token"})
-  // }
-  if(!removeToken(token)){
+  const authHeader = req.headers.authorization
+  const token = authHeader.replace("Bearer ", "");
+  if(!token){
     return res
     .status(StatusCodes.BAD_REQUEST)
     .json({success: false, message: "Error logging out"})
   }
-
+  res.setHeader('Authorization', '');
   return res.status(StatusCodes.OK).json({
     success: true,
     message: "User Logged out successfully"

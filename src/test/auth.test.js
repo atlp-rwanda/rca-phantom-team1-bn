@@ -66,4 +66,28 @@ describe("Auth Controller", () => {
     expect(response.body.success).to.be.false;
     expect(response.body.message).to.equal("Invalid credentials");
   });
+  it("should log out user", async ()=>{
+    const email = "1";
+    const password = "test1234";
+    const user = {
+      id: 1,
+      fullname: "Ride Or Die",
+      email,
+      password: "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
+      roleId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    const response = await request(app)
+      .post("/auth/login")
+      .send({ email, password });
+    const token = response.body.accessToken;
+    const response2 = await request(app)
+    .get("/auth/logout")
+    .set("Authorization", "Bearer"+" "+token);
+    
+    expect(response2.status).to.equal(StatusCodes.OK);
+    expect(response.body.success).to.be.true;
+
+  })
 });
