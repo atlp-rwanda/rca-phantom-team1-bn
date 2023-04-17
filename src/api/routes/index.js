@@ -31,7 +31,7 @@ appRouter.use(
   signupRouter
 );
 appRouter.use("/buses", busesRouter);
-appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
+appRouter.use("/auth", authRouter);
 appRouter.use(profileRouter);
 
 export default appRouter;
