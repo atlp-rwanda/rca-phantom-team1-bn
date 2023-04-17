@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import { StatusCodes } from "http-status-codes";
 import { verifyPassword } from "../utils/hash-password";
-import { signJwtToken } from "../utils/jwt";
+import { removeToken, signJwtToken, verifyToken } from "../utils/jwt";
 import { getUser } from "../services/auth.service";
 
 export const login = async (req, res) => {
@@ -25,3 +25,20 @@ export const login = async (req, res) => {
     accessToken: signJwtToken(data),
   });
 };
+
+export const logout = async (req,res) =>{
+  const authHeader = req.headers.authorization
+  const token = authHeader.replace("Bearer ", "");
+  if(!token){
+    return res
+    .status(StatusCodes.BAD_REQUEST)
+    .json({success: false, message: "Error logging out"})
+  }
+  res.setHeader('Authorization', '');
+  return res.status(StatusCodes.OK).json({
+    success: true,
+    message: "User Logged out successfully"
+  });
+
+  
+}

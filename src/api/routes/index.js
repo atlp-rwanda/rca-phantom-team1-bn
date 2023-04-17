@@ -32,7 +32,7 @@ appRouter.use(
   signupRouter
 );
 appRouter.use("/buses", busesRouter);
-appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
+appRouter.use("/auth", authRouter);
 appRouter.use("/locations", locationRouter);
 appRouter.use(profileRouter);
 
