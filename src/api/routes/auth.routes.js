@@ -19,6 +19,8 @@ const authRouter = Router();
  *  get:
  *    summary: User Logout
  *    tags: [Auth]
+ *    security:
+ *      - bearerAuth: []
  *    responses:
  *      200:
  *        description: User logged out successfully
