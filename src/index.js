@@ -4,11 +4,14 @@ import cors from "cors";
 import morgan from "morgan";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
+import { PORT } from "./config/dotenv";
+import busesRouter from "./api/routes/buses.routes";
+import routesRouter from "./api/routes/routes.routes";
 import db from "./db/models/index.js";
 import locales from "./config/languages";
 import appRouter from "./api/routes/index.js";
 
-const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 5000;
 
 db.sequelize
   .sync()
