@@ -23,7 +23,7 @@ export const getRoute = async (req, res, next) => {
     if (!route) {
       return res.status(StatusCodes.NOT_FOUND).json({
         success: false,
-        message: `Route with id [${id}] not found`,
+        message: `Route not found`,
       });
     }
     res.status(StatusCodes.OK).json({ success: true, data: route });
@@ -54,7 +54,7 @@ export const routeUpdate = async (req, res, next) => {
     if (!updatedRoute) {
       return res.status(StatusCodes.NOT_FOUND).json({
         success: false,
-        message: `Route with id [${id}] not found`,
+        message: `Route not found`,
       });
     }
     res.status(StatusCodes.OK).json({
@@ -74,7 +74,7 @@ export const routeDelete = async (req, res, next) => {
     if (!deletedRoute) {
       return res.status(StatusCodes.NOT_FOUND).json({
         success: false,
-        message: `Route with id [${id}] not found`,
+        message: `Route not found`,
       });
     }
     res.status(StatusCodes.OK).json({

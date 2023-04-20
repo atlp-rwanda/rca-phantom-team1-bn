@@ -7,7 +7,6 @@ export const checkUserLoggedIn = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
-    console.log('  token : ', req.headers);
     if (!authHeader) {
       return res
         .status(401)
