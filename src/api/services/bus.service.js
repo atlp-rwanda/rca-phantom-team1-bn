@@ -2,13 +2,25 @@ import locales from "../../config/languages";
 import models from "../../db/models";
 import CustomError from "../utils/custom-error";
 import { StatusCodes } from "http-status-codes";
-import { getPagingData } from "../utils/pagination";
-const { bus } = models;
+const { bus, agency , user} = models;
 
-export const findAllBuses = async (limit, offset, condition, page) => {
+export const findAllBuses = async (limit, offset) => {
   try {
-    const data = await bus.findAndCountAll({ where: condition, limit, offset });
-    const response = getPagingData(data, page, limit);
+    const response = await bus.findAndCountAll({
+      limit,
+      offset,
+      include: [
+        {
+          model: user,
+          as: 'driver',
+          foreignKey: 'driverId'
+        }, 
+        {
+          model: agency,
+          as: 'agency'
+        },
+      ]
+    });
     return response;
   } catch (e) {
     throw new CustomError(
@@ -18,9 +30,22 @@ export const findAllBuses = async (limit, offset, condition, page) => {
   }
 };
 
-export const findBusByPlateNumber = async (plate_number) => {
+export const findBusByPlateNumber = async (plateNumber) => {
   try {
-    const busExists = await bus.findOne({ where: { plate_number } });
+    const busExists = await bus.findOne({ 
+      where: { plateNumber },
+      include: [
+        {
+          model: user,
+          as: 'driver',
+          foreignKey: 'driverId'
+        }, 
+        {
+          model: agency,
+          as: 'agency'
+        },
+      ]
+    });
     if (!busExists) return false;
     return busExists;
   } catch (e) {
@@ -31,9 +56,22 @@ export const findBusByPlateNumber = async (plate_number) => {
   }
 };
 
-export const findBusByAgency = async (agency_id) => {
+export const findBusByAgency = async (agencyId) => {
   try {
-    const busesExists = await bus.findOne({ where: { agency_id } });
+    const busesExists = await bus.findOne({ 
+      where: { agencyId },
+      include: [
+        {
+          model: user,
+          as: 'driver',
+          foreignKey: 'driverId'
+        }, 
+        {
+          model: agency,
+          as: 'agency'
+        },
+      ]
+    });
     if (!busesExists) return false;
     return busesExists;
   } catch (e) {
@@ -46,7 +84,20 @@ export const findBusByAgency = async (agency_id) => {
 
 export const findBusByRoute = async (route_id) => {
   try {
-    const busExists = await bus.findOne({ where: { route_id } });
+    const busExists = await bus.findOne({ 
+      where: { route_id },
+      include: [
+        {
+          model: user,
+          as: 'driver',
+          foreignKey: 'driverId'
+        }, 
+        {
+          model: agency,
+          as: 'agency'
+        },
+      ]
+    });
     if (!busExists) return false;
     return busExists;
   } catch (e) {
@@ -57,9 +108,22 @@ export const findBusByRoute = async (route_id) => {
   }
 };
 
-export const findBusByDriver = async (driver_id) => {
+export const findBusByDriver = async (driverId) => {
   try {
-    const busExists = await bus.findOne({ where: { driver_id } });
+    const busExists = await bus.findOne({ 
+      where: { driverId },
+      include: [
+        {
+          model: user,
+          as: 'driver',
+          foreignKey: 'driverId'
+        }, 
+        {
+          model: agency,
+          as: 'agency'
+        },
+      ]
+    });
     if (!busExists) return false;
     return busExists;
   } catch (e) {
@@ -72,7 +136,19 @@ export const findBusByDriver = async (driver_id) => {
 
 export const findBusById = async (id) => {
   try {
-    const busData = await bus.findByPk(id);
+    const busData = await bus.findByPk(id, {
+      include: [
+        {
+          model: user,
+          as: 'driver',
+          foreignKey: 'driverId'
+        }, 
+        {
+          model: agency,
+          as: 'agency'
+        },
+      ]
+    });
     if (!busData) return false;
     return busData;
   } catch (e) {
@@ -97,8 +173,8 @@ export const editBus = async (bus, id) => {
     throw new Error(locales("bus_not_found"));
   }
   var updateBus = {
-    plate_number: bus.plate_number,
-    agency_id: bus.agency_id,
+    plateNumber: bus.plateNumber,
+    agencyId: bus.agencyId,
     route_id: bus.route_id,
   };
 

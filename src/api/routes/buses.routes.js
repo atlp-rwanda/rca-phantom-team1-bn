@@ -6,6 +6,7 @@ import {
   createBus,
   updateBus,
   deleteBusById,
+  getBusesByPlateNumber,
 } from "../controllers/bus.controllers";
 import ERoles from "../enums/ERole";
 import {
@@ -27,26 +28,26 @@ const router = Router();
  *     Bus:
  *       type: object
  *       required:
- *         - plate_number
- *         - agency_id
- *         - driver_id
- *         - router_id
+ *         - plateNumber
+ *         - agencyId
+ *         - driverId
+ *         - routerId
  *         - seats
  *         - av_seats
  *       properties:
  *         id:
  *           type: string
  *           description: The auto-generated id of the bus
- *         plate_number:
+ *         plateNumber:
  *           type: string
  *           description: The bus plate number
- *         agency_id:
+ *         agencyId:
  *           type: string
  *           description: The bus agency
- *         driver_id:
+ *         driverId:
  *           type: string
  *           description: The bus driver
- *         router_id:
+ *         routerId:
  *           type: string
  *           description: The bus route
  *         seats:
@@ -56,10 +57,10 @@ const router = Router();
  *           type: string
  *           description: The available seats
  *       example:
- *         plate_number: KL3MS
- *         agency_id: 12321
- *         router_id: 2
- *         driver_id: 1
+ *         plateNumber: KL3MS
+ *         agencyId: 12321
+ *         routerId: 2
+ *         driverId: 1
  *         av_seats: 15
  *         seats: 30
  */
@@ -75,27 +76,44 @@ const router = Router();
  * @swagger
  * /buses:
  *   get:
- *     summary: Returns the list of all the buses
+ *     summary: Get a paginated list of buses
  *     tags: [Buses]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: query
- *         name: plate_number
+ *         name: page
  *         schema:
- *           type: string
- *         description: Optional plate number to filter results by
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *         required: false
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 100
+ *           default: 10
+ *         required: false
  *     responses:
  *       200:
- *         description: The list of the Buses
+ *         description: A list of buses
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Bus'
+ *               type: object
+ *               properties:
+ *                 count:
+ *                   type: integer
+ *                   description: Total number of buses
+ *                 buses:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Bus'
+ *                   description: List of buses for the requested page
  *       500:
- *         description: Some server error
+ *         description: Internal server error
  */
 
 router.get("/", getBuses);
@@ -130,6 +148,36 @@ router.get("/:id", busExistsById, getBusById);
 
 /**
  * @swagger
+ * /buses/plate/{plateNumber}:
+ *   get:
+ *     summary: Get the bus by id
+ *     tags: [Buses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: plateNumber
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The bus plate number
+ *     responses:
+ *       200:
+ *         description: The bus description by plate number
+ *         contens:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Bus'
+ *       404:
+ *         description: The bus was not found
+ *       500:
+ *         description: Internal server error
+ */
+
+router.get("/plate/:plateNumber", busExistsByPlateNumber, getBusesByPlateNumber);
+
+/**
+ * @swagger
  * /buses:
  *   post:
  *     summary: Create a new bus
@@ -139,12 +187,11 @@ router.get("/:id", busExistsById, getBusById);
  *     requestBody:
  *       required: true
  *       content:
- *     parameters:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/Bus'
  *     responses:
- *       200:
+ *       201:
  *         description: The bus was successfully created
  *         content:
  *           application/json:
@@ -159,7 +206,7 @@ router.get("/:id", busExistsById, getBusById);
 router.post(
   "/",
   checkUserLoggedIn,
-  restrictTo(ERoles.OPERATOR),
+  restrictTo(ERoles.OPERATOR|| ERoles.ADMINISTRATOR),
   busExistsByPlateNumber,
   agencyExists,
   createBus
@@ -179,7 +226,7 @@ router.post(
  *        schema:
  *          type: string
  *        required: true
- *        description: The bus id
+ *        description: id of the bus to update
  *    requestBody:
  *      required: true
  *      content:
@@ -202,7 +249,7 @@ router.post(
 router.put(
   "/:id",
   checkUserLoggedIn,
-  restrictTo(ERoles.OPERATOR),
+  restrictTo(ERoles.OPERATOR || ERoles.ADMINISTRATOR),
   busExistsById,
   agencyExists,
   updateBus
@@ -234,7 +281,7 @@ router.put(
 router.delete(
   "/:id",
   checkUserLoggedIn,
-  restrictTo(ERoles.OPERATOR),
+  restrictTo(ERoles.OPERATOR|| ERoles.ADMINISTRATOR),
   busExistsById,
   deleteBusById
 );

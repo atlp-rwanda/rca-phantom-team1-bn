@@ -9,22 +9,22 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      plate_number: {
+      plateNumber: {
         type: Sequelize.STRING,
       },
-      agency_id: {
+      agencyId: {
         type: Sequelize.INTEGER,
       },
-      driver_id: {
+      driverId: {
+        type: Sequelize.INTEGER,
+      },
+      routerId: {
         type: Sequelize.INTEGER,
       },
       seats: {
         type: Sequelize.INTEGER,
       },
       av_seats: {
-        type: Sequelize.INTEGER,
-      },
-      router_id: {
         type: Sequelize.INTEGER,
       },
       createdAt: {
