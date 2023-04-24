@@ -6,6 +6,7 @@ import { decodeJwtToken } from "../utils/jwt";
 export const checkUserLoggedIn = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
+
     if (!authHeader) {
       return res
         .status(401)
