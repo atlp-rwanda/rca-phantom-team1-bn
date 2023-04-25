@@ -5,7 +5,8 @@ import {
   saveBus,
   findAllBuses,
   getAllAssignments,
-  assignDriver
+  assignDriver,
+  assignRoute
 } from "../services/bus.service";
 
 export const createBus = async (req, res, next) => {
@@ -92,7 +93,7 @@ export const updateBus = async (req, res, next) => {
   }
 };
 
-export const assignDriverToBus = async (req, res, next) => {
+export const assignDriverToBus = async (req, res) => {
   try {
 
     const { driver_id } = req.body;
@@ -106,7 +107,29 @@ export const assignDriverToBus = async (req, res, next) => {
       data: assignment
     })
   } catch (err) {
-    next(err);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: err.message
+    });
+  }
+};
+
+export const assignRouteToBus = async (req, res) => {
+  try {
+    const { routerId } = req.body;
+    const { id } = req.params;
+    
+    const assignment = await assignRoute(id, routerId);
+
+    return res.status(StatusCodes.CREATED).json({
+      success: true,
+      data: assignment
+    });
+  } catch (err) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: err.message
+    });
   }
 };
 

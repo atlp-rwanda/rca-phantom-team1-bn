@@ -36,7 +36,7 @@ const options = {
         url: `http://localhost:${PORT || 5000}`,
       },
       {
-        url: `https://phantom-backend-pr-18.onrender.com`,
+        url: `https://phantom-techbandit.onrender.com`,
       },
     ],
     components: {

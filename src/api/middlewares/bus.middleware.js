@@ -37,11 +37,11 @@ export const busExistsById = async (req, res, next) => {
 };
 
 export const busExists = async (req, res, next) => {
-  const bus = await getBus(req.body.bus_id);
+  const bus = await getBus(req.params.id);
   if (!bus)
     return res.status(StatusCodes.NOT_FOUND).json({
       success: false,
-      message: `Bus with id [${req.body.bus_id}] is not found`,
+      message: `Bus is not found`,
     });
   req.bus = bus;
   next();

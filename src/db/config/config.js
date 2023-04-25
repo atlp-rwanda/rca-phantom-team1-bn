@@ -18,8 +18,8 @@ module.exports = {
   },
   development: {
     url: process.env.DB_URL,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+    username: process.env.DB_USER || "postgres",
+    password: process.env.DB_PASSWORD || "divine@2020",
     database: process.env.DB_NAME,
     host: process.env.DB_HOST || "127.0.0.1",
     port: 5432,

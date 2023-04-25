@@ -1,29 +1,31 @@
 /* eslint-disable prettier/prettier */
 "use strict";
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("roles", {
+    await queryInterface.createTable("routes", {
       id: {
-        type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER,
       },
-      title: {
+      route_name: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
       },
-      description: {
-        type: Sequelize.TEXT,
-        allowNull: false,
+      origin_id: {
+        type: Sequelize.INTEGER,
       },
-      privileges: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+      destination_id: {
+        type: Sequelize.INTEGER,
+      },
+      bus_stop_id: {
+        type: Sequelize.INTEGER,
+      },
+      isAssigned: {
+        type: Sequelize.ENUM("true", "false"),
         allowNull: false,
-        defaultValue: [],
+        defaultValue: "false",
       },
       createdAt: {
         allowNull: false,
@@ -35,8 +37,7 @@ module.exports = {
       },
     });
   },
-
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("roles");
+    await queryInterface.dropTable("routes");
   },
 };
