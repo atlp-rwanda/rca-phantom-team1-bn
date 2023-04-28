@@ -83,6 +83,38 @@ export const findBusByAgency = async (agencyId) => {
   }
 };
 
+ export const assignDriver = async (busId, driverId) => {
+  try {
+
+    const bus = await getBus(busId);
+    bus.driver_id = driverId;
+    
+    const driver = await getDriver(driverId);
+    driver.isAssigned = true; // fix: assign to driver, not user
+    
+    await bus.save();
+    await driver.save(); // fix: save the updated driver instead of user
+
+    // Send an email to the user with the updated assignment
+    await sendEmail(
+      "Bus Assignment",
+      driver.email,
+      `Hi ${driver.fullname}, <br /><br />
+      You have been assigned to bus ${bus.plate_number}.<br />
+      Please report to the office for further details.<br /><br />
+      Best regards,<br />
+      Transportation Company`
+    );
+
+    return { message: "Driver assigned to bus successfully" };
+  } catch (e) {
+    throw new CustomError(
+      e?.message || "Error while assigning driver to bus",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
 export const findBusByRoute = async (route_id) => {
   try {
     const busExists = await bus.findOne({ 
