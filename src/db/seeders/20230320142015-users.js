@@ -17,7 +17,7 @@ export default {
               "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
             fullname: "Ride Or Die",
             phone_number: "+1234567890",
-            roleId: 1,
+            roleId: 2,
             isAssigned: "false",
             createdAt: new Date(),
             updatedAt: new Date(),
