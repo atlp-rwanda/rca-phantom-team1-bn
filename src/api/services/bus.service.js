@@ -3,7 +3,21 @@ import locales from "../../config/languages";
 import models from "../../db/models";
 import CustomError from "../utils/custom-error";
 import { StatusCodes } from "http-status-codes";
+import { getDriver } from "./driver.service";
+import { sendEmail } from "../utils/email";
 const { bus, agency , user} = models;
+
+export const getBus = async (busId) => {
+  try {
+   
+    const data = await bus.findOne({ where: { id: busId } });
+    return data;
+  } catch (e) {
+    const error = new CustomError(e?.message || "Error getting bus");
+    error.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+    throw error;
+  }
+};
 
 export const findAllBuses = async (limit, offset) => {
   try {
