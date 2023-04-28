@@ -1,15 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { StatusCodes } from "http-status-codes";
-import { Op } from "sequelize";
 import locales from "../../config/languages";
 import {
   saveBus,
-  findBusByPlateNumber,
   findAllBuses,
   getAllAssignments,
   assignDriver
 } from "../services/bus.service";
-import { getPagination } from "../utils/pagination";
 
 export const createBus = async (req, res, next) => {
   try {
@@ -26,24 +23,32 @@ export const createBus = async (req, res, next) => {
 };
 
 export const getBuses = async (req, res, next) => {
-  const { page, size, plate_number } = req.query;
-  var condition = plate_number
-    ? { plate_number: { [Op.like]: `%${plate_number}%` } }
-    : null;
-  const { limit, offset } = getPagination(page, size);
+  const { page = 1, limit = 10 } = req.query;
+  const offset = (page - 1) * limit;
 
   try {
-    let buses;
-
-    if (plate_number) {
-      buses = await findBusByPlateNumber(plate_number);
-    } else {
-      buses = await findAllBuses(condition, limit, offset, page);
-    }
+    const data = await findAllBuses(limit, offset);
+    const totalPages = Math.ceil(data.count / limit);
 
     res.status(StatusCodes.OK).json({
+      data: data,
+      page: parseInt(page),
+      limit: parseInt(limit),
+      totalPages,
+      totalItems: data.count,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export const getBusesByPlateNumber = async (req, res, next) => {
+  try {
+    const bus = req.bus;
+    res.status(StatusCodes.OK).json({
       success: true,
-      data: buses,
+      data: bus,
     });
   } catch (err) {
     next(err);

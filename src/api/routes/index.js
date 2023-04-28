@@ -3,6 +3,7 @@ import { Router } from "express";
 import busesRouter from "./buses.routes";
 import authRouter from "./auth.routes";
 import roleRouter from "./roles.routes";
+import locationRouter from "./locations.routes";
 import profileRouter from "./profile.routes";
 import signupRouter from "./signup.routes";
 import {
@@ -14,6 +15,7 @@ import { userExistsByEmail } from "../middlewares/user.middleware";
 import { validateSignupPayload } from "../validations/user.validator";
 import { validateLogin } from "../validations/auth.validator";
 import { checkUserExists } from "../middlewares/auth.middleware";
+import routeRouter from "./routes.routes";
 
 const appRouter = Router();
 
@@ -32,7 +34,14 @@ appRouter.use(
   signupRouter
 );
 appRouter.use("/buses", busesRouter);
+appRouter.use(
+  "/routes",
+  checkUserLoggedIn,
+  restrictTo(ERoles.OPERATOR, ERoles.ADMINISTRATOR),
+  routeRouter
+);
 appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
+appRouter.use("/locations", locationRouter);
 appRouter.use(profileRouter);
 
 export default appRouter;

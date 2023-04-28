@@ -10,18 +10,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Bus.belongsTo(models.user, { foreignKey: 'driver_id', as: 'driver' });
+      Bus.belongsTo(models.agency);
+      Bus.belongsTo(models.user,{ foreignKey: 'driverId', as: 'driver' });
+      // Bus.belongsTo(models.router); 
+      // models.user.hasMany(Bus);
+      // models.agency.hasMany(Bus);
+      // models.Router.hasMany(Bus)
     }
   }
 
   Bus.init(
     {
-      plate_number: DataTypes.STRING,
-      driver_id: DataTypes.INTEGER,
-      agency_id: DataTypes.INTEGER,
+      plateNumber: DataTypes.STRING,
+      driverId: DataTypes.INTEGER,
+      agencyId: DataTypes.INTEGER,
+      routerId: DataTypes.INTEGER,
       seats: DataTypes.INTEGER,
       av_seats: DataTypes.INTEGER,
-      router_id: DataTypes.INTEGER,
     },
     {
       sequelize,
