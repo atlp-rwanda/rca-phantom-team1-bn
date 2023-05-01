@@ -121,7 +121,7 @@ router.put("/assign-driver/:id",checkUserLoggedIn,restrictTo("operator"),driverE
 
 /**
  * @swagger
- * /buses/get-all-buses:
+ * /buses:
  *   get:
  *     summary: Get a paginated list of buses
  *     tags: [Buses]
