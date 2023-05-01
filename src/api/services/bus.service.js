@@ -101,7 +101,7 @@ export const findBusByAgency = async (agencyId) => {
   try {
 
     const bus = await getBus(busId);
-    bus.driver_id = driverId;
+    bus.driverId = driverId;
     
     const driver = await getDriver(driverId);
     driver.isAssigned = true; // fix: assign to driver, not user
