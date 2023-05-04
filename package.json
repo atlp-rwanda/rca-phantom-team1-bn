@@ -7,7 +7,11 @@
     "start": "cross-env NODE_ENV=staging babel-node src/index.js",
     "prod": "cross-env NODE_ENV=production babel-node src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec babel-node src/index.js",
-    "test": "cross-env NODE_ENV=test nyc mocha --recursive ./src/test  --require @babel/register --exit --timeout 30000",
+    "migrate": "npx sequelize db:migrate",
+    "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
+    "seed": "npx sequelize-cli db:seed:all",
+    "seeding": "npm run migrate:reset && npm run seed",
+    "test": "cross-env NODE_ENV=test npm run seeding && nyc mocha --recursive ./src/test  --require @babel/register --exit --timeout 30000",
     "lint": "npm run format && eslint ./src --ext .js --fix",
     "format": "prettier --config .prettierrc 'src/**' --write",
     "db:drop": "sequelize-cli db:drop",
@@ -19,7 +23,8 @@
     "db:g:seed": "sequelize-cli seed:generate --name",
     "db:seeds": "sequelize-cli db:seed:all",
     "db:migrate:seed": "sequelize-cli db:migrate && sequelize-cli db:seed:all",
-    "db:reseed": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all"
+    "db:reseed": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+    "db:create-bus": "babel-node ./src/db/fix-seed/create-bus.js"
   },
   "author": "",
   "license": "ISC",

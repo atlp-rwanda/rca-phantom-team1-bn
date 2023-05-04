@@ -19,6 +19,9 @@ import {
   restrictTo,
 } from "../middlewares/protect.middleware";
 
+import {assignDriverToBus} from "../controllers/bus.controllers";
+import { driverExists } from "../middlewares/driver.middleware";
+
 const router = Router();
 
 /**
@@ -67,10 +70,54 @@ const router = Router();
 
 /**
  * @swagger
- * tags:
- *   name: Buses
- *   description: The buses managing API
+ * components:
+ *   schemas:
+ *     BusDriver:
+ *       type: object
+ *       required:
+ *         - driver_id
+ *       properties:
+ *         driver_id:
+ *           type: number
+ *           description: The auto-generated id of the driver
  */
+
+
+/**
+ * @swagger
+ * /buses/assign-driver/{id}:
+ *  put:
+ *    summary: Assign a driver to a bus
+ *    tags: [Buses]
+ *    security:
+ *       - bearerAuth: []
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The bus id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/BusDriver'
+ *    responses:
+ *      200:
+ *        description: The assignment was done successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Bus'
+ *      404:
+ *        description: The bus or driver was not found
+ *      500:
+ *        description: Some error happened
+ */
+
+router.put("/assign-driver/:id",checkUserLoggedIn,restrictTo("operator"),driverExists,assignDriverToBus);
 
 /**
  * @swagger

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import bcrypt from "bcrypt";
 import { StatusCodes } from "http-status-codes";
 import { getRoleByTitle } from "../services/roles.service";

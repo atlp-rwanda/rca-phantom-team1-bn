@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import chai from "chai";
 import chaiHttp from "chai-http";
 import { StatusCodes } from "http-status-codes";
@@ -194,9 +195,10 @@ describe("PATCH /roles/:id", (done) => {
       description: "New admin role",
       privileges: ["create", "read", "update"],
     };
+    let id = 200
     chai
       .request(app)
-      .patch("/roles/999")
+      .patch("/roles/" + id)
       .send(updatedRole)
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + signJwtToken({ id: 3, roleId: 3 }))

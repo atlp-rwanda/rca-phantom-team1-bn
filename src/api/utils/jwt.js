@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { sign, verify } from "jsonwebtoken";
 
 export const signJwtToken = (payload) => {

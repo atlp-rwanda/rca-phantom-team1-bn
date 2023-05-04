@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const chai = require("chai");
 const request = require("supertest");
 const app = require("../index");
@@ -14,7 +15,7 @@ describe("Auth Controller", () => {
       fullname: "Ride Or Die",
       email,
       password: "$2b$10$hY08YwiEfuzi0oU7.IJ15eDfk0yKZnLG9R9KYM3e.JfwO9P9DFl5u",
-      roleId: 1,
+      roleId: 2,
       createdAt: new Date(),
       updatedAt: new Date(),
     };

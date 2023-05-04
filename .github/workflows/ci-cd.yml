@@ -10,8 +10,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
-      - name: 'Create env file'
+          cache: "npm"
+      - name: "Create env file"
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
       - name: Install dependencies
@@ -19,12 +19,6 @@ jobs:
 
       - name: Lint.
         run: npm run lint
-
-      - name: Migrate
-        run: npm run db:migrate
-
-      - name: Seed
-        run: npm run db:seeds
 
       - name: Run Tests
         run: npm run test

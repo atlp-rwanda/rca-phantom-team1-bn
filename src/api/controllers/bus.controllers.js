@@ -4,6 +4,8 @@ import locales from "../../config/languages";
 import {
   saveBus,
   findAllBuses,
+  getAllAssignments,
+  assignDriver
 } from "../services/bus.service";
 
 export const createBus = async (req, res, next) => {
@@ -85,6 +87,37 @@ export const updateBus = async (req, res, next) => {
       message: locales("bus_created"),
       data: updatedBus,
     });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const assignDriverToBus = async (req, res, next) => {
+  try {
+
+    const { driver_id } = req.body;
+
+    const {id} = req.params;
+    
+    const assignment = await assignDriver(id, driver_id);
+    // send email
+    return res.status(StatusCodes.CREATED).json({
+      success: true,
+      data: assignment
+    })
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+export const getDriverToBusAssignments = async (req, res, next) => {
+  try {
+    const assignments = await getAllAssignments();
+    return res.status(StatusCodes.OK).json({
+      success: true,
+      data: assignments
+    })
   } catch (err) {
     next(err);
   }

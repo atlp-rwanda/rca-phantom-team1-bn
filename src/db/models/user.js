@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use strict";
 
 const { Model } = require("sequelize");
@@ -39,6 +40,11 @@ module.exports = (sequelize, DataTypes) => {
       roleId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+      },
+      isAssigned: {
+        type: DataTypes.ENUM("true", "false"),
+        allowNull: true,
+        defaultValue: "false",
       },
       createdAt: {
         allowNull: false,

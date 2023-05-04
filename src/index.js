@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import "dotenv";
 import express from "express";
 import cors from "cors";

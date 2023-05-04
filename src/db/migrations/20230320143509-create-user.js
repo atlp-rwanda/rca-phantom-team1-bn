@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use strict";
 
 /** @type {import('sequelize-cli').Migration} */
@@ -24,6 +25,11 @@ module.exports = {
       },
       roleId: {
         type: Sequelize.INTEGER,
+      },
+      isAssigned: {
+        type: Sequelize.ENUM("true", "false"),
+        allowNull: false,
+        defaultValue: "false",
       },
       createdAt: {
         allowNull: false,

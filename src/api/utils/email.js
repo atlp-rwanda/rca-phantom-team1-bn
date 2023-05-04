@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 var nodemailer = require("nodemailer");
 
 var transporter = nodemailer.createTransport({
