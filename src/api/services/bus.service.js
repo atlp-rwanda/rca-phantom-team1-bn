@@ -104,10 +104,10 @@ export const findBusByAgency = async (agencyId) => {
     bus.driverId = driverId;
     
     const driver = await getDriver(driverId);
-    driver.isAssigned = true; // fix: assign to driver, not user
+    driver.isAssigned = true;
     
     await bus.save();
-    await driver.save(); // fix: save the updated driver instead of user
+    await driver.save(); 
 
     // Send an email to the user with the updated assignment
     await sendEmail(
