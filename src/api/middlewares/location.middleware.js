@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { StatusCodes } from "http-status-codes";
 import { getLocation, getLocationByName } from "../services/locations.service";
 
@@ -8,7 +9,7 @@ export const locationExistsById = async (req, res, next) => {
     if (!location) {
       return res.status(StatusCodes.NOT_FOUND).json({
         success: false,
-        message: `Location with id [${req.params.id}] is not found`,
+        message: `Location is not found`,
       });
     }
     req.location = location; // attach the location to the request object
