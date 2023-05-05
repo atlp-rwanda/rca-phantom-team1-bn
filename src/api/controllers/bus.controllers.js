@@ -93,7 +93,7 @@ export const updateBus = async (req, res, next) => {
   }
 };
 
-export const assignDriverToBus = async (req, res, next) => {
+export const assignDriverToBus = async (req, res) => {
   try {
 
     const { driver_id } = req.body;
@@ -107,25 +107,29 @@ export const assignDriverToBus = async (req, res, next) => {
       data: assignment
     })
   } catch (err) {
-    next(err);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: err.message
+    });
   }
 };
 
-export const assignRouteToBus = async (req, res, next) => {
+export const assignRouteToBus = async (req, res) => {
   try {
-
     const { route_id } = req.body;
-
-    const {id} = req.params;
+    const { id } = req.params;
     
     const assignment = await assignRoute(id, route_id);
 
     return res.status(StatusCodes.CREATED).json({
       success: true,
       data: assignment
-    })
+    });
   } catch (err) {
-    next(err);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: err.message
+    });
   }
 };
 

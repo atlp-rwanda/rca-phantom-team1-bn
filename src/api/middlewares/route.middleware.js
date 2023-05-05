@@ -18,7 +18,7 @@ export const routeExists = async (req, res, next) => {
   if (!route)
     return res.status(StatusCodes.NOT_FOUND).json({
       success: false,
-      message: `Route with id [${req.body.route_id}] is not found`,
+      message: `Route is not found`,
     });
   req.route = route;
   next();
