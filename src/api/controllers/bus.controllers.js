@@ -5,7 +5,8 @@ import {
   saveBus,
   findAllBuses,
   getAllAssignments,
-  assignDriver
+  assignDriver,
+  assignRoute
 } from "../services/bus.service";
 
 export const createBus = async (req, res, next) => {
@@ -101,6 +102,24 @@ export const assignDriverToBus = async (req, res, next) => {
     
     const assignment = await assignDriver(id, driver_id);
     // send email
+    return res.status(StatusCodes.CREATED).json({
+      success: true,
+      data: assignment
+    })
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const assignRouteToBus = async (req, res, next) => {
+  try {
+
+    const { route_id } = req.body;
+
+    const {id} = req.params;
+    
+    const assignment = await assignRoute(id, route_id);
+
     return res.status(StatusCodes.CREATED).json({
       success: true,
       data: assignment

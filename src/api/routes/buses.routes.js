@@ -7,6 +7,7 @@ import {
   updateBus,
   deleteBusById,
   getBusesByPlateNumber,
+  assignRouteToBus,
 } from "../controllers/bus.controllers";
 import ERoles from "../enums/ERole";
 import {
@@ -21,6 +22,7 @@ import {
 
 import {assignDriverToBus} from "../controllers/bus.controllers";
 import { driverExists } from "../middlewares/driver.middleware";
+import {routeExists} from "../middlewares/route.middleware";
 
 const router = Router();
 
@@ -82,6 +84,20 @@ const router = Router();
  *           description: The auto-generated id of the driver
  */
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     BusRoute:
+ *       type: object
+ *       required:
+ *         - route_id
+ *       properties:
+ *         route_id:
+ *           type: number
+ *           description: The auto-generated id of the route
+ */
+
 
 /**
  * @swagger
@@ -118,6 +134,43 @@ const router = Router();
  */
 
 router.put("/assign-driver/:id",checkUserLoggedIn,restrictTo("operator"),driverExists,assignDriverToBus);
+
+/**
+ * @swagger
+ * /buses/assign-route/{id}:
+ *  put:
+ *    summary: Assign a route to a bus
+ *    tags: [Buses]
+ *    security:
+ *       - bearerAuth: []
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The bus id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/BusRoute'
+ *    responses:
+ *      200:
+ *        description: The assignment was done successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Bus'
+ *      404:
+ *        description: The bus or route was not found
+ *      500:
+ *        description: Some error happened
+ */
+
+router.put("/assign-route/:id",checkUserLoggedIn,restrictTo("operator"),routeExists,assignRouteToBus);
+
 
 /**
  * @swagger

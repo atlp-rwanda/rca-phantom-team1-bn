@@ -1,5 +1,6 @@
+/* eslint-disable prettier/prettier */
 import { StatusCodes } from "http-status-codes";
-import { findRouteById, findRouteByRouteName } from "../services/route.service";
+import { findRouteById, findRouteByRouteName, getRoute } from "../services/route.service";
 
 export const routeExistsById = async (req, res, next) => {
   const route = await findRouteById(req.params.id);
@@ -7,6 +8,17 @@ export const routeExistsById = async (req, res, next) => {
     return res.status(StatusCodes.NOT_FOUND).json({
       success: false,
       message: `Route with id [${req.params.id}] is not found`,
+    });
+  req.route = route;
+  next();
+};
+
+export const routeExists = async (req, res, next) => {
+  const route = await getRoute(req.body.route_id);
+  if (!route)
+    return res.status(StatusCodes.NOT_FOUND).json({
+      success: false,
+      message: `Route with id [${req.body.route_id}] is not found`,
     });
   req.route = route;
   next();

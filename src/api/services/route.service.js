@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import locales from "../../config/languages";
 import models from "../../db/models";
 import CustomError from "../utils/custom-error";
@@ -33,6 +34,17 @@ export const findRouteById = async (id) => {
       e?.message || "Error fetching route by id",
       StatusCodes.INTERNAL_SERVER_ERROR
     );
+  }
+};
+
+export const getRoute = async (routerId) => {
+  try {
+    const data = await route.findOne({ where: { id: routerId } });
+    return data;
+  } catch (e) {
+    const error = new Error(e?.message || "Error getting route");
+    error.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+    throw error;
   }
 };
 

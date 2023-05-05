@@ -4,6 +4,7 @@ import models from "../../db/models";
 import CustomError from "../utils/custom-error";
 import { StatusCodes } from "http-status-codes";
 import { getDriver } from "./driver.service";
+import { getRoute } from "./route.service";
 import { sendEmail } from "../utils/email";
 const { bus, agency , user} = models;
 
@@ -124,6 +125,27 @@ export const findBusByAgency = async (agencyId) => {
   } catch (e) {
     throw new CustomError(
       e?.message || "Error while assigning driver to bus",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
+export const assignRoute = async (busId, routerId) => {
+  try {
+
+    const bus = await getBus(busId);
+    bus.routerId = routerId;
+    
+    const route = await getRoute(routerId);
+    route.isAssigned = true;
+    
+    await bus.save();
+    await route.save(); 
+
+    return { message: "Route assigned to bus successfully" };
+  } catch (e) {
+    throw new CustomError(
+      e?.message || "Error while assigning route to bus",
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
