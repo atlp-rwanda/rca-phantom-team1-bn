@@ -6,7 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import { getDriver } from "./driver.service";
 import { getRoute } from "./route.service";
 import { sendEmail } from "../utils/email";
-const { bus, agency , user} = models;
+const { bus, agency , user, route} = models;
 
 export const getBus = async (busId) => {
   try {
@@ -35,6 +35,11 @@ export const findAllBuses = async (limit, offset) => {
           model: agency,
           as: 'agency'
         },
+        {
+          model: route,
+          as: 'route',
+          foreignKey: 'routerId'
+        }, 
       ]
     });
     return response;
@@ -164,7 +169,7 @@ export const findBusByRoute = async (route_id) => {
         {
           model: agency,
           as: 'agency'
-        },
+        }
       ]
     });
     if (!busExists) return false;
