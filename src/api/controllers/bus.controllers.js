@@ -116,10 +116,10 @@ export const assignDriverToBus = async (req, res) => {
 
 export const assignRouteToBus = async (req, res) => {
   try {
-    const { route_id } = req.body;
+    const { routerId } = req.body;
     const { id } = req.params;
     
-    const assignment = await assignRoute(id, route_id);
+    const assignment = await assignRoute(id, routerId);
 
     return res.status(StatusCodes.CREATED).json({
       success: true,

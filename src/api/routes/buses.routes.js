@@ -12,6 +12,7 @@ import {
 import ERoles from "../enums/ERole";
 import {
   agencyExists,
+  busExists,
   busExistsById,
   busExistsByPlateNumber,
 } from "../middlewares/bus.middleware";
@@ -91,9 +92,9 @@ const router = Router();
  *     BusRoute:
  *       type: object
  *       required:
- *         - route_id
+ *         - routerId
  *       properties:
- *         route_id:
+ *         routerId:
  *           type: number
  *           description: The auto-generated id of the route
  */
@@ -169,7 +170,7 @@ router.put("/assign-driver/:id",checkUserLoggedIn,restrictTo("operator"),driverE
  *        description: Some error happened
  */
 
-router.put("/assign-route/:id",checkUserLoggedIn,restrictTo("operator"),routeExists,assignRouteToBus);
+router.put("/assign-route/:id",checkUserLoggedIn,restrictTo("operator"),routeExists,busExists,assignRouteToBus);
 
 
 /**
