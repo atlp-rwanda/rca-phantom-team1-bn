@@ -16,7 +16,12 @@ module.exports = (sequelize, DataTypes) => {
       route_name: DataTypes.STRING,
       origin_id: DataTypes.INTEGER,
       destination_id: DataTypes.INTEGER,
-      bus_stop_id: DataTypes.INTEGER
+      bus_stop_id: DataTypes.INTEGER,
+      isAssigned: {
+        type: DataTypes.ENUM("true", "false"),
+        allowNull: true,
+        defaultValue: "false",
+      },
     },
     {
       sequelize,

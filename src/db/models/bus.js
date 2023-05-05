@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Bus.belongsTo(models.agency);
       Bus.belongsTo(models.user,{ foreignKey: 'driverId', as: 'driver' });
+      Bus.belongsTo(models.route,{ foreignKey: 'routerId', as: 'route' });
       // Bus.belongsTo(models.router); 
       // models.user.hasMany(Bus);
       // models.agency.hasMany(Bus);
