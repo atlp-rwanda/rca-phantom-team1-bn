@@ -13,3 +13,16 @@ export const getUser = async (email) => {
     throw error;
   }
 };
+
+const findUserByResetToken = async (token) => {
+  try {
+    const user = await User.findOne({
+      where: {
+          resetPasswordToken: token,
+      },
+    });
+    return user;
+  } catch (error) {
+      return null
+  }
+}

@@ -1,5 +1,5 @@
 import { getUser } from "../services/auth.service";
-import { sendEmail, sendResetPasswordEmail } from "../utils/email";
+import { sendEmail } from "../utils/email";
 import { hashPassword } from "../utils/hash-password";
 import { generateResetToken } from "../utils/reset-token";
 
@@ -40,21 +40,7 @@ export const resetPasswordEmail = async (req, res) => {
   }
 };
 
-const findUserByResetToken = async (token) => {
-  try {
-    const user = await User.findOne({
-      where: {
-          resetPasswordToken: token,
-      },
-    });
-    return user;
-  } catch (error) {
-      return null
-  }
-}
-
 export const resetPassword = async (req, res) => {
-  const resetToken = req.params.resetToken
   const { newPassword } = req.body;
 
   try {

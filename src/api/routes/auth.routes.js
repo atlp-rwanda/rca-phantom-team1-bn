@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { login } from "../controllers/auth.controller";
 import { validateLogin } from "../validations/auth.validator";
-import { checkUserExists } from "../middlewares/auth.middleware";
+import { checkIsTokenExpired, checkIsTokenValid, checkUserExists } from "../middlewares/auth.middleware";
 import { resetPassword, resetPasswordEmail } from "../controllers/resetPassword.controller.js";
 
 const authRouter = Router();
@@ -100,6 +100,6 @@ authRouter.post("/forgot-password", resetPasswordEmail);
  *       500:
  *         description: failed to update password
  */
-authRouter.post("/reset-password/:resetToken", resetPassword);
+authRouter.post("/reset-password/:resetToken", checkIsTokenValid, checkIsTokenExpired, resetPassword);
 
 export default authRouter;

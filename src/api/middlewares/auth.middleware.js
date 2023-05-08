@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { getUser } from "../services/auth.service";
+import { getUser, findUserByResetToken } from "../services/auth.service";
 
 export const checkUserExists = async (req, res, next) => {
   try {
@@ -25,7 +25,7 @@ export const checkIsTokenValid = async (req, res, next) => {
     if (!user) {
         return res.status(404).json({
             success: true,
-            message: "invalid or expired token",
+            message: "invalid token",
         })
     }
     req.user = user;
@@ -42,7 +42,7 @@ export const checkIsTokenExpired = async (req, res, next) => {
     if (expirationDate.getTime() < Date.now()) {
       return res.status(404).json({
           success: true,
-          message: "invalid or expired token",
+          message: "expired token",
       })
     }
   } catch (e) {
