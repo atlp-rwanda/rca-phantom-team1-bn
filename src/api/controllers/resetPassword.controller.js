@@ -58,22 +58,6 @@ export const resetPassword = async (req, res) => {
   const { newPassword } = req.body;
 
   try {
-    const user = await findUserByResetToken(resetToken);
-    if (!user) {
-        return res.status(404).json({
-            success: true,
-            message: "invalid or expired token",
-        })
-    }
-
-    const expirationDate = user.dataValues.resetPasswordExpires;
-
-    if (expirationDate.getTime() < Date.now()) {
-      return res.status(404).json({
-          success: true,
-          message: "invalid or expired token",
-      })
-    }
     const hashedPassword = await hashPassword(newPassword)
     user.password = hashedPassword
     
