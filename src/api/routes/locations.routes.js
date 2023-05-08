@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Router } from "express";
 import {
   getLocationById,
@@ -14,6 +15,13 @@ import {
   validateCreateLocation,
   validateUpdateLocation,
 } from "../validations/location.validator";
+
+import {
+  checkUserLoggedIn,
+  restrictTo,
+} from "../middlewares/protect.middleware";
+import { assignRouteToLocation } from "../controllers/locations.controller";
+import {routeExists} from "../middlewares/route.middleware";
 
 const locationRouter = Router();
 
@@ -80,6 +88,57 @@ locationRouter.get("/", getLocations);
  *         description: Internal server error
  */
 locationRouter.post("/", validateCreateLocation, locationExistsByName, createLocation);
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     LocationRoute:
+ *       type: object
+ *       required:
+ *         - routerId
+ *       properties:
+ *         routerId:
+ *           type: number
+ *           description: The auto-generated id of the route
+ */
+
+/**
+ * @swagger
+ * /locations/assign-route/{id}:
+ *  put:
+ *    summary: Assign a route to a location
+ *    tags: [Locations]
+ *    security:
+ *       - bearerAuth: []
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The location id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/LocationRoute'
+ *    responses:
+ *      200:
+ *        description: The assignment was done successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Bus'
+ *      404:
+ *        description: The location or route was not found
+ *      500:
+ *        description: Some error happened
+ */
+
+locationRouter.put("/assign-route/:id",checkUserLoggedIn,restrictTo("operator"),routeExists,locationExistsById,assignRouteToLocation);
+
 
 /**
 * @swagger

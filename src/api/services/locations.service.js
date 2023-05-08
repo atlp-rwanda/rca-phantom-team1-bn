@@ -1,27 +1,64 @@
+/* eslint-disable prettier/prettier */
 import { StatusCodes } from "http-status-codes";
 import models from "../../db/models";
+import CustomError from "../utils/custom-error";
+import { getRoute } from "./route.service";
 
-const { location } = models;
+const { location, route } = models;
 
-export const getLocation = async (id) => {
+export const getLocation = async (locationId) => {
   try {
-    const data = await location.findOne({ where: { id } });
+   
+    const data = await location.findOne({ where: { id: locationId } });
     return data;
   } catch (e) {
-    const error = new Error(e?.message || "Error fetching location");
+    const error = new CustomError(e?.message || "Error getting location");
     error.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
     throw error;
   }
 };
 
-export const getAllLocations = async () => {
+export const getAllLocations = async (limit, offset) => {
   try {
-    const data = await location.findAll();
-    return data;
+    const response = await location.findAndCountAll({
+      limit,
+      offset,
+      include: [
+        {
+          model: route,
+          as: 'route',
+          foreignKey: 'routerId'
+        }, 
+      ]
+    });
+    return response;
   } catch (e) {
-    const error = new Error(e?.message || "Error fetching all locations");
-    error.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
-    throw error;
+    throw new CustomError(
+      e?.message || "Error fetching locations",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
+
+export const assignRoute = async (locationId, routerId) => {
+  try {
+
+    const location = await getLocation(locationId);
+    location.routerId = routerId;
+    
+    const route = await getRoute(routerId);
+    route.isAssigned = true;
+    
+    await location.save();
+    await route.save();
+
+    return { message: "Route assigned to location successfully" };
+  } catch (e) {
+    throw new CustomError(
+      e?.message || "Error while assigning route to location",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
   }
 };
 

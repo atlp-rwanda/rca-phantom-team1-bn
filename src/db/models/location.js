@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use strict";
 
 const { Model } = require("sequelize");
@@ -6,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   class Location extends Model {
 
     static associate(models) {
-      
+      Location.belongsTo(models.route,{ foreignKey: 'routerId', as: 'route' });
     }
 
   }
@@ -29,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      routerId: DataTypes.INTEGER,
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
