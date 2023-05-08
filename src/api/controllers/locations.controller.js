@@ -1,5 +1,6 @@
+/* eslint-disable prettier/prettier */
 import { StatusCodes } from "http-status-codes";
-import { getLocation, getAllLocations, createNewLocation, updateExistingLocation, deleteLocation, getLocationByName } from "../services/locations.service";
+import { getLocation, getAllLocations, createNewLocation, updateExistingLocation, deleteLocation, getLocationByName, assignRoute} from "../services/locations.service";
 
 export const getLocations = async (req, res, next) => {
   const { name } = req.query;
@@ -9,8 +10,10 @@ export const getLocations = async (req, res, next) => {
     if (name) {
       locations = await getLocationByName(name); // use the service method
     } else {
-      locations = await getAllLocations();
-    }
+        const { page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+        locations = await getAllLocations(limit, offset);
+      };
     if (!locations && name)
       return res.status(StatusCodes.NOT_FOUND).json({
         success: false,
@@ -42,6 +45,25 @@ export const createLocation = async (req, res, next) => { // rename the controll
     });
   } catch (error) {
     next(error);
+  }
+};
+
+export const assignRouteToLocation = async (req, res) => {
+  try {
+    const { routerId } = req.body;
+    const { id } = req.params;
+    
+    const assignment = await assignRoute(id, routerId);
+
+    return res.status(StatusCodes.CREATED).json({
+      success: true,
+      data: assignment
+    });
+  } catch (err) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: err.message
+    });
   }
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
@@ -5,9 +6,10 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable('locations', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER,
       },
       latitude: {
         type: Sequelize.DECIMAL(9,6),
@@ -20,6 +22,9 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
         allowNull: false,
+      },
+      routerId: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
