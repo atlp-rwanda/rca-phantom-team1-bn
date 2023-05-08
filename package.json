@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=staging babel-node src/index.js",
-    "prod": "node node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production node_modules/web babel-node src/index.js",
+    "prod": "yarn db:migrate:seed && cross-env NODE_ENV=production babel-node src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec babel-node src/index.js",
     "migrate": "npx sequelize db:migrate",
     "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
