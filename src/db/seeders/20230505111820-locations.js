@@ -6,6 +6,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert("locations", [
       {
+        id: 1,
         latitude: 2.7,
         longitude: 9.3,
         name: "Nyagatare",
@@ -14,6 +15,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 2,
         latitude: 5.4,
         longitude: 4.3,
         name: "Nyanza",
