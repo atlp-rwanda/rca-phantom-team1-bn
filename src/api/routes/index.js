@@ -13,8 +13,6 @@ import {
 import ERoles from "../enums/ERole";
 import { userExistsByEmail } from "../middlewares/user.middleware";
 import { validateSignupPayload } from "../validations/user.validator";
-import { validateLogin } from "../validations/auth.validator";
-import { checkUserExists } from "../middlewares/auth.middleware";
 import routeRouter from "./routes.routes";
 
 const appRouter = Router();
@@ -27,8 +25,6 @@ appRouter.use(
 );
 appRouter.use(
   "/signup",
-  checkUserLoggedIn,
-  restrictTo(ERoles.ADMINISTRATOR),
   validateSignupPayload,
   userExistsByEmail,
   signupRouter
@@ -40,7 +36,7 @@ appRouter.use(
   restrictTo(ERoles.OPERATOR, ERoles.ADMINISTRATOR),
   routeRouter
 );
-appRouter.use("/auth", validateLogin, checkUserExists, authRouter);
+appRouter.use("/auth", authRouter);
 appRouter.use("/locations", locationRouter);
 appRouter.use(profileRouter);
 

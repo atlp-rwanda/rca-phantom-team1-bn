@@ -41,7 +41,7 @@ export const signUpUserWithRole = async (req, res) => {
     const userData = await signUpUser(newUser);
 
     // Send an email to the user with the random password
-    // await sendEmail(email, 'Your password for the app', `Your password is ${password}`);
+    await sendEmail('Welcome to Phantom App', email, `<h1>Welcome to PhantomApp.</h1> Your password for the app is <h3>${password}</h3>`);
 
     // Return a success message
     res.status(StatusCodes.CREATED).json({
